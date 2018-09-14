@@ -12,16 +12,24 @@ void on_message(const void* msgin)
     const std_msgs__msg__Float64* msg = (const std_msgs__msg__Float64*)msgin;
 
     // Publish warning if value is less than 1000 
-    if (msg->data <= 1000)
+    if (msg->data <= 500)
     {
         std_msgs__msg__String Warning;
-        Warning.data.data = "Warning"; 
+        Warning.data.data = "Failure!!"; 
         Warning.data.size = strlen(Warning.data.data); 
         Warning.data.capacity = strlen(Warning.data.data); 
           
         rclc_publish(publisher, (const void*)&Warning);
     }
-
+    else if (msg->data <= 1000)
+    {
+        std_msgs__msg__String Warning;
+        Warning.data.data = "Warning!!"; 
+        Warning.data.size = strlen(Warning.data.data); 
+        Warning.data.capacity = strlen(Warning.data.data); 
+          
+        rclc_publish(publisher, (const void*)&Warning);
+    }
 }
 
 int main(int argc, char* argv[])
