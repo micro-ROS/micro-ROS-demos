@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     std_msgs__msg__Float64 msg;
     msg.data = 0;
     double Count = 0;
+    time_t t;
     srand((unsigned) time(&t));
 
     while (rclc_ok())

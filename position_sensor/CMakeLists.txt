@@ -9,6 +9,8 @@ find_package(std_msgs REQUIRED)
 add_executable(position_sensor main.c)
 ament_target_dependencies(position_sensor rclc std_msgs)
 
+target_link_libraries(position_sensor m)
+
 install(TARGETS
   position_sensor
   DESTINATION lib/${PROJECT_NAME}

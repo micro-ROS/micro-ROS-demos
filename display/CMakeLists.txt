@@ -4,7 +4,7 @@ project(display)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclc REQUIRED)
-find_package(display REQUIRED)
+find_package(std_msgs REQUIRED)
 
 add_executable(display main.c)
 ament_target_dependencies(display rclc std_msgs)
