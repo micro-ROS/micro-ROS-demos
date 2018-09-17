@@ -4,10 +4,10 @@
 
 #include <stdio.h>
 
-rclc_publisher_t* publisher;
+static rclc_publisher_t* publisher;
 
 
-void on_message(const void* msgin)
+void altitude_on_message(const void* msgin)
 {
     const std_msgs__msg__Float64* msg = (const std_msgs__msg__Float64*)msgin;
 
@@ -32,18 +32,26 @@ void on_message(const void* msgin)
     }
 }
 
+
+void engine_on_message(const void* msgin)
+{
+    const std_msgs__msg__Float64* msg = (const std_msgs__msg__Float64*)msgin;
+}
+
 int main(int argc, char* argv[])
 {
     (void)argc;
     (void)argv;
     rclc_init(0, NULL);
     rclc_node_t* node        = rclc_create_node("actuator", "");
-    rclc_subscription_t* sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "position_sensor", on_message, 1, false);
-    publisher = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "Warning", 1);
+    rclc_subscription_t* altitude_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "position_sensor", altitude_on_message, 1, false);
+    rclc_subscription_t* engine_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "engine_power", engine_on_message, 1, false);
+    publisher = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "status_report", 1);
 
     rclc_spin_node(node);
 
-    if (sub) rclc_destroy_subscription(sub);
+    if (altitude_sub) rclc_destroy_subscription(altitude_sub);
+    if (engine_sub) rclc_destroy_subscription(engine_sub);
     if (publisher) rclc_destroy_publisher(publisher);
     if (node) rclc_destroy_node(node);
 
