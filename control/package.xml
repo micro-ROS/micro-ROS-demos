@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-  <name>external_node</name>
+  <name>control</name>
   <version>0.0.1</version>
   <description>Demo. Node running on ros2</description>
   <maintainer email="javiermoreno@eprosima.com">Javier Moreno</maintainer>
