@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(external_node)
+project(control)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -14,11 +14,11 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-add_executable(external_node main.cpp)
-ament_target_dependencies(external_node rclcpp std_msgs)
+add_executable(control main.cpp)
+ament_target_dependencies(control rclcpp std_msgs)
 
 install(TARGETS
-  external_node
+  control
   DESTINATION lib/${PROJECT_NAME}
 )
 

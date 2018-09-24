@@ -1,59 +1,61 @@
 #include <rclc/rclc.h>
 #include <std_msgs/msg/string.h>
-#include <std_msgs/msg/float64.h>
+#include <std_msgs/msg/int32.h>
+#include <std_msgs/msg/u_int32.h>
 
 #include <stdio.h>
 
-static rclc_publisher_t* publisher;
-
-
-void altitude_on_message(const void* msgin)
-{
-    const std_msgs__msg__Float64* msg = (const std_msgs__msg__Float64*)msgin;
-
-    // Publish warning if value is less than 1000 
-    if (msg->data <= 500)
-    {
-        std_msgs__msg__String Warning;
-        Warning.data.data = "Failure!!"; 
-        Warning.data.size = strlen(Warning.data.data); 
-        Warning.data.capacity = strlen(Warning.data.data); 
-          
-        rclc_publish(publisher, (const void*)&Warning);
-    }
-    else if (msg->data <= 1000)
-    {
-        std_msgs__msg__String Warning;
-        Warning.data.data = "Warning!!"; 
-        Warning.data.size = strlen(Warning.data.data); 
-        Warning.data.capacity = strlen(Warning.data.data); 
-          
-        rclc_publish(publisher, (const void*)&Warning);
-    }
-}
-
+static rclc_publisher_t* engine_pub;
+static uint32_t engine_power = 100;
 
 void engine_on_message(const void* msgin)
 {
-    const std_msgs__msg__Float64* msg = (const std_msgs__msg__Float64*)msgin;
+    
+    const std_msgs__msg__Int32* msg = (const std_msgs__msg__Int32*)msgin;
+    
+    if (msg->data + engine_power > 0)
+    {
+        engine_power += msg->data;
+    }
+    else
+    {
+        engine_power = 0;
+    }
+
+    // Publish new altitude    
+    std_msgs__msg__UInt32  msg_out;
+    msg_out.data = engine_power;
+    rclc_publish(engine_pub, (const void*)&msg_out);
 }
 
 int main(int argc, char* argv[])
 {
     (void)argc;
     (void)argv;
+
+    rclc_node_t* node = NULL; 
+    rclc_subscription_t* engine_sub = NULL;
+    
+
+
     rclc_init(0, NULL);
-    rclc_node_t* node        = rclc_create_node("actuator", "");
-    rclc_subscription_t* altitude_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "position_sensor", altitude_on_message, 1, false);
-    rclc_subscription_t* engine_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "engine_power", engine_on_message, 1, false);
-    publisher = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "status_report", 1);
+    node = rclc_create_node("actuator", "");
+    engine_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", engine_on_message, 1, false);
+    engine_pub = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, UInt32), "std_msgs_msg_UInt32", 1);
+
+    // Publish new altitude    
+    std_msgs__msg__UInt32  msg_out;
+    msg_out.data = engine_power;
+    rclc_publish(engine_pub, (const void*)&msg_out);
 
     rclc_spin_node(node);
 
-    if (altitude_sub) rclc_destroy_subscription(altitude_sub);
+    //if (altitude_sub) rclc_destroy_subscription(altitude_sub);
     if (engine_sub) rclc_destroy_subscription(engine_sub);
-    if (publisher) rclc_destroy_publisher(publisher);
+    if (engine_pub) rclc_destroy_publisher(engine_pub);
     if (node) rclc_destroy_node(node);
+
+    printf("Actuator node closed.\n");
 
     return 0;
 }
