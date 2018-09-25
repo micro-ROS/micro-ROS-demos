@@ -18,7 +18,7 @@ static char Alert[200];
  */
 void UpdateDisplay()
 {
-    printf("\r[received messages: %7u]\t [Altitude: %5.2f]\t [Engine power: %5u]\t [Status: %10s]\t\t\t", it++, altitude, engine_power, Alert);
+    printf("\r[received messages: %7u]    [Altitude: %8.2f]    [Engine power: %8u]    [Status: %10s]", it++, altitude, engine_power, Alert);
 }
 
 
