@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(test_custom_msg)
+project(example_custom_msgs)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -17,7 +17,8 @@ find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 set(msg_files
-  "msg/AAAATest.msg"
+  "msg/MultiStringTest.msg"
+  "msg/NestedMsgTest.msg"
 )
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${msg_files}

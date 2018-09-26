@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>test_custom_msg</name>
-  <version>0.5.0</version>
+  <name>example_custom_msgs</name>
+  <version>1.0.0</version>
   <description>Custom generated msg.</description>
   <maintainer email="javiermoreno@eproxima.com">Javier Moreno</maintainer>
   <license>Apache License 2.0</license>

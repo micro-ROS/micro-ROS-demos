@@ -5,9 +5,10 @@ project(example_publisher)
 find_package(ament_cmake REQUIRED)
 find_package(rclc REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(example_custom_msgs REQUIRED)
 
 add_executable(example_publisher main.c)
-ament_target_dependencies(example_publisher rclc std_msgs)
+ament_target_dependencies(example_publisher rclc std_msgs example_custom_msgs)
 
 install(TARGETS
   example_publisher

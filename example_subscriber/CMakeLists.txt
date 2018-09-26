@@ -5,9 +5,10 @@ project(example_subscriber)
 find_package(ament_cmake REQUIRED)
 find_package(rclc REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(example_custom_msgs REQUIRED)
 
 add_executable(example_subscriber main.c)
-ament_target_dependencies(example_subscriber rclc std_msgs)
+ament_target_dependencies(example_subscriber rclc std_msgs example_custom_msgs)
 
 install(TARGETS
   example_subscriber

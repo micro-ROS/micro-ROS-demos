@@ -11,4 +11,4 @@ int32 data10
 uint32 data11
 int64 data12
 uint64 data13
-string data14
+MultiStringTest data14
