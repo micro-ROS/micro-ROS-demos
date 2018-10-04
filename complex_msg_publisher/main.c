@@ -1,5 +1,5 @@
 #include <rclc/rclc.h>
-#include <example_custom_msgs/msg/nested_msg_test.h>
+#include <complex_msgs/msg/nested_msg_test.h>
 
 #include <stdio.h>
 
@@ -10,9 +10,9 @@ int main(int argc, char* argv[])
     rclc_init(0, NULL);
     rclc_node_t* node = rclc_create_node("publisher_node", "");
     rclc_publisher_t* publisher =
-        rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(example_custom_msgs, msg, NestedMsgTest), "example_custom_msgs_msg_NestedMsgTest", 1);
+        rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(complex_msgs, msg, NestedMsgTest), "complex_msgs_msg_NestedMsgTest", 1);
 
-    example_custom_msgs__msg__NestedMsgTest msg;
+    complex_msgs__msg__NestedMsgTest msg;
     char Buff1[30];
     msg.data14.data1.data = Buff1;
     msg.data14.data1.size = 0;
