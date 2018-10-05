@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define ASSERT(ptr) if (ptr == NULL) return -1;
+
 void on_message(const void* msgin)
 {
     const std_msgs__msg__Int32* msg = (const std_msgs__msg__Int32*)msgin;
@@ -15,8 +17,10 @@ int main(int argc, char* argv[])
     (void)argv;
     rclc_init(0, NULL);
     rclc_node_t* node        = rclc_create_node("subscription_node", "");
+    ASSERT(node);
     rclc_subscription_t* sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
-                                                        "subscription_example", on_message, 1, false);
+                                                        "std_msgs_msg_Int32", on_message, 1, false);
+    ASSERT(sub);
 
     rclc_spin_node(node);
 

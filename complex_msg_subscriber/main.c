@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define ASSERT(ptr) if (ptr == NULL) return -1;
+
 void on_message(const void* msgin)
 {
     const complex_msgs__msg__NestedMsgTest* msg = (const complex_msgs__msg__NestedMsgTest*)msgin;
@@ -34,7 +36,9 @@ int main(int argc, char* argv[])
     (void)argv;
     rclc_init(0, NULL);
     rclc_node_t* node        = rclc_create_node("subscription_node", "");
+    ASSERT(node);
     rclc_subscription_t* sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(complex_msgs, msg, NestedMsgTest), "complex_msgs_msg_NestedMsgTest", on_message, 1, false);
+    ASSERT(sub);
 
     rclc_spin_node(node);
 

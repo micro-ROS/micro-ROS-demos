@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 
+#define ASSERT(ptr) if (ptr == NULL) return -1;
+
 static rclc_publisher_t* engine_pub;
 static uint32_t engine_power = 100;
 
@@ -40,8 +42,11 @@ int main(int argc, char* argv[])
 
     rclc_init(0, NULL);
     node = rclc_create_node("actuator", "");
+    ASSERT(node);
     engine_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", engine_on_message, 1, false);
+    ASSERT(engine_sub);
     engine_pub = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, UInt32), "std_msgs_msg_UInt32", 1);
+    ASSERT(engine_pub);
 
     // Publish new altitude    
     std_msgs__msg__UInt32  msg_out;

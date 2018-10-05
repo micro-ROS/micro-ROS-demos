@@ -18,6 +18,7 @@ find_package(std_msgs REQUIRED)
 # Do not compile package if rclcpp is not found
 if (NOT rclcpp_FOUND)
   message(WARNING "${PROJECT_NAME} will be ignored due to rclcpp is not installed")
+  ament_package()
   return()
 endif()
 

@@ -9,8 +9,16 @@ int main(int argc, char* argv[])
     (void)argv;
     rclc_init(0, NULL);
     rclc_node_t* node = rclc_create_node("publisher_node", "");
+    if (node == NULL)
+    {
+        return -1;
+    }
     rclc_publisher_t* publisher =
         rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(complex_msgs, msg, NestedMsgTest), "complex_msgs_msg_NestedMsgTest", 1);
+    if (publisher == NULL)
+    {
+        return -1;
+    }
 
     complex_msgs__msg__NestedMsgTest msg;
     char Buff1[30];

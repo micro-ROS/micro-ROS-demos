@@ -3,14 +3,17 @@
 
 #include <stdio.h>
 
+#define ASSERT(ptr) if (ptr == NULL) return -1;
+
 int main(int argc, char *argv[])
 {
     (void)argc;
     (void)argv;
     rclc_init(0, NULL);
     rclc_node_t* node     = rclc_create_node("publisher_node", "");
-    rclc_publisher_t* publisher = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "publisher_example", 1);
-
+    ASSERT(node);
+    rclc_publisher_t* publisher = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", 1);
+    ASSERT(publisher);
     std_msgs__msg__Int32 msg;
     msg.data = -1;
 

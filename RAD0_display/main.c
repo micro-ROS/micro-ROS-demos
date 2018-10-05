@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 
+#define ASSERT(ptr) if (ptr == NULL) return -1;
 
 static float altitude;
 static uint32_t engine_power;
@@ -84,10 +85,13 @@ int main(int argc, char *argv[])
     rclc_init(0, NULL);
     
     node = rclc_create_node("display", "");
-    
+    ASSERT(node);
     alert_subscription = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "std_msgs_msg_String", on_alert_message, 1, false);
+    ASSERT(alert_subscription);
     altitude_subscription = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "std_msgs_msg_Float64", on_altitude_message, 1, false);
+    ASSERT(altitude_subscription);
     power_subscription = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, UInt32), "std_msgs_msg_UInt32", on_power_message, 1, false);
+    ASSERT(power_subscription);
 
     rclc_spin_node(node);
 
