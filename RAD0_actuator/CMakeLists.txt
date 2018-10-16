@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=*)
+set(CMAKE_C_CLANG_TIDY clang-tidy -checks=*)
 project(rad0_actuator)
 
 find_package(ament_cmake REQUIRED)
@@ -20,7 +20,5 @@ install(TARGETS
   ${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME}
 )
-
-target_link_libraries(${PROJECT_NAME} micrortps_client microcdr)
 
 ament_package()

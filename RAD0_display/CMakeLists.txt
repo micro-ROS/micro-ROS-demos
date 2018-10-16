@@ -21,6 +21,4 @@ ${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME}
 )
 
-target_link_libraries(${PROJECT_NAME} micrortps_client microcdr)
-
 ament_package()
