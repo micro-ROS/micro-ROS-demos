@@ -1,8 +1,11 @@
+<a href="http://www.eprosima.com"><img src="http://www.eprosima.com/images/logos/eprosima/logo.png" align="top" hspace="8" vspace="2" width="650" height="200" ></a>
+
 # Overview
 
-The main porpuse for this repo is to organize all packages for the [Micro-ROS Poject]() funcionalities demostrations.
-
-
+The main porpuse for this repo is to organize all packages for the [Micro-ROS Poject]() functionalities demostrations.
+All packages contained in this repo are a part of the Micro-ROS poject stack. 
+For more information about Micro-ROS project click [here]().
+ 
 # Package clusters
 
 The repository contains the belows packages clusters:
@@ -48,7 +51,7 @@ cd ~/ros2_ws/install/micrortps_agent/bin
 ./MicroRTPSAgent udp 8888
 ```
 
-You may prefert to run the Agent in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the Agent in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
 cd ~/ros2_ws/install/micrortps_agent/bin
@@ -62,7 +65,7 @@ Run the publisher.
  ~/ros2_ws/install/int32_publisher/lib/int32_publisher/./int32_publisher
 ```
 
-You may prefert to run the publisher in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the publisher in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
  ~/ros2_ws/install/int32_publisher/lib/int32_publisher/./int32_publisher > /dev/null &
@@ -113,7 +116,7 @@ cd ~/ros2_ws/install/micrortps_agent/bin
 ./MicroRTPSAgent udp 8888
 ```
 
-You may prefert to run the Agent in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the Agent in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
 cd ~/ros2_ws/install/micrortps_agent/bin
@@ -127,7 +130,7 @@ Run the publisher.
  ~/ros2_ws/install/string_publisher/lib/string_publisher/./string_publisher
 ```
 
-You may prefert to run the publisher in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the publisher in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
  ~/ros2_ws/install/string_publisher/lib/string_publisher/./string_publisher > /dev/null &
@@ -189,7 +192,7 @@ cd ~/ros2_ws/install/micrortps_agent/bin
 ./MicroRTPSAgent udp 8888
 ```
 
-You may prefert to run the Agent in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the Agent in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
 cd ~/ros2_ws/install/micrortps_agent/bin
@@ -203,7 +206,7 @@ Run the publisher.
  ~/ros2_ws/install/complex_msg_publisher/lib/complex_msg_publisher/./complex_msg_publisher
 ```
 
-You may prefert to run the publisher in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the publisher in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
  ~/ros2_ws/install/complex_msg_publisher/lib/complex_msg_publisher/./complex_msg_publisher > /dev/null &
@@ -299,7 +302,7 @@ cd ~/ros2_ws/install/micrortps_agent/bin
 ./MicroRTPSAgent udp 8888
 ```
 
-You may prefert to run the Agent in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the Agent in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
 cd ~/ros2_ws/install/micrortps_agent/bin
@@ -312,7 +315,7 @@ Run the altitude_sensor node.
  ~/ros2_ws/install/rad0_altitude_sensor/lib/rad0_altitude_sensor/./rad0_altitude_sensor
 ```
 
-You may prefert to run the publisher in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the publisher in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
  ~/ros2_ws/install/rad0_altitude_sensor/lib/rad0_altitude_sensor/./rad0_altitude_sensor > /dev/null &
@@ -324,7 +327,7 @@ Run the actitude node.
  ~/ros2_ws/install/rad0_actuator/lib/rad0_actuator/./rad0_actuator
 ```
 
-You may prefert to run the publisher in background and discatr all output in order still using the terminal for the next step.
+You may prefer to run the publisher in background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
  ~/ros2_ws/install/rad0_actuator/lib/rad0_actuator/./rad0_actuator > /dev/null &
