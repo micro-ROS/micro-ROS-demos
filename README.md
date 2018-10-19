@@ -1,32 +1,32 @@
-<a href="http://www.eprosima.com"><img src="http://www.eprosima.com/images/logos/eprosima/logo.png" align="center" hspace="8" vspace="2" width="850" height="200" ></a>
+# Micro ROS Demo
 
-# Overview
+## Overview
 
 The main porpuse for this repo is to organize all packages for the [Micro-ROS Poject]() functionalities demostrations.
 All packages contained in this repo are a part of the Micro-ROS poject stack. 
 For more information about Micro-ROS project click [here]().
  
-# Package clusters
+## Package clusters
 
 The repository contains the belows packages clusters:
 
 
-## Simple message demostration
+### Simple message demostration
 
-### Packages
+#### Packages
 
-#### Int32_publisher
+##### Int32_publisher
 
 The porpuse of the package is to publicate a one of the simplest ROS2 message and demostrate how Micro-ROS down layers (rcl, typesupport and rmw) handle it. 
 For each publication, the message value will be increased in one unit order to see in the subcriber side the menssage variations.
 
 
-#### Int32_subscriber
+##### Int32_subscriber
 
 The porpuse of the package is to subcribe to one of the simplest ROS2 message and demostrate how Micro-ROS down layers (rcl, typesupport and rmw) handle it. 
 
 
-### Run demostration
+#### Run demostration
 
 To run the demostration you have first to build all required packages in a Micro-ROS workspace. 
 To read farther about how to build the Micro-ROS workspace click [here]().
@@ -48,7 +48,7 @@ Run the Micro-xrce agent
 
 ```bash
 cd ~/ros2_ws/install/micrortps_agent/bin
-./MicroRTPSAgent udp 8888
+./MicroXRCEDDSAgent udp 8888
 ```
 
 You may prefer to run the Agent in background and discard all outputs in order still using the terminal for the next step.
@@ -77,22 +77,22 @@ Run the subcriber.
 ~/ros2_ws/install/int32_subscriber/lib/int32_subscriber/./int32_subscriber
 ```
 
-## String message demostration
+### String message demostration
 
-### Packages
+#### Packages
 
-#### string_publisher
+##### string_publisher
 
 The porpuse of the package is to publicate a simple string ROS2 message and demostrate how Micro-ROS down layers (rcl, typesupport and rmw) handle it. 
 For each publication, the message string number will be increased in one unit order to see in the subcriber side the menssage variations.
 
 
-#### String_subscriber
+##### String_subscriber
 
 The porpuse of the package is to subcribe to a simple string ROS2 message and demostrate how Micro-ROS down layers (rcl, typesupport and rmw) handle it. 
 
 
-### Run demostration
+#### Run demostration
 
 To run the demostration you have first to build all required packages in a Micro-ROS workspace. 
 To read farther about how to build the Micro-ROS workspace click [here]().
@@ -143,11 +143,11 @@ Run the subcriber.
 ```
 
 
-## Complex message demostration
+### Complex message demostration
 
-### Packages
+#### Packages
 
-#### complex_msg
+##### complex_msg
 
 One of the porpuses of the package is to demostrate how typesupport code is generated for a complex message. 
 Also, the generation of a complex ROS2 structure message will be used to demostrate how down layers (rcl, typesupport and rmw) handle it. 
@@ -157,18 +157,18 @@ The message structure content the following types:
 - Unbonded string data.
 
 
-#### Complex_msg_publisher
+##### Complex_msg_publisher
 
 The porpuse of the package is to publicate a complex ROS2 message and demostrate how Micro-ROS down layers (rcl, typesupport and rmw) handle it. 
 For each publication, the message values will be increased in one unit order to see in the subcriber side the menssage variations.
 
 
-#### Complex_msg_subscriber
+##### Complex_msg_subscriber
 
 The porpuse of the package is to subcribe a complex ROS2 message and demostrate how Micro-ROS down layers (rcl, typesupport and rmw) handle it. 
 
 
-### Run demostration
+#### Run demostration
 
 To run the demostration you have first to build all required packages in a Micro-ROS workspace. 
 To read farther about how to build the Micro-ROS workspace click [here]().
@@ -219,7 +219,7 @@ Run the subcriber.
 ```
 
 
-## Real aplication demostration
+### Real aplication demostration
 
 This purpuse of the packages is to demostrate Micro-Ros stack can be used in a real aplication scenario. 
 In this demostration an altitude control system will be simulated.
@@ -228,9 +228,9 @@ The main purpuse of this is to see how Micro-Ros comunicates with Ros2 nodes.
 For farther information about this demostration click [here]()
 
 
-### Packages
+#### Packages
 
-#### RAD0_actuator
+##### RAD0_actuator
 
 The mission of this node is to simulate a dummy altitude engine power actuator. 
 It will receive power increments and publicate the total power amount as a DDS topic.
@@ -241,7 +241,7 @@ It is meant to be running in on a microcontroller processor but for this demostr
 The node will be conected to the DDS world throw a micro-xrce-agent.
 
 
-#### RAD0_altitude_sensor
+##### RAD0_altitude_sensor
 
 The mission of this node is to simulate a dummy altitude sensor. 
 It will publicate the altitude variations as a DDS topic.
@@ -252,7 +252,7 @@ It is meant to be running in on a microcontroller processor but for this demostr
 The node will be conected to the DDS world throw a micro-xrce-agent.
 
 
-#### RAD0_control
+##### RAD0_control
 
 The mission of this node is to read altitude values and send to the actuator engine variations.
 It also will publicate the status (OK, WARNING or FAILURE) as a DDS topic.
@@ -262,7 +262,7 @@ The node will be built using the ROS2 middleware packages (rmw_fastrtps and rosi
 
 It is meant to be running in on a microcontroler processor and will be directly conected to de dds wold.
 
-#### RAD0_display
+##### RAD0_display
 
 The mission of this node is to simulate one LCD screen that will print the important parameters. 
 It will subcribe to the altitude, power and status messages availables as a DDS topic.
@@ -273,11 +273,11 @@ It is meant to be running in on a microcontroller processor but for this demostr
 The node will be conected to the DDS world throw a micro-xrce-agent.
 
 
-### Run demostration
+#### Run demostration
 
 Note: For this demostraton you need at least two open termninals, one for the Micro-ROS workspace and the other for the ROS2 workspace.
 
-#### Micro-ROS nodes
+##### Micro-ROS nodes
 
 To run the demostration you have first to build all required packages in a Micro-ROS workspace. 
 To read farther about how to build the Micro-ROS workspace click [here]().
@@ -339,7 +339,7 @@ Run the display node.
 ~/ros2_ws/install/rad0_display/lib/rad0_display/./rad0_display
 ```
 
-#### ROS2 nodes
+##### ROS2 nodes
 
 To run the demostration you have first to build all required packages in a ROS2 workspace. 
 To read farther about how to build the ROS2 workspace click [here]().
