@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
     (void)argc;
     (void)argv;
     rclc_init(0, NULL);
-    rclc_node_t* node = rclc_create_node("publisher_node", "");
+    rclc_node_t* node = rclc_create_node("complex_msg_publisher_c", "");
     if (node == NULL)
     {
         return -1;

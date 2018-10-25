@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 
 
     rclc_init(0, NULL);
-    node = rclc_create_node("actuator", "");
+    node = rclc_create_node("rad0_actuator_c", "");
     ASSERT(node);
     engine_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", engine_on_message, 1, false);
     ASSERT(engine_sub);

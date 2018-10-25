@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_C_CLANG_TIDY clang-tidy -checks=*)
-project(rad0_actuator)
+project(rad0_actuator_c)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclc QUIET)

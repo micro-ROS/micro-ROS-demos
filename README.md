@@ -213,7 +213,7 @@ For further information about this demonstration click [here]()
 
 #### Packages
 
-##### RAD0_actuator
+##### rad0_actuator
 
 The mission of this node is to simulate a dummy engine power actuator.
 It receives power increments and publishes the total power amount as a DDS topic.
@@ -223,7 +223,7 @@ The node is built using the Micro-ROS middleware packages (rmw_micro_xrcedds and
 It is meant to be running in a microcontroller processor, but for this demonstration, the node runs on the host PC.
 The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 
-##### RAD0_altitude_sensor
+##### rad0_altitude_sensor
 
 The mission of this node is to simulate a dummy altitude sensor.
 It publishes the altitude variations as a DDS topic.
@@ -233,7 +233,7 @@ The node is built using the Micro-ROS middleware packages (rmw_micro_xrcedds and
 It is meant to be running in a microcontroller processor, but for this demonstration, the node runs on the host PC.
 The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 
-##### RAD0_control
+##### rad0_control
 
 The mission of this node is to read altitude values and send to the actuator engine variations.
 It also publishes the status (OK, WARNING or FAILURE) as a DDS topic.
@@ -243,7 +243,7 @@ The node is built using the ROS 2 middleware packages (rmw_fastrtps and rosidl_t
 
 It is meant to be running in on a regular PC, and it is directly connected to de DDS world.
 
-##### RAD0_display
+##### rad0_display
 
 The mission of this node is to simulate one LCD screen that prints the critical parameters.
 It subscribes to the altitude, power and status messages available as a DDS topic.

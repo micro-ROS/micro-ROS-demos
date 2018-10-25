@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     rclc_node_t* node = NULL;
     rclc_publisher_t* publisher = NULL;
 
-    node = rclc_create_node("altitude_sensor", "");
+    node = rclc_create_node("rad0_altitude_sensor_c", "");
     ASSERT(node);
     publisher = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "std_msgs_msg_Float64", 1);
     ASSERT(publisher);

@@ -1,4 +1,4 @@
-// Copyright 2016 Open Source Robotics Foundation, Inc.
+// Copyright 2018 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ using std::placeholders::_1;
 class ExternalNode : public rclcpp::Node
 {
 public:
-  ExternalNode() : Node("control")
+  ExternalNode() : Node("rad0_control_cpp")
   {
     engine_power_publisher_ = this->create_publisher<std_msgs::msg::Int32>("std_msgs_msg_Int32");
     warn_publisher_ = this->create_publisher<std_msgs::msg::String>("std_msgs_msg_String");

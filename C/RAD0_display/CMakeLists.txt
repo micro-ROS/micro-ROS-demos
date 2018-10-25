@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=*)
-project(rad0_display)
+project(rad0_display_c)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclc QUIET)

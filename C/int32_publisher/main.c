@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
     rclc_init(0, NULL);
-    rclc_node_t* node     = rclc_create_node("publisher_node", "");
+    rclc_node_t* node     = rclc_create_node("int32_publisher_c", "");
     ASSERT(node);
     rclc_publisher_t* publisher = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", 1);
     ASSERT(publisher);

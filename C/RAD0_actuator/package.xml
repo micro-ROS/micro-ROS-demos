@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>rad0_actuator</name>
+  <name>rad0_actuator_c</name>
   <version>0.0.1</version>
   <description>Real apliacion demostration. Actuator node</description>
   <maintainer email="javiermoreno@eprosima.com">Javier Moreno</maintainer>
