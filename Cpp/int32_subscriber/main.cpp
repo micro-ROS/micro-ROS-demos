@@ -12,40 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <chrono>
 #include <cstdio>
+
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/int32.hpp"
-using namespace std::chrono_literals;
+using std::placeholders::_1;
 
-class int32_publisher_node : public rclcpp::Node
+class int32_subscriber_node : public rclcpp::Node
 {
 public:
-  int32_publisher_node() : Node("int32_publisher_cpp")
-  {
-    publisher_ = this->create_publisher<std_msgs::msg::Int32>("std_msgs_msg_Int32");
-    timer_ = this->create_wall_timer(
-      500ms, std::bind(&int32_publisher_node::timer_callback, this));
+  int32_subscriber_node() : Node("int32_subscriber_cpp")
+  { 
+    subscription_ = this->create_subscription<std_msgs::msg::Int32>("std_msgs_msg_Int32", 
+      std::bind(&int32_subscriber_node::topic_callback, this, _1));
   }
 
 private:
-  void timer_callback()
+  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr subscription_;
+
+  void topic_callback(const std_msgs::msg::Int32::SharedPtr msg)
   {
-    count_.data++;
-    publisher_->publish(count_);
-    std::cout << count_.data << std::endl;
+    std::cout << "I heard: " << msg->data << std::endl;
   }
-
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr publisher_;
-  rclcpp::TimerBase::SharedPtr timer_;
-  std_msgs::msg::Int32 count_;
 };
-
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<int32_publisher_node>());
+  rclcpp::spin(std::make_shared<int32_subscriber_node>());
   rclcpp::shutdown();
   return 0;
 }
