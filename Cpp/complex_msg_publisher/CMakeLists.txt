@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_C_CLANG_TIDY clang-tidy -checks=*)
-project(rad0_control_cpp)
+project(complex_msg_publisher_cpp)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -13,10 +13,11 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp QUIET)
-find_package(std_msgs REQUIRED)
+find_package(complex_msgs REQUIRED)
 
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package (Threads REQUIRED)
+
 
 # Do not compile package if rclcpp is not found
 if (NOT rclcpp_FOUND)
@@ -27,7 +28,7 @@ endif()
 
 
 add_executable(${PROJECT_NAME} main.cpp)
-ament_target_dependencies(${PROJECT_NAME} rclcpp std_msgs)
+ament_target_dependencies(${PROJECT_NAME} rclcpp complex_msgs)
 
 target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
