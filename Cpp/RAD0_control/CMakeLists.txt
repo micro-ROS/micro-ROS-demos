@@ -15,9 +15,6 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp QUIET)
 find_package(std_msgs REQUIRED)
 
-set(THREADS_PREFER_PTHREAD_FLAG TRUE)
-find_package (Threads REQUIRED)
-
 # Do not compile package if rclcpp is not found
 if (NOT rclcpp_FOUND)
   message(WARNING "${PROJECT_NAME} will be ignored due to rclcpp is not installed")
@@ -28,8 +25,6 @@ endif()
 
 add_executable(${PROJECT_NAME} main.cpp)
 ament_target_dependencies(${PROJECT_NAME} rclcpp std_msgs)
-
-target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 install(TARGETS
   ${PROJECT_NAME}
