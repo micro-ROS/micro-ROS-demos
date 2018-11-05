@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-set(CMAKE_C_CLANG_TIDY clang-tidy -checks=*)
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=*)
 project(rad0_control_cpp)
 
 # Default to C++14
