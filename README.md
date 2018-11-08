@@ -25,8 +25,8 @@ The purpose of the package is to subscribe to one of the most basic ROS 2 messag
 
 #### Run demonstration
 
-To run the demonstration, as a first step, you have to build all the required packages in a Micro-ROS workspace.
-To read further about how to build the Micro-ROS workspace click [here]().
+To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
+To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
 
 ```bash
 cd ~/ros2_ws
@@ -73,7 +73,7 @@ Run the subscriber.
 
 ### String message demonstration
 
-#### Packages
+#### String packages
 
 ##### string_publisher
 
@@ -84,10 +84,10 @@ For each publication, the message string number increases in one unit order to s
 
 The purpose of the package is to subscribe to a simple string ROS 2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run demonstration
+#### Run string demonstration
 
-To run the demonstration, as a first step, you have to build all the required packages in a Micro-ROS workspace.
-To read further about how to build the Micro-ROS workspace click [here]().
+To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
+To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
 
 ```bash
 cd ~/ros2_ws
@@ -134,7 +134,7 @@ Run the subscriber.
 
 ### Complex message demonstration
 
-#### Packages
+#### Complex packages
 
 ##### complex_msg
 
@@ -155,10 +155,10 @@ For each publication, the message values increases in one unit order to see in t
 
 The purpose of the package is to subscribe to a complex ROS 2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run demonstration
+#### Run complex demonstration
 
-To run the demonstration, as a first step, you have to build all the required packages in a Micro-ROS workspace.
-To read further about how to build the Micro-ROS workspace click [here]().
+To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
+To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
 
 ```bash
 cd ~/ros2_ws
@@ -209,9 +209,7 @@ This purpose of the packages is to demonstrate Micro-ROS stack can be used in a 
 In this demonstration, an altitude control system is simulated.
 The primary purpose of this is to see how Micro-ROS communicates with ROS 2 nodes.
 
-For further information about this demonstration click [here]()
-
-#### Packages
+#### Real application packages
 
 ##### rad0_actuator
 
@@ -253,14 +251,14 @@ The node is built using the Micro-ROS middleware packages (rmw_micro_xrcedds and
 It is meant to be running in a microcontroller processor, but for this demonstration, the node runs on the host PC.
 The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 
-#### Run demonstration
+#### Run real application demonstration
 
-Note: For this demonstration, you need at least two open terminals, one for the Micro-ROS workspace and the other for the ROS 2 workspace.
+Note: For this demonstration, you need at least two open terminals, one for the ROS 2 workspace and the other for the ROS 2 workspace.
 
 ##### Micro-ROS nodes
 
-To run the demonstration, as a first step, you have to build all the required packages in a Micro-ROS workspace.
-To read further about how to build the Micro-ROS workspace click [here]().
+To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
+To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
 
 ```bash
 cd ~/ros2_ws
@@ -320,7 +318,7 @@ Run the display node.
 ##### ROS 2 nodes
 
 To run the demonstration, you have first to build all required packages in a ROS 2 workspace.
-To read further about how to build the ROS 2 workspace click [here]().
+To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
 
 ```bash
 cd ~/ros2_ws
