@@ -326,5 +326,5 @@ Configure the environment
 Run the display node.
 
 ```bash
-ros2 run rad0_control_cpp rad0_control_cpp &
+ros2 run rad0_control_cpp rad0_control_cpp
 ```
