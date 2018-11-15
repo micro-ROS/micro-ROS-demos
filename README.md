@@ -32,31 +32,31 @@ The purpose of the package is to subscribe to one of the most basic ROS2 message
 Run the Micro XRCE-DDS Agent
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
-~/ros2_WS/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c
+~/uros_WS/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next step.
 
 ```bash
- ~/ros2_WS/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c > /dev/null &
+ ~/uros_WS/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/ros2_WS/install/int32_subscriber_c/lib/int32_subscriber_c/./int32_subscriber_c
+~/uros_WS/install/int32_subscriber_c/lib/int32_subscriber_c/./int32_subscriber_c
 ```
 
 #### Run demonstration (Windows)
@@ -110,31 +110,31 @@ The purpose of the package is to subscribe to a simple string ROS2 message and d
 Run the Micro XRCE-DDS Agent
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
- ~/ros2_WS/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c
+ ~/uros_WS/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
- ~/ros2_WS/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c > /dev/null &
+ ~/uros_WS/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/ros2_WS/install/string_subscriber_c/lib/string_subscriber_c/./string_subscriber_c
+~/uros_WS/install/string_subscriber_c/lib/string_subscriber_c/./string_subscriber_c
 ```
 
 #### Run string demonstration (Windows)
@@ -198,31 +198,31 @@ The purpose of the package is to subscribe to a complex ROS2 message and demonst
 Run the Micro XRCE-DDS Agent
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
- ~/ros2_WS/install/complex_msg_publisher/lib/complex_msg_publisher/./complex_msg_publisher
+ ~/uros_WS/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
- ~/ros2_WS/install/complex_msg_publisher/lib/complex_msg_publisher/./complex_msg_publisher > /dev/null &
+ ~/uros_WS/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/ros2_WS/install/complex_msg_subscriber/lib/complex_msg_subscriber/./complex_msg_subscriber
+~/uros_WS/install/complex_msg_subscriber_c/lib/complex_msg_subscriber_c/./complex_msg_subscriber_c
 ```
 
 #### Run complex demonstration (Windows)
@@ -242,19 +242,19 @@ START /B C:\W\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888 > NUL
 Run the publisher.
 
 ```bash
-START C:\W\install\complex_msg_publisher\lib\complex_msg_publisher\.\complex_msg_publisher
+START C:\W\install\complex_msg_publisher_c\lib\complex_msg_publisher_c\.\complex_msg_publisher_c
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-START /B C:\W\install\complex_msg_publisher\lib\complex_msg_publisher\.\complex_msg_publisher > NUL
+START /B C:\W\install\complex_msg_publisher_c\lib\complex_msg_publisher_c\.\complex_msg_publisher_c > NUL
 ```
 
 Run the subscriber.
 
 ```bash
-START C:\W\install\complex_msg_subscriber\lib\complex_msg_subscriber\.\complex_msg_subscriber
+START C:\W\install\complex_msg_subscriber_c\lib\complex_msg_subscriber_c\.\complex_msg_subscriber_c
 ```
 
 
@@ -313,43 +313,43 @@ The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 Run the Micro XRCE-DDS Agent
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next steps.
 
 ```bash
-~/ros2_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the altitude_sensor node.
 
 ```bash
-~/ros2_WS/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c
+~/uros_WS/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
 
 ```bash
-~/ros2_WS/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c > /dev/null &
+~/uros_WS/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c > /dev/null &
 ```
 
 Run the actuator node.
 
 ```bash
- ~/ros2_WS/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c
+ ~/uros_WS/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
 
 ```bash
- ~/ros2_WS/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c > /dev/null &
+ ~/uros_WS/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c > /dev/null &
 ```
 
 Run the display node.
 
 ```bash
-~/ros2_WS/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
+~/uros_WS/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
 ```
 
 ##### ROS2 nodes
