@@ -185,7 +185,7 @@ The purpose of the package is to subscribe to a complex ROS2 message and demonst
 #### Run complex demonstration (Linux)
 
 
-Run the Micro XRCE-DDS Agent
+Run the micro-ROS Agent
 
 ```bash
 cd ~/agent_ws/install/uros_agent/lib/uros_agent/
