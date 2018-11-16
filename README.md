@@ -351,7 +351,7 @@ Run the display node.
 ##### Micro-ROS nodes
 
 Run the Micro XRCE-DDS Agent.
-So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
 
 ```bash
 cd C:\A\install\Lib\uros_agent\
