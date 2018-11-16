@@ -296,7 +296,7 @@ The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 ##### Micro-ROS nodes
 
 Run the micro-ROS Agent.
-So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
 
 ```bash
 cd ~/uros_WS/install/uros_agent/lib/uros_agent/
