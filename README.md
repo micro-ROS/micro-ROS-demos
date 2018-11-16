@@ -27,7 +27,7 @@ For each publication, the message value increases in one unit order to see in th
 
 The purpose of the package is to subscribe to one of the most basic ROS2 messages and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run demonstration (Linux Debian)
+#### Run demonstration (Linux)
 
 Run the micro-ROS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
