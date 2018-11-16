@@ -64,7 +64,7 @@ Run the subscriber.
 
 #### Run demonstration (Windows)
 
-Run the Micro XRCE-DDS Agent.
+Run the micro-ROS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
