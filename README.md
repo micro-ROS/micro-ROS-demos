@@ -102,7 +102,7 @@ The purpose of the package is to subscribe to a simple string ROS2 message and d
 
 #### Run string demonstration (Linux)
 
-Run the Micro XRCE-DDS Agent.
+Run the micro-ROS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
