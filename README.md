@@ -33,33 +33,33 @@ Run the Micro XRCE-DDS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
 ./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
 ./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
-~/uros_WS/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c
+~/client_ws/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next step.
 
 ```bash
- ~/uros_WS/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c > /dev/null &
+ ~/client_ws/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/uros_WS/install/int32_subscriber_c/lib/int32_subscriber_c/./int32_subscriber_c
+~/client_ws/install/int32_subscriber_c/lib/int32_subscriber_c/./int32_subscriber_c
 ```
 
 #### Run demonstration (Windows)
@@ -68,21 +68,21 @@ Run the Micro XRCE-DDS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-cd C:\W\install\Lib\uros_agent\
+cd C:\A\install\Lib\uros_agent\
 uros_agent.exe udp 8888
 ```
 
 Run the publisher.
 
 ```bash
-cd C:\W\install\Lib\int32_publisher_c\
+cd C:\C\install\Lib\int32_publisher_c\
 int32_publisher_c.exe
 ```
 
 Run the subscriber.
 
 ```bash
-cd C:\W\install\Lib\int32_subscriber_c\
+cd C:\C\install\Lib\int32_subscriber_c\
 int32_subscriber_c.exe
 ```
 
@@ -106,33 +106,33 @@ Run the Micro XRCE-DDS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
 ./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
 ./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
- ~/uros_WS/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c
+ ~/client_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs in order still using the terminal for the next step.
 
 ```bash
- ~/uros_WS/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c > /dev/null &
+ ~/client_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/uros_WS/install/string_subscriber_c/lib/string_subscriber_c/./string_subscriber_c
+~/client_ws/install/string_subscriber_c/lib/string_subscriber_c/./string_subscriber_c
 ```
 
 #### Run string demonstration (Windows)
@@ -141,21 +141,21 @@ Run the Micro XRCE-DDS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-cd C:\W\install\Lib\uros_agent\
+cd C:\A\install\Lib\uros_agent\
 uros_agent.exe udp 8888
 ```
 
 Run the publisher.
 
 ```bash
-cd C:\W\install\Lib\string_publisher_c\
+cd C:\C\install\Lib\string_publisher_c\
 string_publisher_c.exe
 ```
 
 Run the subscriber.
 
 ```bash
-cd C:\W\install\Lib\string_subscriber_c\
+cd C:\C\install\Lib\string_subscriber_c\
 string_subscriber_c.exe
 ```
 
@@ -189,33 +189,33 @@ Run the Micro XRCE-DDS Agent
 Run the Micro XRCE-DDS Agent
 
 ```bash
-cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
 ./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
 ./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
- ~/uros_WS/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c
+ ~/client_ws/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
- ~/uros_WS/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c > /dev/null &
+ ~/client_ws/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/uros_WS/install/complex_msg_subscriber_c/lib/complex_msg_subscriber_c/./complex_msg_subscriber_c
+~/client_ws/install/complex_msg_subscriber_c/lib/complex_msg_subscriber_c/./complex_msg_subscriber_c
 ```
 
 #### Run complex demonstration (Windows)
@@ -224,21 +224,21 @@ Run the Micro XRCE-DDS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-cd C:\W\install\Lib\uros_agent\
+cd C:\A\install\Lib\uros_agent\
 uros_agent.exe udp 8888
 ```
 
 Run the publisher.
 
 ```bash
-cd C:\W\install\Lib\complex_msg_publisher_c\
+cd C:\C\install\Lib\complex_msg_publisher_c\
 complex_msg_publisher_c.exe
 ```
 
 Run the subscriber.
 
 ```bash
-cd C:\W\install\Lib\complex_msg_subscriber_c\
+cd C:\C\install\Lib\complex_msg_subscriber_c\
 complex_msg_subscriber_c.exe
 ```
 
@@ -313,42 +313,37 @@ cd ~/uros_WS/install/uros_agent/lib/uros_agent/
 Run the altitude_sensor node.
 
 ```bash
-~/uros_WS/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c
+~/client_ws/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
 
 ```bash
-~/uros_WS/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c > /dev/null &
+~/client_ws/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c > /dev/null &
 ```
 
 Run the actuator node.
 
 ```bash
- ~/uros_WS/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c
+ ~/client_ws/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
 
 ```bash
- ~/uros_WS/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c > /dev/null &
+ ~/client_ws/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c > /dev/null &
 ```
 
 Run the display node.
 
 ```bash
-~/uros_WS/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
+~/client_ws/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
 ```
 
 ##### ROS2 nodes
 
-To run this node, you have first to build all required packages for a [ROS2 installation](https://index.ros.org/doc/ros2/Linux-Development-Setup/#get-ros-2-0-code).
-You also will need to copy the rad0_control source folder inside the ROS2 source folder before build all packages. 
-
-Run the control node.
-
 ```bash
-ros2 run rad0_control_cpp rad0_control_cpp
+~/agent_ws/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
 ```
 
 #### Run real application demonstration (Windows)
@@ -359,38 +354,34 @@ Run the Micro XRCE-DDS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-cd C:\W\install\Lib\uros_agent\
+cd C:\A\install\Lib\uros_agent\
 uros_agent.exe udp 8888
 ```
 
 Run the altitude_sensor node.
 
 ```bash
-cd C:\W\install\Lib\rad0_altitude_sensor_c
+cd C:\C\install\Lib\rad0_altitude_sensor_c
 rad0_altitude_sensor_c.exe
 ```
 
 Run the actuator node.
 
 ```bash
-cd C:\W\install\Lib\rad0_actuator_c
+cd C:\C\install\Lib\rad0_actuator_c
 rad0_actuator_c.exe
 ```
 
 Run the display node.
 
 ```bash
-cd C:\W\install\Lib\rad0_display_c\
+cd C:\C\install\Lib\rad0_display_c\
 rad0_display_c.exe
 ```
 
 ##### ROS2 nodes
 
-To run this node, you have first to build all required packages for a [ROS2 installation](https://index.ros.org/doc/ros2/Windows-Development-Setup/#getting-the-source-code).
-You also will need to copy the rad0_control source folder inside the ROS2 source folder before build all packages. 
-
-Run the control node.
-
 ```bash
-ros2 run rad0_control_cpp rad0_control_cpp
+cd C:\A\install\Lib\rad0_control_cpp\
+rad0_control_cpp.exe
 ```
