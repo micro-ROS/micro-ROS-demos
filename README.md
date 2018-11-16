@@ -182,7 +182,7 @@ For each publication, the message values increases in one unit order to see in t
 
 The purpose of the package is to subscribe to a complex ROS2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run complex demonstration (Linux Debian)
+#### Run complex demonstration (Linux)
 
 Run the Micro XRCE-DDS Agent
 
