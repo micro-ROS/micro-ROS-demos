@@ -100,7 +100,7 @@ For each publication, the message string number increases in one unit order to s
 
 The purpose of the package is to subscribe to a simple string ROS2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run string demonstration (Linux Debian)
+#### Run string demonstration (Linux)
 
 Run the Micro XRCE-DDS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
