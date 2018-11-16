@@ -29,16 +29,19 @@ The purpose of the package is to subscribe to one of the most basic ROS2 message
 
 #### Run demonstration (Linux Debian)
 
-Run the Micro XRCE-DDS Agent
+Run the Micro XRCE-DDS Agent.
+So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
@@ -61,34 +64,26 @@ Run the subscriber.
 
 #### Run demonstration (Windows)
 
-Run the Micro XRCE-DDS Agent
+Run the Micro XRCE-DDS Agent.
+So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-START C:\W\install\Lib\uros_agent\uros_agent.exe udp 8888
-```
-
-You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
-
-```bash
-START /B C:\W\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888 > NUL
+cd C:\W\install\Lib\uros_agent\
+uros_agent.exe udp 8888
 ```
 
 Run the publisher.
 
 ```bash
-START  C:\W\install\int32_publisher_c\lib\int32_publisher_c\.\int32_publisher_c
-```
-
-You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next step.
-
-```bash
-START /B C:\W\install\int32_publisher_c\lib\int32_publisher_c\.\int32_publisher_c > NUL
+cd C:\W\install\Lib\int32_publisher_c\
+int32_publisher_c.exe
 ```
 
 Run the subscriber.
 
 ```bash
-START C:\W\install\int32_subscriber_c\lib\int32_subscriber_c\.\int32_subscriber_c
+cd C:\W\install\Lib\int32_subscriber_c\
+int32_subscriber_c.exe
 ```
 
 
@@ -107,16 +102,19 @@ The purpose of the package is to subscribe to a simple string ROS2 message and d
 
 #### Run string demonstration (Linux Debian)
 
-Run the Micro XRCE-DDS Agent
+Run the Micro XRCE-DDS Agent.
+So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
@@ -139,36 +137,27 @@ Run the subscriber.
 
 #### Run string demonstration (Windows)
 
-Run the Micro XRCE-DDS Agent
+Run the Micro XRCE-DDS Agent.
+So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-START C:\W\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888
-```
-
-You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
-
-```bash
-START /B C:\W\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888 > NUL
+cd C:\W\install\Lib\uros_agent\
+uros_agent.exe udp 8888
 ```
 
 Run the publisher.
 
 ```bash
-START C:\W\install\string_publisher_c\lib\string_publisher_c\.\string_publisher_c
-```
-
-You may prefer to run the publisher in the background and discard all outputs in order still using the terminal for the next step.
-
-```bash
-START /B C:\W\install\string_publisher_c\lib\string_publisher_c\.\string_publisher_c > NUL
+cd C:\W\install\Lib\string_publisher_c\
+string_publisher_c.exe
 ```
 
 Run the subscriber.
 
 ```bash
-START /B C:\W\install\string_subscriber_c\lib\string_subscriber_c\.\string_subscriber_c
+cd C:\W\install\Lib\string_subscriber_c\
+string_subscriber_c.exe
 ```
-
 
 ### Complex message demonstration
 
@@ -197,14 +186,18 @@ The purpose of the package is to subscribe to a complex ROS2 message and demonst
 
 Run the Micro XRCE-DDS Agent
 
+Run the Micro XRCE-DDS Agent
+
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
@@ -227,34 +220,26 @@ Run the subscriber.
 
 #### Run complex demonstration (Windows)
 
-Run the Micro XRCE-DDS Agent
+Run the Micro XRCE-DDS Agent.
+So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-START C:\W\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888
-```
-
-You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
-
-```bash
-START /B C:\W\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888 > NUL
+cd C:\W\install\Lib\uros_agent\
+uros_agent.exe udp 8888
 ```
 
 Run the publisher.
 
 ```bash
-START C:\W\install\complex_msg_publisher_c\lib\complex_msg_publisher_c\.\complex_msg_publisher_c
-```
-
-You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
-
-```bash
-START /B C:\W\install\complex_msg_publisher_c\lib\complex_msg_publisher_c\.\complex_msg_publisher_c > NUL
+cd C:\W\install\Lib\complex_msg_publisher_c\
+complex_msg_publisher_c.exe
 ```
 
 Run the subscriber.
 
 ```bash
-START C:\W\install\complex_msg_subscriber_c\lib\complex_msg_subscriber_c\.\complex_msg_subscriber_c
+cd C:\W\install\Lib\complex_msg_subscriber_c\
+complex_msg_subscriber_c.exe
 ```
 
 
@@ -262,7 +247,7 @@ START C:\W\install\complex_msg_subscriber_c\lib\complex_msg_subscriber_c\.\compl
 
 This purpose of the packages is to demonstrate Micro-ROS stack can be used in a real application scenario.
 In this demonstration, an altitude control system is simulated.
-The primary purpose of this is to demostrate how Micro-ROS communicates with ROS2 nodes.
+The primary purpose of this is to demonstrate how Micro-ROS communicates with ROS2 nodes.
 
 #### Real application packages
 
@@ -310,16 +295,19 @@ The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 
 ##### Micro-ROS nodes
 
-Run the Micro XRCE-DDS Agent
+Run the Micro XRCE-DDS Agent.
+So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
-You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next steps.
+You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/uros_WS/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the altitude_sensor node.
@@ -354,8 +342,8 @@ Run the display node.
 
 ##### ROS2 nodes
 
-To run the demonstration, you have first to build all required packages for a [ROS2 installation](https://index.ros.org/doc/ros2/Linux-Development-Setup/#get-ros-2-0-code).
-You will need to copy the rad0_control source folder inside the ROS2 source folder before build all packages. 
+To run this node, you have first to build all required packages for a [ROS2 installation](https://index.ros.org/doc/ros2/Linux-Development-Setup/#get-ros-2-0-code).
+You also will need to copy the rad0_control source folder inside the ROS2 source folder before build all packages. 
 
 Run the control node.
 
@@ -367,52 +355,39 @@ ros2 run rad0_control_cpp rad0_control_cpp
 
 ##### Micro-ROS nodes
 
-Run the Micro XRCE-DDS Agent
+Run the Micro XRCE-DDS Agent.
+So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
-START C:\Ws\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888
-```
-
-You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next steps.
-
-```bash
-START /B C:\Ws\install\uros_agent\lib\uros_agent\.\uros_agent udp 8888 > NUL
+cd C:\W\install\Lib\uros_agent\
+uros_agent.exe udp 8888
 ```
 
 Run the altitude_sensor node.
 
 ```bash
-START C:\Ws\install\rad0_altitude_sensor_c\lib\rad0_altitude_sensor_c\.\rad0_altitude_sensor_c
-```
-
-You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
-
-```bash
-START /B C:\Ws\install\rad0_altitude_sensor_c\lib\rad0_altitude_sensor_c\.\rad0_altitude_sensor_c > NUL
+cd C:\W\install\Lib\rad0_altitude_sensor_c
+rad0_altitude_sensor_c.exe
 ```
 
 Run the actuator node.
 
 ```bash
-START C:\Ws\install\rad0_actuator_c\lib\rad0_actuator_c\.\rad0_actuator_c
-```
-
-You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
-
-```bash
-START /B C:\Ws\install\rad0_actuator_c\lib\rad0_actuator_c\.\rad0_actuator_c > NUL
+cd C:\W\install\Lib\rad0_actuator_c
+rad0_actuator_c.exe
 ```
 
 Run the display node.
 
 ```bash
-START C:\Ws\install\rad0_display_c\lib\rad0_display_c\.\rad0_display_c
+cd C:\W\install\Lib\rad0_display_c\
+rad0_display_c.exe
 ```
 
 ##### ROS2 nodes
 
-To run the demonstration, you have first to build all required packages for a [ROS2 installation](https://index.ros.org/doc/ros2/Windows-Development-Setup/#getting-the-source-code).
-You will need to copy the rad0_control source folder inside the ROS2 source folder before build all packages. 
+To run this node, you have first to build all required packages for a [ROS2 installation](https://index.ros.org/doc/ros2/Windows-Development-Setup/#getting-the-source-code).
+You also will need to copy the rad0_control source folder inside the ROS2 source folder before build all packages. 
 
 Run the control node.
 
