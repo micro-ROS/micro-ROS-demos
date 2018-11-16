@@ -291,7 +291,7 @@ The node is built using the Micro-ROS middleware packages (rmw_micro_xrcedds and
 It is meant to be running in a microcontroller processor, but for this demonstration, the node runs on the host PC.
 The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 
-#### Run real application demonstration (Linux Debian)
+#### Run real application demonstration (Linux)
 
 ##### Micro-ROS nodes
 
