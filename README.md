@@ -7,7 +7,7 @@ All packages contained in this repository are a part of the Micro-ROS project st
 
 ## Previous step
 
-To run the all demonstrations you need to setup the ROS2 environment and build all the required packages.
+To run all the demonstrations, you need to set up the ROS2 environment and build all the required packages.
 Click [here](https://github.com/microROS/micro-ROS-doc) to read further about how to do this previous step.
 
 ## Package clusters
