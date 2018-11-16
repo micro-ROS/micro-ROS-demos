@@ -29,7 +29,7 @@ The purpose of the package is to subscribe to one of the most basic ROS2 message
 
 #### Run demonstration (Linux Debian)
 
-Run the Micro XRCE-DDS Agent.
+Run the micro-ROS Agent.
 So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
 
 ```bash
