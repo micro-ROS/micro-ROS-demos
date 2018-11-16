@@ -30,7 +30,7 @@ The purpose of the package is to subscribe to one of the most basic ROS2 message
 #### Run demonstration (Linux)
 
 Run the micro-ROS Agent.
-So that the agent can find the XML reference file, the execution of this must be done from the executable folder.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
 
 ```bash
 cd ~/agent_ws/install/uros_agent/lib/uros_agent/
