@@ -184,7 +184,6 @@ The purpose of the package is to subscribe to a complex ROS2 message and demonst
 
 #### Run complex demonstration (Linux)
 
-Run the Micro XRCE-DDS Agent
 
 Run the Micro XRCE-DDS Agent
 
