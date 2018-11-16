@@ -123,7 +123,7 @@ Run the publisher.
  ~/client_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c
 ```
 
-You may prefer to run the publisher in the background and discard all outputs in order still using the terminal for the next step.
+You may prefer to run the publisher in the background and discard all outputs in order to keep using the terminal for the next step.
 
 ```bash
  ~/client_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c > /dev/null &
