@@ -16,7 +16,9 @@ endif()
 add_executable(${PROJECT_NAME} main.c)
 ament_target_dependencies(${PROJECT_NAME} rclc std_msgs)
 
-target_link_libraries(${PROJECT_NAME} m)
+if(NOT WIN32)
+  target_link_libraries(${PROJECT_NAME} m)
+endif()
 
 install(TARGETS
 ${PROJECT_NAME}
