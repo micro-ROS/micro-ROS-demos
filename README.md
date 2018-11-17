@@ -4,7 +4,11 @@
 
 The primary purpose for this repository is to organise all packages for the [Micro-ROS project](https://microros.github.io/micro-ROS/) functionalities demonstrations.
 All packages contained in this repository are a part of the Micro-ROS project stack.
-For more information about Micro-ROS project click [here](https://microros.github.io/micro-ROS/).
+
+## Previous step
+
+To run all the demonstrations, you need to set up the ROS2 environment and build all the required packages.
+Click [here](https://github.com/microROS/micro-ROS-doc) to read further about how to do this previous step.
 
 ## Package clusters
 
@@ -16,58 +20,72 @@ The repository contains the below packages clusters:
 
 ##### Int32_publisher
 
-The purpose of the package is to publish one of the most basic ROS 2 messages and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
+The purpose of the package is to publish one of the most basic ROS2 messages and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 For each publication, the message value increases in one unit order to see in the subscriber side the message variations.
 
 ##### Int32_subscriber
 
-The purpose of the package is to subscribe to one of the most basic ROS 2 messages and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
+The purpose of the package is to subscribe to one of the most basic ROS2 messages and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run demonstration
+#### Run demonstration (Linux)
 
-To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
-To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
-
-```bash
-cd ~/ros2_ws
-colcon build --cmake-args -DBUILD_SHARED_LIBS=ON --packages-up-to int32_publisher_c int32_subscriber_c uros_agent
-```
-
-Configure the environment
+Run the micro-ROS Agent.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
 
 ```bash
-. ~/ros2_ws/install/local_setup.bash
-```
-
-Run the Micro XRCE-DDS Agent
-
-```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
-~/ros2_ws/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c
+~/client_ws/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next step.
 
 ```bash
- ~/ros2_ws/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c > /dev/null &
+ ~/client_ws/install/int32_publisher_c/lib/int32_publisher_c/./int32_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/ros2_ws/install/int32_subscriber_c/lib/int32_subscriber_c/./int32_subscriber_c
+~/client_ws/install/int32_subscriber_c/lib/int32_subscriber_c/./int32_subscriber_c
 ```
+
+#### Run demonstration (Windows)
+
+Run the micro-ROS Agent.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
+
+```bash
+cd C:\A\install\Lib\uros_agent\
+uros_agent.exe udp 8888
+```
+
+Run the publisher.
+
+```bash
+cd C:\C\install\Lib\int32_publisher_c\
+int32_publisher_c.exe
+```
+
+Run the subscriber.
+
+```bash
+cd C:\C\install\Lib\int32_subscriber_c\
+int32_subscriber_c.exe
+```
+
 
 ### String message demonstration
 
@@ -75,57 +93,70 @@ Run the subscriber.
 
 ##### String_publisher
 
-The purpose of the package is to publish a simple string ROS 2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
+The purpose of the package is to publish a simple string ROS2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 For each publication, the message string number increases in one unit order to see in the subscriber side the message variations.
 
 ##### String_subscriber
 
-The purpose of the package is to subscribe to a simple string ROS 2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
+The purpose of the package is to subscribe to a simple string ROS2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run string demonstration
+#### Run string demonstration (Linux)
 
-To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
-To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
-
-```bash
-cd ~/ros2_ws
-colcon build --cmake-args -DBUILD_SHARED_LIBS=ON --packages-up-to string_publisher_c string_subscriber_c uros_agent
-```
-
-Configure the environment
+Run the micro-ROS Agent.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
 
 ```bash
-. ~/ros2_ws/install/local_setup.bash
-```
-
-Run the Micro XRCE-DDS Agent
-
-```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
- ~/ros2_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c
+ ~/client_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c
 ```
 
-You may prefer to run the publisher in the background and discard all outputs in order still using the terminal for the next step.
+You may prefer to run the publisher in the background and discard all outputs in order to keep using the terminal for the next step.
 
 ```bash
- ~/ros2_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c > /dev/null &
+ ~/client_ws/install/string_publisher_c/lib/string_publisher_c/./string_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/ros2_ws/install/string_subscriber_c/lib/string_subscriber_c/./string_subscriber_c
+~/client_ws/install/string_subscriber_c/lib/string_subscriber_c/./string_subscriber_c
+```
+
+#### Run string demonstration (Windows)
+
+Run the micro-ROS Agent.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
+
+```bash
+cd C:\A\install\Lib\uros_agent\
+uros_agent.exe udp 8888
+```
+
+Run the publisher.
+
+```bash
+cd C:\C\install\Lib\string_publisher_c\
+string_publisher_c.exe
+```
+
+Run the subscriber.
+
+```bash
+cd C:\C\install\Lib\string_subscriber_c\
+string_subscriber_c.exe
 ```
 
 ### Complex message demonstration
@@ -135,7 +166,7 @@ Run the subscriber.
 ##### complex_msg
 
 One of the purposes of the package is to demonstrate how typesupport code is generated for a complex message.
-Also, the generation of a complex ROS 2 structure message is used to demonstrate how the different layers (rcl, typesupport and rmw) handle it.
+Also, the generation of a complex ROS2 structure message is used to demonstrate how the different layers (rcl, typesupport and rmw) handle it.
 The message structure contains the following types:
 
 - All primitive data types.
@@ -144,64 +175,78 @@ The message structure contains the following types:
 
 ##### Complex_msg_publisher
 
-The purpose of the package is to publish a complex ROS 2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
+The purpose of the package is to publish a complex ROS2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 For each publication, the message values increases in one unit order to see in the subscriber side the message variations.
 
 ##### Complex_msg_subscriber
 
-The purpose of the package is to subscribe to a complex ROS 2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
+The purpose of the package is to subscribe to a complex ROS2 message and demonstrate how Micro-ROS layers (rcl, typesupport and rmw) handle it.
 
-#### Run complex demonstration
+#### Run complex demonstration (Linux)
 
-To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
-To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
 
-```bash
-cd ~/ros2_ws
-colcon build --cmake-args -DBUILD_SHARED_LIBS=ON --packages-up-to complex_msgs complex_msg_publisher complex_msg_subscriber uros_agent
-```
-
-Configure the environment
+Run the micro-ROS Agent
 
 ```bash
-. ~/ros2_ws/install/local_setup.bash
-```
-
-Run the Micro XRCE-DDS Agent
-
-```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/agent_ws/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the publisher.
 
 ```bash
- ~/ros2_ws/install/complex_msg_publisher/lib/complex_msg_publisher/./complex_msg_publisher
+ ~/client_ws/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c
 ```
 
 You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
- ~/ros2_ws/install/complex_msg_publisher/lib/complex_msg_publisher/./complex_msg_publisher > /dev/null &
+ ~/client_ws/install/complex_msg_publisher_c/lib/complex_msg_publisher_c/./complex_msg_publisher_c > /dev/null &
 ```
 
 Run the subscriber.
 
 ```bash
-~/ros2_ws/install/complex_msg_subscriber/lib/complex_msg_subscriber/./complex_msg_subscriber
+~/client_ws/install/complex_msg_subscriber_c/lib/complex_msg_subscriber_c/./complex_msg_subscriber_c
 ```
+
+#### Run complex demonstration (Windows)
+
+Run the micro-ROS Agent.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
+
+```bash
+cd C:\A\install\Lib\uros_agent\
+uros_agent.exe udp 8888
+```
+
+Run the publisher.
+
+```bash
+cd C:\C\install\Lib\complex_msg_publisher_c\
+complex_msg_publisher_c.exe
+```
+
+Run the subscriber.
+
+```bash
+cd C:\C\install\Lib\complex_msg_subscriber_c\
+complex_msg_subscriber_c.exe
+```
+
 
 ### Real application demonstration
 
 This purpose of the packages is to demonstrate Micro-ROS stack can be used in a real application scenario.
 In this demonstration, an altitude control system is simulated.
-The primary purpose of this is to see how Micro-ROS communicates with ROS 2 nodes.
+The primary purpose of this is to demonstrate how Micro-ROS communicates with ROS2 nodes.
 
 #### Real application packages
 
@@ -231,7 +276,7 @@ The mission of this node is to read altitude values and send to the actuator eng
 It also publishes the status (OK, WARNING or FAILURE) as a DDS topic.
 The status depends on the altitude value.
 
-The node is built using the ROS 2 middleware packages (rmw_fastrtps and rosidl_typesupport_fastrtps).
+The node is built using the ROS2 middleware packages (rmw_fastrtps and rosidl_typesupport_fastrtps).
 
 It is meant to be running in on a regular PC, and it is directly connected to de DDS world.
 
@@ -245,86 +290,97 @@ The node is built using the Micro-ROS middleware packages (rmw_micro_xrcedds and
 It is meant to be running in a microcontroller processor, but for this demonstration, the node runs on the host PC.
 The node is connected to the DDS world through a Micro XRCE-DDS Agent.
 
-#### Run real application demonstration
-
-Note: For this demonstration, you need at least two open terminals, one for the ROS 2 workspace and the other for the ROS 2 workspace.
+#### Run real application demonstration (Linux)
 
 ##### Micro-ROS nodes
 
-To run the demonstration, as a first step, you have to build all the required packages in a ROS 2 workspace.
-To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
+Run the micro-ROS Agent.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
 
 ```bash
-cd ~/ros2_ws
-colcon build --cmake-args -DBUILD_SHARED_LIBS=ON --packages-up-to rad0_actuator_c rad0_display_c rad0_altitude_sensor_c uros_agent
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888
 ```
 
-Configure the environment
+You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next step.
 
 ```bash
-. ~/ros2_ws/install/local_setup.bash
-```
-
-Run the Micro XRCE-DDS Agent
-
-```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888
-```
-
-You may prefer to run the Agent in the background and discard all outputs to keep using the same terminal for the next steps.
-
-```bash
-~/ros2_ws/install/uros_agent/lib/uros_agent/./uros_agent udp 8888 > /dev/null &
+cd ~/uros_WS/install/uros_agent/lib/uros_agent/
+./uros_agent udp 8888 > /dev/null &
 ```
 
 Run the altitude_sensor node.
 
 ```bash
-~/ros2_ws/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c
+~/client_ws/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
 
 ```bash
-~/ros2_ws/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c > /dev/null &
+~/client_ws/install/rad0_altitude_sensor_c/lib/rad0_altitude_sensor_c/./rad0_altitude_sensor_c > /dev/null &
 ```
 
 Run the actuator node.
 
 ```bash
- ~/ros2_ws/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c
+ ~/client_ws/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c
 ```
 
 You may prefer to run the publisher in the background and discard all outputs to keep using the terminal for the next steps.
 
 ```bash
- ~/ros2_ws/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c > /dev/null &
+ ~/client_ws/install/rad0_actuator_c/lib/rad0_actuator_c/./rad0_actuator_c > /dev/null &
 ```
 
 Run the display node.
 
 ```bash
-~/ros2_ws/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
+~/client_ws/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
 ```
 
-##### ROS 2 nodes
-
-To run the demonstration, you have first to build all required packages in a ROS 2 workspace.
-To read further about how to build the ROS 2 workspace click [here](https://index.ros.org/doc/ros2/Linux-Development-Setup/).
+##### ROS2 nodes
 
 ```bash
-cd ~/ros2_ws
-colcon build --packages-up-to rad0_control_cpp
+~/agent_ws/install/rad0_display_c/lib/rad0_display_c/./rad0_display_c
 ```
 
-Configure the environment
+#### Run real application demonstration (Windows)
+
+##### Micro-ROS nodes
+
+Run the micro-ROS Agent.
+For the micro-ROS Agent to find the XML reference file, the execution must be done from the executable folder.
 
 ```bash
-. ~/ros2_ws/install/local_setup.bash
+cd C:\A\install\Lib\uros_agent\
+uros_agent.exe udp 8888
+```
+
+Run the altitude_sensor node.
+
+```bash
+cd C:\C\install\Lib\rad0_altitude_sensor_c
+rad0_altitude_sensor_c.exe
+```
+
+Run the actuator node.
+
+```bash
+cd C:\C\install\Lib\rad0_actuator_c
+rad0_actuator_c.exe
 ```
 
 Run the display node.
 
 ```bash
-ros2 run rad0_control_cpp rad0_control_cpp
+cd C:\C\install\Lib\rad0_display_c\
+rad0_display_c.exe
+```
+
+##### ROS2 nodes
+
+```bash
+cd C:\A\install\Lib\rad0_control_cpp\
+rad0_control_cpp.exe
 ```
