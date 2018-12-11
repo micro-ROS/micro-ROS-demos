@@ -1,6 +1,6 @@
 # cbg-executor_ping-pong_cpp
 
-This ROS2 package provides a small example for the use of the Callback-group-level Executor concept.
+This package provides a small example for the use of the Callback-group-level Executor concept.
 
 The Callback-group-level Executor leverages the callback-group concept in rclcpp by introducing real-time profiles such as RT-CRITICAL and BEST-EFFORT in the callback-group API (i.e. rclcpp/callback_group.hpp). Each callback requiring specific real-time guarantees, when created, may therefore be associated with a dedicated callback group. With this in place, the Executor class and depending classes (e.g., for memory allocation) were enhanced to operate at a finer, callback-group-level granularity.
 

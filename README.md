@@ -384,3 +384,16 @@ rad0_display_c.exe
 cd C:\A\install\Lib\rad0_control_cpp\
 rad0_control_cpp.exe
 ```
+
+
+### Callback-group-level Executor
+
+Demo of the Callback-group-level Executor concept. See [Cpp/cbg-executor_ping-pong/README.md](Cpp/cbg-executor_ping-pong/README.md) for details.
+
+Run the micro-ROS Agent.
+
+```bash
+cd install/cbg-executor_ping-pong_cpp/bin/cbg-executor_ping-pong_cpp/
+./ping-pong --help  # to get all options
+./ping-pong io 1000 ...
+```
