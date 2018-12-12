@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>int32_firos2_rev</name>
+  <version>0.0.1</version>
+  <description>Example of a NGSIv2 to ROS2 bridge (FIROS2) for a int32 message</description>
+  <maintainer email="javiermoreno@eprosima.com">Javier Moreno</maintainer>
+  <license>Apache License 2.0</license>
+  <author>Javier Moreno</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>std_msgs</depend>
+  <depend>firos2</depend>
+  <depend>rosidl_typesupport_c</depend>
+  <depend>rosidl_typesupport_cpp</depend>
+  <depend>rmw_implementation</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
