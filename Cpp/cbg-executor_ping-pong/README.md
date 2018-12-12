@@ -49,7 +49,7 @@ The shell run\* scripts in this folder run various experiments in sequence. For 
 
 ## Implementation Details
 
-The algorithms of the Ping node and of the Pong node are factored out into classes [_PingSubNode_](include/PingSubNode.hpp) and [_PongSubNode_](include/PongSubNode.hpp) - configurable with regard to the real-time profile and the topic prefix. Thus, the Ping node contains of two instances of the _PingSubNode_ and the Pong node contains two instances of _PongSubNode_. (And the test bench could be easily extended to more than two ping-pong paths.)
+The algorithms of the Ping node and of the Pong node are factored out into classes [_PingSubNode_](include/PingSubNode.hpp) and [_PongSubNode_](include/PongSubNode.hpp) - configurable with regard to the real-time profile and the topic prefix. Thus, the Ping node contains two instances of the _PingSubNode_ and the Pong node contains two instances of _PongSubNode_. (And the test bench could be easily extended to more than two ping-pong paths.)
 
 The PingSubNode contains a timer for sending the ping messages and a subscription for the corresponding pong messages. Also, it records the number of messages being sent and received and measures the roundtrip time.
 
