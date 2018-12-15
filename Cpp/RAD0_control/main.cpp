@@ -42,7 +42,7 @@ private:
         {
           auto message = std_msgs::msg::String();
           message.data = "Failure!!";
-          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str())
+          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
           this->warn_publisher_->publish(message);
         }
         
@@ -60,7 +60,7 @@ private:
         {
           auto message = std_msgs::msg::String();
           message.data = "Warning!!";
-          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str())
+          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
           this->warn_publisher_->publish(message);
         }
         
