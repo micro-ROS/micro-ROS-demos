@@ -15,6 +15,7 @@
   <depend>rosidl_typesupport_c</depend>
   <depend>rosidl_typesupport_cpp</depend>
   <depend>rmw_implementation</depend>
+  <depend>rmw</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

@@ -1,25 +1,43 @@
 <?xml version="1.0"?>
 <is>
-	<bridge>
-		<bridge_type>unidirectional</bridge_type>
-		<subscriber>
-			<participant>ros2_subscriber</participant>
-			<domain>0</domain>
-			<topic>rt/std_msgs_msg_Int32</topic>
-			<type>std_msgs::msg::dds_::Int32_</type>
-			<partition></partition>
-		</subscriber>
-		<publisher>
-			<participant>ngsiv2_publisher</participant>
-			<id>Helloworld</id>
-			<host>localhost</host>
-			<port>1026</port>
-		</publisher>
-		<!-- Windows -->
-		<!-- <transformToNGSIv2>C:\dev\ros2\src\ros2\firos2\examples\helloworld_orion\build\Release\userlib.dll</transformToNGSIv2>
-		<bridge_library>C:\dev\ros2\build\firos2\Release\isrtpsngsiv2bridgelib.dll</bridge_library> -->
-		<!-- Linux -->
-		<transformToNGSIv2>/root/ws/install/int32_firos2/lib/int32_firos2/libint32_firos2.so</transformToNGSIv2>
-		<bridge_library>/root/ws/install/firos2/lib/libisrtpsngsiv2bridgelib.so</bridge_library>
-	</bridge>
+    <profiles>
+        <participant profile_name="ros2">
+            <rtps>
+                <builtin>
+                    <domainId>0</domainId>
+                </builtin>
+            </rtps>
+        </participant>
+
+        <subscriber profile_name="ros2_subscriber">
+            <topic>
+                <partition></partition>
+                <name>rt/std_msgs_msg_Int32</name>
+                <dataType>std_msgs::msg::dds_::Int32_</dataType>
+            </topic>
+			<historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
+        </subscriber>
+
+    </profiles>
+
+    <bridge name="ngsiv2">
+        <library>libisbridgengsiv2lib.so</library> <!-- Path to the NGSIv2 library -->
+
+        <writer name="ngsiv2_publisher">
+            <property>
+                <name>host</name>
+                <value>localhost</value>
+            </property>
+            <property>
+                <name>port</name>
+                <value>1026</value>
+            </property>
+        </writer>
+    </bridge>
+
+    <connector name="domain_change">
+        <reader participant_profile="ros2" subscriber_profile="ros2_subscriber"/>
+        <writer bridge_name="ngsiv2" writer_name="ngsiv2_publisher"/>
+        <transformation file="/root/ws/install/int32_firos2/lib/int32_firos2/libint32_firos2.so" function="transform"/>
+    </connector>
 </is>

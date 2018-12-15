@@ -18,6 +18,7 @@ find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_typesupport_c REQUIRED)
 find_package(rosidl_typesupport_cpp REQUIRED)
+find_package(rmw REQUIRED)
 find_package(rmw_implementation REQUIRED)
 
 # Do not build the package demo if firos is not found
@@ -47,12 +48,18 @@ target_link_libraries(${PROJECT_NAME} fastrtps fastcdr)
 ament_target_dependencies(
     ${PROJECT_NAME}
     std_msgs
-    firos2
+    rmw
     rmw_implementation
+    firos2
 )
 
 install(TARGETS
   ${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(FILES
+  config.xml
   DESTINATION lib/${PROJECT_NAME}
 )
 

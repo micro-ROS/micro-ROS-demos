@@ -2,10 +2,9 @@
 
 #include <std_msgs/msg/int32.hpp>
 
-#include <NGSIv2/NGSIv2Params.h>
-#include <NGSIv2/idl/JsonNGSIv2PubSubTypes.h>
-
 #include <rmw/rmw.h>
+
+#include <NGSIv2/idl/JsonNGSIv2PubSubTypes.h>
 
 #include <rosidl_typesupport_cpp/message_type_support.hpp>
 
@@ -31,7 +30,7 @@ extern "C" void USER_LIB_EXPORT transform(SerializedPayload_t *serialized_input,
 
     // Convert to ROS2 serialized message
     rmw_serialized_message_t serialized_message;
-    serialized_message.buffer = (char*)serialized_input->data;
+    serialized_message.buffer = (uint8_t*)serialized_input->data;
     serialized_message.buffer_length = serialized_input->length;
     serialized_message.buffer_capacity = serialized_input->max_size;
     serialized_message.allocator = rcutils_get_default_allocator();
