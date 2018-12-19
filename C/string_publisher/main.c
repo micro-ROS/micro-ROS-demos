@@ -3,18 +3,26 @@
 
 #include <stdio.h>
 
-#define ASSERT(ptr) if (ptr == NULL) return -1;
+#define CUSTOM_ASSERT(ptr) if ((ptr) == NULL) return -1;
 
 int main(int argc, char* argv[])
 {
     (void)argc;
     (void)argv;
-    rclc_init(0, NULL);
+
+    rclc_ret_t ret;
+
+    ret = rclc_init(0, NULL);
+    if (ret != RCL_RET_OK)
+    {
+        return -1;
+    }
+
     rclc_node_t* node = rclc_create_node("string_publisher_c", "");
-    ASSERT(node);
+    CUSTOM_ASSERT(node);
     rclc_publisher_t* publisher =
         rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "std_msgs_msg_String", 1);
-    ASSERT(publisher);
+    CUSTOM_ASSERT(publisher);
 
     std_msgs__msg__String msg;
     char buff[128]    = {0};
@@ -29,11 +37,14 @@ int main(int argc, char* argv[])
         if (msg.data.size > msg.data.capacity)
             msg.data.size = 0;
 
-        printf("Sending: '%s'\n", msg.data.data);
-        rclc_publish(publisher, (const void*)&msg);
+        ret = rclc_publish(publisher, (const void*)&msg);
+        if (ret == RCL_RET_OK){
+            printf("Sending: '%s'\n", msg.data.data);
+        } 
+
         rclc_spin_node_once(node, 500);
     }
-    rclc_destroy_publisher(publisher);
-    rclc_destroy_node(node);
+    ret = rclc_destroy_publisher(publisher);
+    ret = rclc_destroy_node(node);
     return 0;
 }

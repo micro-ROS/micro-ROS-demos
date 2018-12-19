@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 
-#define ASSERT(ptr) if (ptr == NULL) return -1;
+#define CUSTOM_ASSERT(ptr) if ((ptr) == NULL) return -1;
 
 static float altitude;
 static uint32_t engine_power;
@@ -81,23 +81,28 @@ int main(int argc, char *argv[])
     rclc_subscription_t* altitude_subscription = NULL;
     rclc_subscription_t* power_subscription = NULL;
 
+    rclc_ret_t ret;
 
-    rclc_init(0, NULL);
+    ret = rclc_init(0, NULL);
+    if (ret != RCL_RET_OK)
+    {
+        return -1;
+    }
     
     node = rclc_create_node("rad0_display_c", "");
-    ASSERT(node);
+    CUSTOM_ASSERT(node);
     alert_subscription = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "std_msgs_msg_String", on_alert_message, 1, false);
-    ASSERT(alert_subscription);
+    CUSTOM_ASSERT(alert_subscription);
     altitude_subscription = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64), "std_msgs_msg_Float64", on_altitude_message, 1, false);
-    ASSERT(altitude_subscription);
+    CUSTOM_ASSERT(altitude_subscription);
     power_subscription = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, UInt32), "std_msgs_msg_UInt32", on_power_message, 1, false);
-    ASSERT(power_subscription);
+    CUSTOM_ASSERT(power_subscription);
 
     rclc_spin_node(node);
 
-    if (alert_subscription) rclc_destroy_subscription(alert_subscription);
-    if (altitude_subscription) rclc_destroy_subscription(altitude_subscription);
-    if (node) rclc_destroy_node(node);
+    if (alert_subscription) ret = rclc_destroy_subscription(alert_subscription);
+    if (altitude_subscription) ret = rclc_destroy_subscription(altitude_subscription);
+    if (node) ret = rclc_destroy_node(node);
 
     printf("Display node closed.");
 

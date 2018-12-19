@@ -7,7 +7,14 @@ int main(int argc, char* argv[])
 {
     (void)argc;
     (void)argv;
-    rclc_init(0, NULL);
+
+    rclc_ret_t ret;
+
+    ret = rclc_init(0, NULL);
+    if (ret != RCL_RET_OK)
+    {
+        return -1;
+    }
     rclc_node_t* node = rclc_create_node("complex_msg_publisher_c", "");
     if (node == NULL)
     {
@@ -65,32 +72,33 @@ int main(int argc, char* argv[])
         msg.data14.data4.size = snprintf(msg.data14.data4.data, msg.data14.data4.capacity, "Msg D - %i", num);
         num++;
 
+        ret = rclc_publish(publisher, (const void*)&msg);
+        if (ret == RCL_RET_OK){
+            printf("I send:\n");
+            printf("\tBool: %u\n", msg.data1);
+            printf("\tuint8_t: %u\n", msg.data2);
+            printf("\tsigned char: %u\n", msg.data3);
+            printf("\tfloat: %f\n", msg.data4);
+            printf("\tdouble: %lf\n", msg.data5);
+            printf("\tint8_t: %i\n", msg.data6);
+            printf("\tuint8_t: %u\n", msg.data7);
+            printf("\tint16_t: %i\n", msg.data8);
+            printf("\tuint16_t: %u\n", msg.data9);
+            printf("\tint32_t: %i\n", msg.data10);
+            printf("\tuint32_t: %u\n", msg.data11);
+            printf("\tint64_t: %li\n", msg.data12);
+            printf("\tuint64_t: %lu\n", msg.data13);
 
-        printf("I send:\n");
-        printf("\tBool: %u\n", msg.data1);
-        printf("\tuint8_t: %u\n", msg.data2);
-        printf("\tsigned char: %u\n", msg.data3);
-        printf("\tfloat: %f\n", msg.data4);
-        printf("\tdouble: %lf\n", msg.data5);
-        printf("\tint8_t: %i\n", msg.data6);
-        printf("\tuint8_t: %u\n", msg.data7);
-        printf("\tint16_t: %i\n", msg.data8);
-        printf("\tuint16_t: %u\n", msg.data9);
-        printf("\tint32_t: %i\n", msg.data10);
-        printf("\tuint32_t: %u\n", msg.data11);
-        printf("\tint64_t: %li\n", msg.data12);
-        printf("\tuint64_t: %lu\n", msg.data13);
+            printf("\tstring 1: %s\n", msg.data14.data1.data);
+            printf("\tstring 2: %s\n", msg.data14.data2.data);
+            printf("\tstring 3: %s\n", msg.data14.data3.data);
+            printf("\tstring 4: %s\n", msg.data14.data4.data);
+            printf("\n\n");
+        }
 
-        printf("\tstring 1: %s\n", msg.data14.data1.data);
-        printf("\tstring 2: %s\n", msg.data14.data2.data);
-        printf("\tstring 3: %s\n", msg.data14.data3.data);
-        printf("\tstring 4: %s\n", msg.data14.data4.data);
-        printf("\n\n");
-
-        rclc_publish(publisher, (const void*)&msg);
         rclc_spin_node_once(node, 500);
     }
-    rclc_destroy_publisher(publisher);
-    rclc_destroy_node(node);
+    ret = rclc_destroy_publisher(publisher);
+    ret = rclc_destroy_node(node);
     return 0;
 }

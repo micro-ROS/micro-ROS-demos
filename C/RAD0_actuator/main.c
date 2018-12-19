@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-#define ASSERT(ptr) if (ptr == NULL) return -1;
+#define CUSTOM_ASSERT(ptr) if ((ptr) == NULL) return -1;
 
 static rclc_publisher_t* engine_pub;
 static uint32_t engine_power = 100;
@@ -24,10 +24,11 @@ void engine_on_message(const void* msgin)
         engine_power = 0;
     }
 
-    // Publish new altitude    
+    // Publish new altitude
+    rclc_ret_t ret;
     std_msgs__msg__UInt32  msg_out;
     msg_out.data = engine_power;
-    rclc_publish(engine_pub, (const void*)&msg_out);
+    ret = rclc_publish(engine_pub, (const void*)&msg_out);
 }
 
 int main(int argc, char* argv[])
@@ -37,28 +38,39 @@ int main(int argc, char* argv[])
 
     rclc_node_t* node = NULL; 
     rclc_subscription_t* engine_sub = NULL;
-    
 
+    rclc_ret_t ret;
 
-    rclc_init(0, NULL);
+    ret = rclc_init(0, NULL);
+    if (ret != RCL_RET_OK)
+    {
+        return -1;
+    }
+
     node = rclc_create_node("rad0_actuator_c", "");
-    ASSERT(node);
+    CUSTOM_ASSERT(node);
     engine_sub = rclc_create_subscription(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", engine_on_message, 1, false);
-    ASSERT(engine_sub);
+    CUSTOM_ASSERT(engine_sub);
     engine_pub = rclc_create_publisher(node, RCLC_GET_MSG_TYPE_SUPPORT(std_msgs, msg, UInt32), "std_msgs_msg_UInt32", 1);
-    ASSERT(engine_pub);
+    CUSTOM_ASSERT(engine_pub);
 
     // Publish new altitude    
     std_msgs__msg__UInt32  msg_out;
     msg_out.data = engine_power;
-    rclc_publish(engine_pub, (const void*)&msg_out);
+    ret = rclc_publish(engine_pub, (const void*)&msg_out);
 
     rclc_spin_node(node);
 
     //if (altitude_sub) rclc_destroy_subscription(altitude_sub);
-    if (engine_sub) rclc_destroy_subscription(engine_sub);
-    if (engine_pub) rclc_destroy_publisher(engine_pub);
-    if (node) rclc_destroy_node(node);
+    if (engine_sub){
+        ret = rclc_destroy_subscription(engine_sub);
+    }
+    if (engine_pub){
+        ret = rclc_destroy_publisher(engine_pub);
+    }
+    if (node){
+        ret = rclc_destroy_node(node);
+    }
 
     printf("Actuator node closed.\n");
 
