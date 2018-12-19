@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <cstdio>
 #include <std_msgs/msg/string.hpp>
-#include "rclcpp/rclcpp.hpp"
+#include <rclcpp/rclcpp.hpp>
+
+#include <memory>
+#include <cstdio>
+
 using std::placeholders::_1;
 
 class string_subscriber_cpp_node : public rclcpp::Node
 {
 public:
-  string_subscriber_cpp_node() : Node("string_subscriber_cpp")
-  { 
-    subscription_ = this->create_subscription<std_msgs::msg::String>("std_msgs_msg_String", 
-      std::bind(&string_subscriber_cpp_node::topic_callback, this, _1));
+  string_subscriber_cpp_node()
+  : Node("string_subscriber_cpp")
+  {
+    subscription_ = this->create_subscription<std_msgs::msg::String>("std_msgs_msg_String",
+        std::bind(&string_subscriber_cpp_node::topic_callback, this, _1));
   }
 
 private:
