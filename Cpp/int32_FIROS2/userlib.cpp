@@ -46,7 +46,7 @@ extern "C" void USER_LIB_EXPORT transform(SerializedPayload_t *serialized_input,
 
     // Custom transformation
     JsonNGSIv2 string_data;
-    std:: string json = "{\"count\": { \"value\": " + std::to_string(data.data) + "} }";
+    std::string json = "{\"count\": { \"value\": " + std::to_string(data.data) + "} }";
     string_data.entityId("Helloworld"); // Fixed for the example
     string_data.data(json);
     std::cout << "Data output: " << string_data.data() << std::endl;
