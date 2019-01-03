@@ -70,6 +70,6 @@ int main(int argc, char * argv[])
   if (publisher) {ret = rclc_destroy_publisher(publisher);}
   if (node) {ret = rclc_destroy_node(node);}
 
-  printf("altitude sendor closed.\n");
+  printf("altitude sensor closed.\n");
   return 0;
 }
