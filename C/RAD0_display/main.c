@@ -53,7 +53,7 @@ void on_alert_message(const void * msgin)
 
 
 /**
- * @brief new altitude calback
+ * @brief new altitude callback
  *
  * @param msgin
  */
