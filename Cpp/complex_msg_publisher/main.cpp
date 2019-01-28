@@ -12,18 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <rclcpp/rclcpp.hpp>
+#include <complex_msgs/msg/nested_msg_test.hpp>
+
+#include <memory>
 #include <chrono>
 #include <cstdio>
-#include <complex_msgs/msg/nested_msg_test.hpp>
-#include "rclcpp/rclcpp.hpp"
+
 using namespace std::chrono_literals;
 
 class complex_msg_publisher_cpp_node : public rclcpp::Node
 {
 public:
-  complex_msg_publisher_cpp_node() : Node("complex_msg_publisher_cpp")
+  complex_msg_publisher_cpp_node()
+  : Node("complex_msg_publisher_cpp")
   {
-    publisher_ = this->create_publisher<complex_msgs::msg::NestedMsgTest>("complex_msgs_msg_NestedMsgTest");
+    publisher_ = this->create_publisher<complex_msgs::msg::NestedMsgTest>(
+      "complex_msgs_msg_NestedMsgTest");
     timer_ = this->create_wall_timer(
       500ms, std::bind(&complex_msg_publisher_cpp_node::timer_callback, this));
   }
@@ -31,25 +36,25 @@ public:
 private:
   void timer_callback()
   {
-    msg.data1 = (bool)(num & 0x01);
-    msg.data2 = (uint8_t)num;
-    msg.data3 = (signed char)num;
-    msg.data4 = (float)num;
-    msg.data5 = (double)num;
-    msg.data6 = (int8_t)num;
-    msg.data7 = (uint8_t)num;
-    msg.data8 = (int16_t)num;
-    msg.data9 = (uint16_t)num;
-    msg.data10 = (int32_t)num;
-    msg.data11 = (uint32_t)num;
-    msg.data12 = (int64_t)num;
-    msg.data13 = (uint64_t)num;
+    msg.data1 = static_cast<bool>(num & 0x01);
+    msg.data2 = static_cast<uint8_t>(num);
+    msg.data3 = static_cast<signed char>(num);
+    msg.data4 = static_cast<float>(num);
+    msg.data5 = static_cast<double>(num);
+    msg.data6 = static_cast<int8_t>(num);
+    msg.data7 = static_cast<uint8_t>(num);
+    msg.data8 = static_cast<int16_t>(num);
+    msg.data9 = static_cast<uint16_t>(num);
+    msg.data10 = static_cast<int32_t>(num);
+    msg.data11 = static_cast<uint32_t>(num);
+    msg.data12 = static_cast<int64_t>(num);
+    msg.data13 = static_cast<uint64_t>(num);
     msg.data14.data1 = "Msg A - " + std::to_string(num);
     msg.data14.data2 = "Msg B - " + std::to_string(num);
     msg.data14.data3 = "Msg C - " + std::to_string(num);
     msg.data14.data4 = "Msg D - " + std::to_string(num);
     num++;
-    
+
     publisher_->publish(msg);
 
     std::cout << "I send:" << std::endl;

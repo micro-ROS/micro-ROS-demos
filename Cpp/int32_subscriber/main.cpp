@@ -12,19 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/int32.hpp>
+
+#include <memory>
 #include <cstdio>
 
-#include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/int32.hpp"
 using std::placeholders::_1;
 
 class int32_subscriber_node : public rclcpp::Node
 {
 public:
-  int32_subscriber_node() : Node("int32_subscriber_cpp")
-  { 
-    subscription_ = this->create_subscription<std_msgs::msg::Int32>("std_msgs_msg_Int32", 
-      std::bind(&int32_subscriber_node::topic_callback, this, _1));
+  int32_subscriber_node()
+  : Node("int32_subscriber_cpp")
+  {
+    subscription_ = this->create_subscription<std_msgs::msg::Int32>("std_msgs_msg_Int32",
+        std::bind(&int32_subscriber_node::topic_callback, this, _1));
   }
 
 private:

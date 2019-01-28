@@ -12,21 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/float64.hpp"
-#include "std_msgs/msg/int32.hpp"
-#include "std_msgs/msg/string.hpp"
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/int32.hpp>
+#include <std_msgs/msg/string.hpp>
+
 using std::placeholders::_1;
 
 class ExternalNode : public rclcpp::Node
 {
 public:
-  ExternalNode() : Node("rad0_control_cpp")
+  ExternalNode()
+  : Node("rad0_control_cpp")
   {
     engine_power_publisher_ = this->create_publisher<std_msgs::msg::Int32>("std_msgs_msg_Int32");
     warn_publisher_ = this->create_publisher<std_msgs::msg::String>("std_msgs_msg_String");
-    
-    altitude_subscription_ = this->create_subscription<std_msgs::msg::Float64>("std_msgs_msg_Float64", std::bind(&ExternalNode::topic_callback, this, _1));
+
+    altitude_subscription_ = this->create_subscription<std_msgs::msg::Float64>(
+      "std_msgs_msg_Float64", std::bind(&ExternalNode::topic_callback, this, _1));
   }
 
 private:
@@ -37,40 +40,34 @@ private:
   void topic_callback(const std_msgs::msg::Float64::SharedPtr msg)
   {
     // Warning
-    if (msg->data <= 500)
-    {
-        {
-          auto message = std_msgs::msg::String();
-          message.data = "Failure!!";
-          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str())
-          this->warn_publisher_->publish(message);
-        }
-        
-        {
-          auto message = std_msgs::msg::Int32();
-          message.data = 10;
-          this->engine_power_publisher_->publish(message);
-        }
+    if (msg->data <= 500) {
+      {
+        auto message = std_msgs::msg::String();
+        message.data = "Failure!!";
+        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+        this->warn_publisher_->publish(message);
+      }
 
+      {
+        auto message = std_msgs::msg::Int32();
+        message.data = 10;
+        this->engine_power_publisher_->publish(message);
+      }
+      // Failure
+    } else if (msg->data <= 1000) {
+      {
+        auto message = std_msgs::msg::String();
+        message.data = "Warning!!";
+        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+        this->warn_publisher_->publish(message);
+      }
+
+      {
+        auto message = std_msgs::msg::Int32();
+        message.data = 5;
+        this->engine_power_publisher_->publish(message);
+      }
     }
-
-    // Failure
-    else if (msg->data <= 1000)
-    {
-        {
-          auto message = std_msgs::msg::String();
-          message.data = "Warning!!";
-          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str())
-          this->warn_publisher_->publish(message);
-        }
-        
-        {
-          auto message = std_msgs::msg::Int32();
-          message.data = 5;
-          this->engine_power_publisher_->publish(message);
-        }
-
-    } 
   }
 };
 

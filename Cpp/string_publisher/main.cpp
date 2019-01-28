@@ -12,16 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <std_msgs/msg/string.hpp>
+#include <rclcpp/rclcpp.hpp>
+
+#include <memory>
 #include <chrono>
 #include <cstdio>
-#include <std_msgs/msg/string.hpp>
-#include "rclcpp/rclcpp.hpp"
+
 using namespace std::chrono_literals;
 
 class string_publisher_cpp_node : public rclcpp::Node
 {
 public:
-  string_publisher_cpp_node() : Node("string_publisher_cpp")
+  string_publisher_cpp_node()
+  : Node("string_publisher_cpp")
   {
     publisher_ = this->create_publisher<std_msgs::msg::String>("std_msgs_msg_String");
     timer_ = this->create_wall_timer(
