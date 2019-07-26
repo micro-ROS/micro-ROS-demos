@@ -31,6 +31,7 @@ int main(int argc, const char * const * argv)
   rv = rcl_wait_set_init(&wait_set, 0, 0, 0, 0, 0, 0, NULL, rcl_get_default_allocator());
   if (RCL_RET_OK != rv) {
     printf("Wait set initialization error\n");
+    return 1;
   }
 
   std_msgs__msg__Int32 msg;
@@ -41,8 +42,8 @@ int main(int argc, const char * const * argv)
     rv &= rcl_wait(&wait_set, 500);
   } while (rv);
 
-  rcl_publisher_fini(&publisher, &node);
-  rcl_node_fini(&node);
+  rv = rcl_publisher_fini(&publisher, &node);
+  rv = rcl_node_fini(&node);
 
   return 0;
 }
