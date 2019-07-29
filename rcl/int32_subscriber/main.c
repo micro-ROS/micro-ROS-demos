@@ -7,29 +7,39 @@ int main(int argc, const char * const * argv)
 {
   rcl_ret_t rv;
 
-  rv = rcl_init(argc, argv, NULL, NULL);
+  rcl_init_options_t options = rcl_get_zero_initialized_init_options();
+  rv = rcl_init_options_init(&options, rcl_get_default_allocator());
+  if (RCL_RET_OK != rv) {
+    printf("rcl init options error\n");
+    return 1;
+  }
+
+  rcl_context_t context = rcl_get_zero_initialized_context();
+  rv = rcl_init(argc, argv, &options, &context);
   if (RCL_RET_OK != rv) {
     printf("rcl initialization error\n");
     return 1;
   }
 
+  rcl_node_options_t node_ops = rcl_node_get_default_options();
   rcl_node_t node;
-  rv = rcl_node_fini(&node);
+  rv = rcl_node_init(&node, "int32_subscriber_rcl", "", &context, &node_ops);
   if (RCL_RET_OK != rv) {
     printf("Node initialization error\n");
     return 1;
   }
 
+  rcl_subscription_options_t subscription_ops = rcl_subscription_get_default_options();
   rcl_subscription_t subscription;
   rv = rcl_subscription_init(
-    &subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", NULL);
+    &subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", &subscription_ops);
   if (RCL_RET_OK != rv) {
     printf("Subscription initialization error\n");
     return 1;
   }
 
   rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
-  rv = rcl_wait_set_init(&wait_set, 0, 0, 0, 0, 0, 0, NULL, rcl_get_default_allocator());
+  rv = rcl_wait_set_init(&wait_set, 1, 0, 0, 0, 0, 0, &context, rcl_get_default_allocator());
   if (RCL_RET_OK != rv) {
     printf("Wait set initialization error\n");
     return 1;
@@ -41,7 +51,8 @@ int main(int argc, const char * const * argv)
     return 1;
   }
 
-  rv = rcl_wait_set_add_subscription(&wait_set, &subscription, NULL);
+  size_t index;
+  rv = rcl_wait_set_add_subscription(&wait_set, &subscription, &index);
   if (RCL_RET_OK != rv) {
     printf("Wait set add subscription error\n");
     return 1;

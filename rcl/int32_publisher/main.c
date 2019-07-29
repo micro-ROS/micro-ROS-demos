@@ -7,21 +7,31 @@ int main(int argc, const char * const * argv)
 {
   rcl_ret_t rv;
 
-  rv = rcl_init(argc, argv, NULL, NULL);
+  rcl_init_options_t options = rcl_get_zero_initialized_init_options();
+  rv = rcl_init_options_init(&options, rcl_get_default_allocator());
+  if (RCL_RET_OK != rv) {
+    printf("rcl init options error\n");
+    return 1;
+  }
+
+  rcl_context_t context = rcl_get_zero_initialized_context();
+  rv = rcl_init(argc, argv, &options, &context);
   if (RCL_RET_OK != rv) {
     printf("rcl initialization error\n");
     return 1;
   }
 
+  rcl_node_options_t node_ops = rcl_node_get_default_options();
   rcl_node_t node;
-  rv = rcl_node_fini(&node);
+  rv = rcl_node_init(&node, "int32_publisher_rcl", "", &context, &node_ops);
   if (RCL_RET_OK != rv) {
     printf("Node initialization error\n");
     return 1;
   }
 
+  rcl_publisher_options_t publisher_ops = rcl_publisher_get_default_options();
   rcl_publisher_t publisher;
-  rv = rcl_publisher_init(&publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", NULL);
+  rv = rcl_publisher_init(&publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", &publisher_ops);
   if (RCL_RET_OK != rv) {
     printf("Publisher initialization error\n");
     return 1;
