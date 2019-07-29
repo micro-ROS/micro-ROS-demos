@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
-set(CMAKE_C_CLANG_TIDY clang-tidy -checks=*)
-project(rad0_altitude_sensor_c)
+
+project(rad0_altitude_sensor_c LANGUAGES C)
+
+find_program(CLANG_TIDY clang-tidy)
+if(CLANG_TIDY)
+  set(CMAKE_C_CLANG_TIDY clang-tidy -checks=*)
+endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclc QUIET)

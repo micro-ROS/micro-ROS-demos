@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=*)
-project(string_publisher_c)
+
+project(string_publisher_c LANGUAGES C)
+
+find_program(CLANG_TIDY clang-tidy)
+if(CLANG_TIDY)
+  set(CMAKE_C_CLANG_TIDY clang-tidy -checks=*)
+endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclc QUIET)

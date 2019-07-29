@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=*)
-project(string_subscriber_cpp)
+
+project(string_subscriber_cpp LANGUAGES CXX)
+
+find_program(CLANG_TIDY clang-tidy)
+if(CLANG_TIDY)
+  set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=*)
+endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
