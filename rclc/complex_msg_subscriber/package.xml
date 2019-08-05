@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>complex_msg_subscriber_c</name>
+  <name>complex_msg_subscriber_rclc</name>
   <version>0.0.1</version>
   <description>Example of a complex smg subcriber</description>
-  <maintainer email="javiermoreno@eproxima.com">Javier Moreno</maintainer>
+  <maintainer email="borjaouterelo@eproxima.com">Borja Outerelo</maintainer>
   <license>Apache License 2.0</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>rclc</build_depend>
