@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(int32_publisher_cpp LANGUAGES CXX)
+project(int32_publisher_rclcpp LANGUAGES CXX)
 
 find_program(CLANG_TIDY clang-tidy)
 if(CLANG_TIDY)
@@ -32,9 +32,11 @@ endif()
 add_executable(${PROJECT_NAME} main.cpp)
 ament_target_dependencies(${PROJECT_NAME} rclcpp std_msgs)
 
-install(TARGETS
-  ${PROJECT_NAME}
-  DESTINATION lib/${PROJECT_NAME}
-)
+install(
+  TARGETS
+    ${PROJECT_NAME}
+  DESTINATION
+    bin/${PROJECT_NAME}
+  )
 
 ament_package()
