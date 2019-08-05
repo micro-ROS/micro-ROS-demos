@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(rad0_display_c LANGUAGES C)
+project(rad0_display_rclc LANGUAGES C)
 
 find_program(CLANG_TIDY clang-tidy)
 if(CLANG_TIDY)
@@ -21,9 +21,11 @@ endif()
 add_executable(${PROJECT_NAME} main.c)
 ament_target_dependencies(${PROJECT_NAME} rclc std_msgs)
 
-install(TARGETS
-${PROJECT_NAME}
-  DESTINATION lib/${PROJECT_NAME}
-)
+install(
+  TARGETS
+    ${PROJECT_NAME}
+  DESTINATION
+    bin/${PROJECT_NAME}
+  )
 
 ament_package()

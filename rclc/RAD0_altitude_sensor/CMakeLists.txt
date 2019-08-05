@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(rad0_altitude_sensor_c LANGUAGES C)
+project(rad0_altitude_sensor_rclc LANGUAGES C)
 
 find_program(CLANG_TIDY clang-tidy)
 if(CLANG_TIDY)
@@ -25,9 +25,11 @@ if(NOT WIN32)
   target_link_libraries(${PROJECT_NAME} m)
 endif()
 
-install(TARGETS
-${PROJECT_NAME}
-  DESTINATION lib/${PROJECT_NAME}
-)
+install(
+  TARGETS
+    ${PROJECT_NAME}
+  DESTINATION
+    bin/${PROJECT_NAME}
+  )
 
 ament_package()
