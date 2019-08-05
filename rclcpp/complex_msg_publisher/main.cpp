@@ -27,8 +27,9 @@ public:
   complex_msg_publisher_cpp_node()
   : Node("complex_msg_publisher_cpp")
   {
+    rclcpp::QoS qos(10);
     publisher_ = this->create_publisher<complex_msgs::msg::NestedMsgTest>(
-      "complex_msgs_msg_NestedMsgTest");
+      "complex_msgs_msg_NestedMsgTest", qos);
     timer_ = this->create_wall_timer(
       500ms, std::bind(&complex_msg_publisher_cpp_node::timer_callback, this));
   }

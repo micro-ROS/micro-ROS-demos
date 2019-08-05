@@ -16,6 +16,7 @@
 #include <std_msgs/msg/int32.h>
 
 #include <stdio.h>
+#include <unistd.h>
 
 #define CUSTOM_ASSERT(ptr) if ((ptr) == NULL) {return -1;}
 
@@ -44,6 +45,7 @@ int main(int argc, char * argv[])
     if (ret == RCL_RET_OK) {
       printf("Sending: '%i'\n", msg.data++);
     }
+    usleep(110000);
     rclc_spin_node_once(node, 500);
   }
   ret = rclc_destroy_publisher(publisher);

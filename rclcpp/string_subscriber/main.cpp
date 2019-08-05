@@ -26,7 +26,8 @@ public:
   string_subscriber_cpp_node()
   : Node("string_subscriber_cpp")
   {
-    subscription_ = this->create_subscription<std_msgs::msg::String>("std_msgs_msg_String",
+    rclcpp::QoS qos(10);
+    subscription_ = this->create_subscription<std_msgs::msg::String>("std_msgs_msg_String", qos,
         std::bind(&string_subscriber_cpp_node::topic_callback, this, _1));
   }
 

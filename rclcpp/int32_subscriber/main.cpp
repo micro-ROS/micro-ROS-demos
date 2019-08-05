@@ -26,8 +26,11 @@ public:
   int32_subscriber_node()
   : Node("int32_subscriber_cpp")
   {
-    subscription_ = this->create_subscription<std_msgs::msg::Int32>("std_msgs_msg_Int32",
+    rclcpp::QoS qos(10);
+    subscription_ = this->create_subscription<std_msgs::msg::Int32>("std_msgs_msg_Int32", qos,
         std::bind(&int32_subscriber_node::topic_callback, this, _1));
+//    subscription_ = this->create_subscription<std_msgs::msg::Int32>("std_msgs_msg_Int32",
+//        std::bind(&int32_subscriber_node::topic_callback, this, _1));
   }
 
 private:

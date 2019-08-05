@@ -27,7 +27,8 @@ public:
   string_publisher_cpp_node()
   : Node("string_publisher_cpp")
   {
-    publisher_ = this->create_publisher<std_msgs::msg::String>("std_msgs_msg_String");
+    rclcpp::QoS qos(10);
+    publisher_ = this->create_publisher<std_msgs::msg::String>("std_msgs_msg_String", qos);
     timer_ = this->create_wall_timer(
       500ms, std::bind(&string_publisher_cpp_node::timer_callback, this));
   }

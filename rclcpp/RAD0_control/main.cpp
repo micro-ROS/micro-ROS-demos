@@ -25,11 +25,14 @@ public:
   ExternalNode()
   : Node("rad0_control_cpp")
   {
-    engine_power_publisher_ = this->create_publisher<std_msgs::msg::Int32>("std_msgs_msg_Int32");
-    warn_publisher_ = this->create_publisher<std_msgs::msg::String>("std_msgs_msg_String");
+    rclcpp::QoS qos(10);
+    engine_power_publisher_ = this->create_publisher<std_msgs::msg::Int32>(
+      "std_msgs_msg_Int32", qos);
+    warn_publisher_ = this->create_publisher<std_msgs::msg::String>(
+      "std_msgs_msg_String", qos);
 
     altitude_subscription_ = this->create_subscription<std_msgs::msg::Float64>(
-      "std_msgs_msg_Float64", std::bind(&ExternalNode::topic_callback, this, _1));
+      "std_msgs_msg_Float64", qos, std::bind(&ExternalNode::topic_callback, this, _1));
   }
 
 private:
