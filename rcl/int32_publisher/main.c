@@ -2,6 +2,7 @@
 #include <std_msgs/msg/int32.h>
 
 #include <stdio.h>
+#include <unistd.h>
 
 int main(int argc, const char * const * argv)
 {
@@ -30,7 +31,7 @@ int main(int argc, const char * const * argv)
   }
 
   rcl_publisher_options_t publisher_ops = rcl_publisher_get_default_options();
-  rcl_publisher_t publisher;
+  rcl_publisher_t publisher = rcl_get_zero_initialized_publisher();
   rv = rcl_publisher_init(&publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", &publisher_ops);
   if (RCL_RET_OK != rv) {
     printf("Publisher initialization error\n");
@@ -38,19 +39,24 @@ int main(int argc, const char * const * argv)
   }
 
   rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
-  rv = rcl_wait_set_init(&wait_set, 0, 0, 0, 0, 0, 0, NULL, rcl_get_default_allocator());
+  rv = rcl_wait_set_init(&wait_set, 0, 0, 0, 0, 0, 0, &context, rcl_get_default_allocator());
   if (RCL_RET_OK != rv) {
     printf("Wait set initialization error\n");
     return 1;
   }
 
   std_msgs__msg__Int32 msg;
-  msg.data = -1;
+  const int num_msg = 1000;
+  msg.data = 0;
+  usleep(3000000); // As we are sending low number mensajes we need to wait discovery of the subscriber. (Do not have a notification on discovery)
   do {
-    printf("Sending: '%i'\n", msg.data++);
-    rv &= rcl_publish(&publisher, (const void*)&msg, NULL);
-    rv &= rcl_wait(&wait_set, 500);
-  } while (rv);
+    rv = rcl_publish(&publisher, (const void*)&msg, NULL);
+    if (RCL_RET_OK == rv )
+    {
+        printf("Sent: '%i'\n", msg.data++);
+    }
+  } while (RCL_RET_OK == rv && msg.data < num_msg );
+  printf("TOTAL sent: %i\n", num_msg);
 
   rv = rcl_publisher_fini(&publisher, &node);
   rv = rcl_node_fini(&node);

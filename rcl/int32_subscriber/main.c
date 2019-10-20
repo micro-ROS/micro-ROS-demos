@@ -1,4 +1,5 @@
 #include <rcl/rcl.h>
+#include <rcl/error_handling.h>
 #include <std_msgs/msg/int32.h>
 
 #include <stdio.h>
@@ -24,13 +25,15 @@ int main(int argc, const char * const * argv)
   rcl_node_options_t node_ops = rcl_node_get_default_options();
   rcl_node_t node;
   rv = rcl_node_init(&node, "int32_subscriber_rcl", "", &context, &node_ops);
-  if (RCL_RET_OK != rv) {
-    printf("Node initialization error\n");
+  if (RCL_RET_OK != rv)
+  {
+    fprintf(stderr, "[main] error in rcl : %s\n", rcutils_get_error_string().str);
+    rcl_reset_error();
     return 1;
   }
 
   rcl_subscription_options_t subscription_ops = rcl_subscription_get_default_options();
-  rcl_subscription_t subscription;
+  rcl_subscription_t subscription = rcl_get_zero_initialized_subscription();
   rv = rcl_subscription_init(
     &subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", &subscription_ops);
   if (RCL_RET_OK != rv) {
@@ -68,7 +71,7 @@ int main(int argc, const char * const * argv)
         printf("I received: [%i]\n", ((const std_msgs__msg__Int32*)msg)->data);
       }
     }
-  } while (rv);
+  } while ( RCL_RET_OK == rv );
 
   rv = rcl_subscription_fini(&subscription, &node);
   rv = rcl_node_fini(&node);
