@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(int32_publisher_rcl LANGUAGES C)
+project(int32_publisher LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
@@ -13,11 +13,6 @@ ament_target_dependencies(${PROJECT_NAME}
   std_msgs
   )
 
-install(
-  TARGETS
-    ${PROJECT_NAME}
-  DESTINATION
-    bin/${PROJECT_NAME}
-  )
-
-ament_package()
+install(TARGETS ${PROJECT_NAME}
+        DESTINATION ${PROJECT_NAME}
+        )

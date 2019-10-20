@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(rad0_altitude_sensor_rclc LANGUAGES C)
+project(rad0_altitude_sensor LANGUAGES C)
 
 find_program(CLANG_TIDY clang-tidy)
 if(CLANG_TIDY)
@@ -29,7 +29,5 @@ install(
   TARGETS
     ${PROJECT_NAME}
   DESTINATION
-    bin/${PROJECT_NAME}
+    ${PROJECT_NAME}
   )
-
-ament_package()

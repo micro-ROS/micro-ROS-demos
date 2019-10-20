@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(string_subscriber_rclc LANGUAGES C)
+project(string_subscriber LANGUAGES C)
 
 find_program(CLANG_TIDY clang-tidy)
 if(CLANG_TIDY)
@@ -25,7 +25,5 @@ install(
   TARGETS
     ${PROJECT_NAME}
   DESTINATION
-    bin/${PROJECT_NAME}
+    ${PROJECT_NAME}
   )
-
-ament_package()

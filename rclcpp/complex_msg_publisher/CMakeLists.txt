@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(complex_msg_publisher_rclcpp LANGUAGES CXX)
+project(complex_msg_publisher LANGUAGES CXX)
 
 find_program(CLANG_TIDY clang-tidy)
 if(CLANG_TIDY)
@@ -23,7 +23,6 @@ find_package(complex_msgs REQUIRED)
 # Do not compile package if rclcpp is not found
 if (NOT rclcpp_FOUND)
   message(WARNING "${PROJECT_NAME} will be ignored due to rclcpp is not installed")
-  ament_package()
   return()
 endif()
 
@@ -35,7 +34,6 @@ install(
   TARGETS
     ${PROJECT_NAME}
   DESTINATION
-    bin/${PROJECT_NAME}
+    ${PROJECT_NAME}
   )
 
-ament_package()

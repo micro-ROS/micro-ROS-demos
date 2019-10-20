@@ -1,16 +1,22 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>rad0_display_rclc</name>
+  <name>micro_ros_demos_rclc</name>
   <version>0.0.1</version>
-  <description>Real apliacion demostration. Display on screen any message</description>
-  <maintainer email="borjaouterelo@eprosima.com">Borja Outerelo</maintainer>
+  <description>Example of a publisher using int32</description>
+  <maintainer email="julianbermudez@eprosima.com">Julian Bermudez</maintainer>
   <license>Apache License 2.0</license>
+  <author>Julian Bermudez</author>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <build_depend>rclc</build_depend>
-  <build_depend>std_msgs</build_depend>
+
+  <depend>std_msgs</depend>
+  <depend>complex_msgs</depend>
+  <depend>rclc</depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
+
 </package>
 
