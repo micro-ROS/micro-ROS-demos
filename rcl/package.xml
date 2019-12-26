@@ -2,11 +2,11 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>micro_ros_demos_rcl</name>
-  <version>0.0.1</version>
-  <description>Example of a publisher using int32</description>
-  <maintainer email="julianbermudez@eprosima.com">Julian Bermudez</maintainer>
+  <version>0.0.2</version>
+  <description>Examples using RCL API</description>
+  <maintainer email="borjaouterelo@eprosima.com">Borja Outerelo</maintainer>
   <license>Apache License 2.0</license>
-  <author>Julian Bermudez</author>
+  <author>Borja Outerelo</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
@@ -15,9 +15,12 @@
   <depend>std_msgs</depend>
   <depend>example_interfaces</depend>
 
+  <!-- configured_publisher and configured_subscriber-->
+  <depend>geometry_msgs</depend>
+  <depend>rmw_microxrcedds</depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
 
 </package>
-
