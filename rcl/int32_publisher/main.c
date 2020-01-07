@@ -39,13 +39,6 @@ int main(int argc, const char * const * argv)
     return 1;
   }
 
- /* rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
-  rv = rcl_wait_set_init(&wait_set, 0, 0, 0, 0, 0, 0, &context, rcl_get_default_allocator());
-  if (RCL_RET_OK != rv) {
-    printf("Wait set initialization error: %s\n", rcl_get_error_string().str);
-    return 1;
-  }*/
-
   std_msgs__msg__Int32 msg;
   const int num_msg = 1000;
   msg.data = 0;
