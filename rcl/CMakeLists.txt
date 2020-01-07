@@ -25,6 +25,8 @@ endfunction()
 
 export_executable(int32_publisher)
 export_executable(int32_subscriber)
+export_executable(addtwoints_server)
+export_executable(addtwoints_client)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
     install(
