@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
 
   printf("Connecting to agent %s:%d\n",argv[1],atoi(argv[2]));
   rmw_init_options_t* rmw_options = rcl_init_options_get_rmw_init_options(&init_options);
-  ret = rmw_uros_init_options(argc, argv, rmw_options);
+  ret = rmw_uros_options_set_udp_address(argv[1], argv[2], rmw_options);
 
   context = rcl_get_zero_initialized_context();
 
@@ -77,10 +77,10 @@ int main(int argc, char * argv[])
 
     ret = rcl_wait(&wait_set, RCL_MS_TO_NS(timeout_ms));				
 
-    if (ret == RCL_RET_OK  && wait_set.subscriptions[0]) {
+    if (ret == RCL_RET_OK && wait_set.subscriptions[0]) {
         rmw_message_info_t messageInfo;
         ret = rcl_take(wait_set.subscriptions[0], &topic_data, &messageInfo, NULL);
-        printf("Publish: %f, %f, %f\n",topic_data.x,topic_data.y,topic_data.z);
+        printf("Received: %f, %f, %f\n",topic_data.x,topic_data.y,topic_data.z);
     }
 
     rcl_wait_set_fini(&wait_set);
