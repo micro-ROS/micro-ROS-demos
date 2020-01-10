@@ -61,8 +61,6 @@ int main(int argc, const char * const * argv)
   }
 
   const char * action_name = "fibonacci";
-  // #include <rosidl_generator_c/action_type_support_struct.h>
-  // #include <example_interfaces/action/fibonacci.h>
   const rosidl_action_type_support_t * action_type_support = ROSIDL_GET_ACTION_TYPE_SUPPORT(example_interfaces, Fibonacci);
   rcl_action_server_t action_server = rcl_action_get_zero_initialized_server();
   rcl_action_server_options_t action_server_ops = rcl_action_server_get_default_options();
@@ -86,7 +84,7 @@ int main(int argc, const char * const * argv)
 
   size_t num_subscriptions, num_guard_conditions, num_timers, num_clients, num_services;
 
-  rcl_action_server_wait_set_get_num_entities(&action_server,&num_subscriptions, &num_guard_conditions, &num_timers, &num_clients, &num_services);
+  rcl_action_server_wait_set_get_num_entities(&action_server, &num_subscriptions, &num_guard_conditions, &num_timers, &num_clients, &num_services);
 
   rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
   rv = rcl_wait_set_init(&wait_set, num_subscriptions, num_guard_conditions, num_timers, num_clients, num_services, 0, &context, rcl_get_default_allocator());
