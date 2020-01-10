@@ -8,36 +8,30 @@
 #include <pthread.h>
 
 typedef struct fibonacci_args {
-  rcl_action_server_t * action_server;
-  unique_identifier_msgs__msg__UUID uuid;
   uint32_t order;
+  bool * goal_done;
+  int32_t * feedback;
+  int32_t * feedback_lenght;
 } fibonacci_args;
 
 void * fibonacci(void *args){
   fibonacci_args * fib_args = (fibonacci_args *)args;
 
-  int32_t * feedback = (int32_t*) malloc(fib_args->order * sizeof(int32_t));
+  *fib_args->goal_done = false;
 
-  int t1 = 0, t2 = 1, nextTerm;
+  fib_args->feedback[0] = 0;
+  fib_args->feedback[1] = 1;
+  *fib_args->feedback_lenght = 2;
 
-  for (uint32_t i = 1; i <= fib_args->order; ++i) {
-    nextTerm = t1 + t2;
-    t1 = t2;
-    t2 = nextTerm;
+  for (uint32_t i = 2; i <= fib_args->order; ++i) {
 
-    feedback[i] = nextTerm;
-    example_interfaces__action__Fibonacci_FeedbackMessage ros_goal_feedback;    
-
-    ros_goal_feedback.goal_id = fib_args->uuid;
-    ros_goal_feedback.feedback.sequence.data = feedback;
-    ros_goal_feedback.feedback.sequence.size = i;
-    ros_goal_feedback.feedback.sequence.capacity = fib_args->order;
-
-    rcl_action_publish_feedback(fib_args->action_server, &ros_goal_feedback);
+    *fib_args->feedback_lenght = i;
+    fib_args->feedback[i] = fib_args->feedback[i-1] + fib_args->feedback[i-2];
+    
     usleep(500000);
   }
-  
-  rcl_action_notify_goal_done(fib_args->action_server);
+
+  *fib_args->goal_done = true;
 }
 
 int main(int argc, const char * const * argv)
@@ -102,8 +96,14 @@ int main(int argc, const char * const * argv)
   }
 
   rcl_action_goal_handle_t * goal_handle;
-  bool processing_goal = false;
+  rcl_action_goal_info_t goal_info;
   pthread_t goal_thread;
+
+  bool processing_goal = false;
+  bool goal_done = false;
+  int32_t * feedback;
+  int32_t feedback_lenght;
+  int32_t goal_order;
 
   do {
     rv = rcl_wait_set_clear(&wait_set);
@@ -115,7 +115,7 @@ int main(int argc, const char * const * argv)
     size_t index;
     rv = rcl_action_wait_set_add_action_server(&wait_set, &action_server, &index);
     
-    rv = rcl_wait(&wait_set, 1000000);
+    rv = rcl_wait(&wait_set, RCL_MS_TO_NS(500));
 
     bool is_goal_request_ready = false;
     bool is_cancel_request_ready = false;
@@ -130,19 +130,12 @@ int main(int argc, const char * const * argv)
           &is_result_request_ready,
           &is_goal_expired);
     
-    // rcl_action_get_goal_status_array 
-    // rcl_action_publish_status
-    // rcl_action_take_result_request 
-    // rcl_action_send_result_response 
-    // rcl_action_expire_goals
-    // rcl_action_notify_goal_done 
-    // rcl_action_take_cancel_request
-    // rcl_action_process_cancel_request
-    // rcl_action_send_cancel_response
 
     if (is_goal_request_ready)
-    {   
-      rcl_action_goal_info_t goal_info = rcl_action_get_zero_initialized_goal_info();
+    { 
+      printf("Goal request received\n");
+
+      goal_info = rcl_action_get_zero_initialized_goal_info();
       rmw_request_id_t request_header;
       example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
 
@@ -155,55 +148,83 @@ int main(int argc, const char * const * argv)
 
       if (ros_goal_response.accepted)
       {
+        printf("Goal request accepted\n");
+
         // ---- Accept goal
         goal_info.goal_id = ros_goal_request.goal_id;
         // goal_info.stamp = 
         goal_handle = rcl_action_accept_new_goal(&action_server, &goal_info);
 
-
-
         // ---- Update state
         rv = rcl_action_update_goal_state(goal_handle, GOAL_EVENT_EXECUTE);
 
-
-
         // ---- Publish statuses
-
-        rcl_action_goal_handle_t ** goal_handles = NULL;
-        size_t num_goals = 0;
-
-        rcl_action_server_get_goal_handles(&action_server, &goal_handles, &num_goals);
 
         rcl_action_goal_status_array_t c_status_array = rcl_action_get_zero_initialized_goal_status_array();
         rcl_action_get_goal_status_array(&action_server, &c_status_array);
-
-        action_msgs__msg__GoalStatusArray status_array;
-        // action_msgs__msg__GoalStatus goal_status;
-
-        // goal_status.goal_info
-
-        // status_array.status_list.capacity = 1;
-        // status_array.status_list.size = 1;
-        // status_array.status_list.data = &goal_status;
-
-
         rcl_action_publish_status(&action_server, &c_status_array.msg);
+
         // ---- Calling thread callback
         processing_goal = true;
+        feedback = (int32_t*) malloc(ros_goal_request.goal.order * sizeof(int32_t));
+        goal_order = ros_goal_request.goal.order;
 
         fibonacci_args args = {
-          .action_server = &action_server,
-          .uuid = ros_goal_request.goal_id,
           .order = ros_goal_request.goal.order,
+          .goal_done = &goal_done,
+          .feedback = feedback,
+          .feedback_lenght = &feedback_lenght,
         };
 
         pthread_create(&goal_thread, NULL, fibonacci, &args);
-
-
+      }else{
+        printf("Goal request rejected\n");
       }
-      
-      
-    }
+    }else if(!goal_done && processing_goal){
+      // ---- Publish feedback
+      printf("Publishing feedback\n");
+
+      example_interfaces__action__Fibonacci_FeedbackMessage ros_goal_feedback; 
+
+      ros_goal_feedback.goal_id = goal_info.goal_id;
+      ros_goal_feedback.feedback.sequence.data = feedback;
+      ros_goal_feedback.feedback.sequence.size = feedback_lenght;
+      ros_goal_feedback.feedback.sequence.capacity = goal_order;
+
+      rcl_action_publish_feedback(&action_server, &ros_goal_feedback);
+
+    }else if (goal_done && processing_goal){
+      // ---- Sending result ready
+      printf("Sending result ready state\n");
+
+      processing_goal = false;
+
+      rv = rcl_action_update_goal_state(goal_handle, GOAL_EVENT_SUCCEED);
+
+      rcl_action_notify_goal_done(&action_server);
+
+    }else if(is_result_request_ready && goal_done && !processing_goal){
+      printf("Sending result ready state\n");
+
+      goal_done = false;
+
+      example_interfaces__action__Fibonacci_GetResult_Request ros_result_request;
+      rmw_request_id_t request_header;
+      rv = rcl_action_take_result_request(&action_server, &request_header, &ros_result_request);
+
+      example_interfaces__action__Fibonacci_GetResult_Response ros_result_response;
+      example_interfaces__action__Fibonacci_Result result;
+      result.sequence.capacity = goal_order;
+      result.sequence.size = feedback_lenght;
+      result.sequence.data = feedback;
+
+      ros_result_response.status = action_msgs__msg__GoalStatus__STATUS_SUCCEEDED;
+      ros_result_response.result = result;
+
+      rcl_action_send_result_response(&action_server, &request_header, &ros_result_response);
+
+      free(feedback);
+      }
     
   } while ( true );
 
