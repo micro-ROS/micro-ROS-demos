@@ -62,19 +62,19 @@ int main(int argc, const char * const * argv)
 
   int64_t goal_sequence_number;
   int64_t result_sequence_number;
-  
 
   bool done = false;
   bool goal_accepted = false;
   int order = 10;
-  do {
-    if (!goal_accepted) 
-    {
-      example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
-      ros_goal_request.goal.order = order;
-      rcl_action_send_goal_request(&action_client, &ros_goal_request, &goal_sequence_number);
-    }
-    
+
+  sleep(2);
+  printf("Sending goal request\n");
+  example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
+  ros_goal_request.goal.order = order;
+  rcl_action_send_goal_request(&action_client, &ros_goal_request, &goal_sequence_number);
+  printf("Request sent\n");
+
+  do {    
     rv = rcl_wait_set_clear(&wait_set);
     if (RCL_RET_OK != rv) {
       printf("Wait set clear error: %s\n", rcl_get_error_string().str);
@@ -84,7 +84,7 @@ int main(int argc, const char * const * argv)
     size_t client_index, subscription_index;
     rcl_action_wait_set_add_action_client(&wait_set, &action_client, &client_index, &subscription_index);
     
-    rcl_wait(&wait_set, RCL_MS_TO_NS(500));
+    rcl_wait(&wait_set, RCL_MS_TO_NS(50));
 
     bool is_feedback_ready = false;
     bool is_status_ready = false;
@@ -103,6 +103,7 @@ int main(int argc, const char * const * argv)
 
     if (is_goal_response_ready)
     {
+      printf("Goal response ready\n");
       example_interfaces__action__Fibonacci_SendGoal_Response ros_goal_response;
       rmw_request_id_t response_header;
 

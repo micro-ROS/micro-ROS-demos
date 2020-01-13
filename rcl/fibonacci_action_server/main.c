@@ -113,7 +113,7 @@ int main(int argc, const char * const * argv)
     size_t index;
     rv = rcl_action_wait_set_add_action_server(&wait_set, &action_server, &index);
     
-    rv = rcl_wait(&wait_set, RCL_MS_TO_NS(500));
+    rv = rcl_wait(&wait_set, RCL_MS_TO_NS(200));
 
     bool is_goal_request_ready = false;
     bool is_cancel_request_ready = false;
@@ -202,7 +202,7 @@ int main(int argc, const char * const * argv)
       rcl_action_notify_goal_done(&action_server);
 
     }else if(is_result_request_ready && goal_done && !processing_goal){
-      printf("Sending result ready state\n");
+      printf("Sending result array\n");
 
       goal_done = false;
 
