@@ -63,7 +63,7 @@ int main(int argc, const char * const * argv)
       break;
     }    
     
-    rv = rcl_wait(&wait_set, 1000000);
+    rv = rcl_wait(&wait_set, RCL_MS_TO_NS(1));
     for (size_t i = 0; i < wait_set.size_of_subscriptions; ++i) {
       if (wait_set.subscriptions[i])
       {
