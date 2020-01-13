@@ -137,7 +137,6 @@ int main(int argc, const char * const * argv)
       printf("]\n");
 
       free(ros_feedback.feedback.sequence.data);
-
     } 
     
     if(is_result_response_ready)
@@ -159,7 +158,6 @@ int main(int argc, const char * const * argv)
 
       done = true;
       free(ros_result_response.result.sequence.data);
-
     }
   } while ( !done );
 
