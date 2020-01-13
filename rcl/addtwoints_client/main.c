@@ -25,7 +25,7 @@ int main(int argc, const char * const * argv)
 
   rcl_node_options_t node_ops = rcl_node_get_default_options();
   rcl_node_t node = rcl_get_zero_initialized_node();
-  rv = rcl_node_init(&node, "addtowints_server_rcl", "", &context, &node_ops);
+  rv = rcl_node_init(&node, "addtowints_client_rcl", "", &context, &node_ops);
   if (RCL_RET_OK != rv) {
     printf("Node initialization error: %s\n", rcl_get_error_string().str);
     return 1;
