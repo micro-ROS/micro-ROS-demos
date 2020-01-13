@@ -14,5 +14,5 @@ ament_target_dependencies(${PROJECT_NAME}
   )
 
 install(TARGETS ${PROJECT_NAME}
-        DESTINATION ${PROJECT_NAME}
-        )
+  DESTINATION ${PROJECT_NAME}
+  )
