@@ -178,7 +178,8 @@ int main(int argc, const char * const * argv)
       }else{
         printf("Goal request rejected\n");
       }
-    }else if(!goal_done && processing_goal){
+    } else if(!goal_done && processing_goal)
+    {
       // ---- Publish feedback
       printf("Publishing feedback\n");
 
@@ -191,7 +192,8 @@ int main(int argc, const char * const * argv)
 
       rcl_action_publish_feedback(&action_server, &ros_goal_feedback);
 
-    }else if (goal_done && processing_goal){
+    } else if (goal_done && processing_goal)
+    {
       // ---- Sending result ready
       printf("Sending result ready state\n");
 
@@ -201,7 +203,8 @@ int main(int argc, const char * const * argv)
 
       rcl_action_notify_goal_done(&action_server);
 
-    }else if(is_result_request_ready && goal_done && !processing_goal){
+    } else if(is_result_request_ready && goal_done && !processing_goal)
+    {
       printf("Sending result array\n");
 
       goal_done = false;

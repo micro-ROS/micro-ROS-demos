@@ -118,7 +118,8 @@ int main(int argc, const char * const * argv)
           example_interfaces__action__Fibonacci_GetResult_Request ros_result_request;
           rcl_action_send_result_request(&action_client, &ros_result_request, &result_sequence_number);
       }
-    }else if(is_feedback_ready){
+    } else if(is_feedback_ready)
+    {
       example_interfaces__action__Fibonacci_FeedbackMessage ros_feedback;
 
       ros_feedback.feedback.sequence.data = (int32_t*) malloc(order * sizeof(int32_t));
@@ -135,7 +136,8 @@ int main(int argc, const char * const * argv)
 
       free(ros_feedback.feedback.sequence.data);
 
-    }else if(is_result_response_ready){
+    } else if(is_result_response_ready)
+    {
       example_interfaces__action__Fibonacci_GetResult_Response ros_result_response;
       rmw_request_id_t response_header;
 
