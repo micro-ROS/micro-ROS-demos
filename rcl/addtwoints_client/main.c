@@ -72,14 +72,14 @@ int main(int argc, const char * const * argv)
     rv = rcl_wait_set_clear(&wait_set);
     if (RCL_RET_OK != rv) {
       printf("Wait set clear error: %s\n", rcl_get_error_string().str);
-      return 1;
+      break;
     }
     
     size_t index;
     rv = rcl_wait_set_add_client(&wait_set, &client, &index);
     if (RCL_RET_OK != rv) {
       printf("Wait set add client error: %s\n", rcl_get_error_string().str);
-      return 1;
+      break;
     }    
     
     rv = rcl_wait(&wait_set, 1000000);
@@ -93,8 +93,11 @@ int main(int argc, const char * const * argv)
 
         rv = rcl_take_response(&client, &req_id, &res);
 
-        printf("Received service response %d + %d = %d. Seq %d\n",(int)req.a, (int)req.b, (int)res.sum,req_id.sequence_number);
-        done = true;
+        if (RCL_RET_OK == rv)
+        {
+          printf("Received service response %d + %d = %d. Seq %d\n",(int)req.a, (int)req.b, (int)res.sum,req_id.sequence_number);
+          done = true;
+        }
       }
     }
   } while ( !done );

@@ -59,14 +59,14 @@ int main(int argc, const char * const * argv)
     rv = rcl_wait_set_clear(&wait_set);
     if (RCL_RET_OK != rv) {
       printf("Wait set clear error: %s\n", rcl_get_error_string().str);
-      return 1;
+      break;
     }
     
     size_t index;
     rv = rcl_wait_set_add_service(&wait_set, &serv, &index);
     if (RCL_RET_OK != rv) {
       printf("Wait set add subscription error: %s\n", rcl_get_error_string().str);
-      return 1;
+      break;
     }    
     
     rv = rcl_wait(&wait_set, 1000000);
