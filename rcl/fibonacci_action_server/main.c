@@ -68,6 +68,10 @@ int main(int argc, const char * const * argv)
   rcl_clock_t clock;
   rcl_allocator_t allocator = rcl_get_default_allocator();
   rv = rcl_ros_clock_init(&clock, &allocator);
+  if (RCL_RET_OK != rv) {
+    printf("ros clock init error: %s\n", rcl_get_error_string().str);
+    return 1;
+  }
 
   rv = rcl_action_server_init(
       &action_server, 
@@ -107,13 +111,21 @@ int main(int argc, const char * const * argv)
     rv = rcl_wait_set_clear(&wait_set);
     if (RCL_RET_OK != rv) {
       printf("Wait set clear error: %s\n", rcl_get_error_string().str);
-      return 1;
+      break;
     }
     
     size_t index;
     rv = rcl_action_wait_set_add_action_server(&wait_set, &action_server, &index);
-    
+    if (RCL_RET_OK != rv) {
+      printf("wait set add action error: %s\n", rcl_get_error_string().str);
+      break;
+    }
+
     rv = rcl_wait(&wait_set, RCL_MS_TO_NS(200));
+    if (RCL_RET_OK != rv) {
+      printf("rcl wait error: %s\n", rcl_get_error_string().str);
+      break;
+    }
 
     bool is_goal_request_ready = false;
     bool is_cancel_request_ready = false;
@@ -128,6 +140,10 @@ int main(int argc, const char * const * argv)
           &is_result_request_ready,
           &is_goal_expired);
     
+    if (RCL_RET_OK != rv) {
+      printf("rcl action server get entities error: %s\n", rcl_get_error_string().str);
+      break;
+    }
 
     if (is_goal_request_ready)
     { 
@@ -139,10 +155,20 @@ int main(int argc, const char * const * argv)
 
       rv = rcl_action_take_goal_request(&action_server, &request_header, &ros_goal_request);
 
+      if (RCL_RET_OK != rv) {
+        printf("rcl action take goal error: %s\n", rcl_get_error_string().str);
+        break;
+      }
+
       example_interfaces__action__Fibonacci_SendGoal_Response ros_goal_response;
       ros_goal_response.accepted = !processing_goal;
       // ros_goal_response.stamp =
       rv = rcl_action_send_goal_response(&action_server, &request_header, &ros_goal_response);
+      
+      if (RCL_RET_OK != rv) {
+        printf("rcl action send goal response error: %s\n", rcl_get_error_string().str);
+        break;
+      }
 
       if (ros_goal_response.accepted)
       {
@@ -155,6 +181,11 @@ int main(int argc, const char * const * argv)
 
         // ---- Update state
         rv = rcl_action_update_goal_state(goal_handle, GOAL_EVENT_EXECUTE);
+
+        if (RCL_RET_OK != rv) {
+          printf("rcl action update goal state error: %s\n", rcl_get_error_string().str);
+          break;
+        }
 
         // ---- Publish statuses
 
@@ -200,8 +231,18 @@ int main(int argc, const char * const * argv)
       processing_goal = false;
 
       rv = rcl_action_update_goal_state(goal_handle, GOAL_EVENT_SUCCEED);
+      
+      if (RCL_RET_OK != rv) {
+        printf("rcl action update goal state error: %s\n", rcl_get_error_string().str);
+        break;
+      }
 
-      rcl_action_notify_goal_done(&action_server);
+      rv = rcl_action_notify_goal_done(&action_server);
+
+      if (RCL_RET_OK != rv) {
+        printf("rcl action notify goal error: %s\n", rcl_get_error_string().str);
+        break;
+      }
 
     } else if(is_result_request_ready && goal_done && !processing_goal)
     {
@@ -213,6 +254,11 @@ int main(int argc, const char * const * argv)
       rmw_request_id_t request_header;
       rv = rcl_action_take_result_request(&action_server, &request_header, &ros_result_request);
 
+      if (RCL_RET_OK != rv) {
+        printf("rcl action take result request error: %s\n", rcl_get_error_string().str);
+        break;
+      }
+
       example_interfaces__action__Fibonacci_GetResult_Response ros_result_response;
       example_interfaces__action__Fibonacci_Result result;
       result.sequence.capacity = goal_order;
@@ -222,7 +268,12 @@ int main(int argc, const char * const * argv)
       ros_result_response.status = action_msgs__msg__GoalStatus__STATUS_SUCCEEDED;
       ros_result_response.result = result;
 
-      rcl_action_send_result_response(&action_server, &request_header, &ros_result_response);
+      rv = rcl_action_send_result_response(&action_server, &request_header, &ros_result_response);
+
+      if (RCL_RET_OK != rv) {
+        printf("rcl action send result response error: %s\n", rcl_get_error_string().str);
+        break;
+      }
 
       free(feedback);
       }

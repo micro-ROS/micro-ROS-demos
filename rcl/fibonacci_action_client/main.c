@@ -71,20 +71,34 @@ int main(int argc, const char * const * argv)
   printf("Sending goal request\n");
   example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
   ros_goal_request.goal.order = order;
-  rcl_action_send_goal_request(&action_client, &ros_goal_request, &goal_sequence_number);
-  printf("Request sent\n");
+  rv = rcl_action_send_goal_request(&action_client, &ros_goal_request, &goal_sequence_number);
+  
+  if (RCL_RET_OK != rv) {
+    printf("rcl action send goal request error: %s\n", rcl_get_error_string().str);
+    return 1;
+  }
 
   do {    
     rv = rcl_wait_set_clear(&wait_set);
     if (RCL_RET_OK != rv) {
       printf("Wait set clear error: %s\n", rcl_get_error_string().str);
-      return 1;
+      break;
     }
     
     size_t client_index, subscription_index;
-    rcl_action_wait_set_add_action_client(&wait_set, &action_client, &client_index, &subscription_index);
-    
-    rcl_wait(&wait_set, RCL_MS_TO_NS(50));
+    rv = rcl_action_wait_set_add_action_client(&wait_set, &action_client, &client_index, &subscription_index);
+
+    if (RCL_RET_OK != rv) {
+      printf("rcl action wait set add error: %s\n", rcl_get_error_string().str);
+      break;
+    }
+
+    rv = rcl_wait(&wait_set, RCL_MS_TO_NS(50));
+
+    if (RCL_RET_OK != rv) {
+      printf("rcl_wait error: %s\n", rcl_get_error_string().str);
+      break;
+    }
 
     bool is_feedback_ready = false;
     bool is_status_ready = false;
@@ -92,7 +106,7 @@ int main(int argc, const char * const * argv)
     bool is_cancel_response_ready = false;
     bool is_result_response_ready = false;
 
-    rcl_action_client_wait_set_get_entities_ready(
+    rv = rcl_action_client_wait_set_get_entities_ready(
           &wait_set,
           &action_client,
           &is_feedback_ready,
@@ -101,13 +115,24 @@ int main(int argc, const char * const * argv)
           &is_cancel_response_ready,
           &is_result_response_ready);
 
+    if (RCL_RET_OK != rv) {
+      printf("rcl action wait get entities error: %s\n", rcl_get_error_string().str);
+      break;
+    }
+
     if (is_goal_response_ready)
     {
       printf("Goal response ready\n");
       example_interfaces__action__Fibonacci_SendGoal_Response ros_goal_response;
       rmw_request_id_t response_header;
 
-      rcl_action_take_goal_response(&action_client, &response_header, &ros_goal_response);
+      rv = rcl_action_take_goal_response(&action_client, &response_header, &ros_goal_response);
+
+      if (RCL_RET_OK != rv) {
+        printf("rcl action take goal response error: %s\n", rcl_get_error_string().str);
+        break;
+      }
+
       if (ros_goal_response.accepted)
       {
           printf("Goal request accepted\n");
@@ -116,7 +141,12 @@ int main(int argc, const char * const * argv)
           goal_accepted = true;
 
           example_interfaces__action__Fibonacci_GetResult_Request ros_result_request;
-          rcl_action_send_result_request(&action_client, &ros_result_request, &result_sequence_number);
+          rv = rcl_action_send_result_request(&action_client, &ros_result_request, &result_sequence_number);
+
+          if (RCL_RET_OK != rv) {
+            printf("rcl action send result request error: %s\n", rcl_get_error_string().str);
+            break;
+          }
       }
     }
     
@@ -127,8 +157,13 @@ int main(int argc, const char * const * argv)
       ros_feedback.feedback.sequence.data = (int32_t*) malloc(order * sizeof(int32_t));
       ros_feedback.feedback.sequence.capacity = order;
 
-      rcl_action_take_feedback(&action_client, &ros_feedback);
+      rv = rcl_action_take_feedback(&action_client, &ros_feedback);
       
+      if (RCL_RET_OK != rv) {
+        printf("rcl action take feedback error: %s\n", rcl_get_error_string().str);
+        break;
+      }
+
       printf("Feedback: [");
       for (size_t i = 0; i < ros_feedback.feedback.sequence.size ; i++)
       {
@@ -147,8 +182,13 @@ int main(int argc, const char * const * argv)
       ros_result_response.result.sequence.data = (int32_t*) malloc(order * sizeof(int32_t));
       ros_result_response.result.sequence.capacity = order;
 
-      rcl_action_take_result_response(&action_client, &response_header, &ros_result_response);
+      rv = rcl_action_take_result_response(&action_client, &response_header, &ros_result_response);
       
+      if (RCL_RET_OK != rv) {
+        printf("rcl action take result response error: %s\n", rcl_get_error_string().str);
+        break;
+      }
+
       printf("Response: [");
       for (size_t i = 0; i < ros_result_response.result.sequence.size ; i++)
       {
