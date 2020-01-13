@@ -276,7 +276,7 @@ int main(int argc, const char * const * argv)
       }
 
       free(feedback);
-      }
+    }
     
   } while ( true );
 
