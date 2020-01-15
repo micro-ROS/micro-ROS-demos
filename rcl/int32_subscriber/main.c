@@ -48,30 +48,33 @@ int main(int argc, const char * const * argv)
     return 1;
   }
 
-  rv = rcl_wait_set_clear(&wait_set);
-  if (RCL_RET_OK != rv) {
-    printf("Wait set clear error: %s\n", rcl_get_error_string().str);
-    return 1;
-  }
-
-  size_t index;
-  rv = rcl_wait_set_add_subscription(&wait_set, &subscription, &index);
-  if (RCL_RET_OK != rv) {
-    printf("Wait set add subscription error: %s\n", rcl_get_error_string().str);
-    return 1;
-  }
-
   void* msg = rcl_get_default_allocator().zero_allocate(sizeof(std_msgs__msg__Int32), 1, rcl_get_default_allocator().state);
   do {
-    rv = rcl_wait(&wait_set, 1000000);
+    rv = rcl_wait_set_clear(&wait_set);
+    if (RCL_RET_OK != rv) {
+      printf("Wait set clear error: %s\n", rcl_get_error_string().str);
+      break;
+    }
+    
+    size_t index;
+    rv = rcl_wait_set_add_subscription(&wait_set, &subscription, &index);
+    if (RCL_RET_OK != rv) {
+      printf("Wait set add subscription error: %s\n", rcl_get_error_string().str);
+      break;
+    }    
+    
+    rv = rcl_wait(&wait_set, RCL_MS_TO_NS(1));
     for (size_t i = 0; i < wait_set.size_of_subscriptions; ++i) {
-      rv = rcl_take(wait_set.subscriptions[i], msg, NULL, NULL);
-      if (RCL_RET_OK == rv)
+      if (wait_set.subscriptions[i])
       {
-        printf("I received: [%i]\n", ((const std_msgs__msg__Int32*)msg)->data);
+        rv = rcl_take(wait_set.subscriptions[i], msg, NULL, NULL);
+        if (RCL_RET_OK == rv)
+        {
+          printf("I received: [%i]\n", ((const std_msgs__msg__Int32*)msg)->data);
+        }
       }
     }
-  } while ( RCL_RET_OK == rv || RCL_RET_SUBSCRIPTION_TAKE_FAILED == rv);
+  } while ( true );
 
   rv = rcl_subscription_fini(&subscription, &node);
   rv = rcl_node_fini(&node);
