@@ -105,12 +105,12 @@ int main(int argc, const char * const * argv)
     usleep(1000);
   } while (true);
 
-  rc = rcl_publisher_fini(&publisher1, &node1);
-  rc = rcl_publisher_fini(&publisher2, &node2);
-  rc = rcl_subscription_fini(&subscription1, &node1);
-  rc = rcl_subscription_fini(&subscription2, &node2);
-  rc = rcl_node_fini(&node1);
-  rc = rcl_node_fini(&node2);
+  rcl_publisher_fini(&publisher1, &node1);
+  rcl_publisher_fini(&publisher2, &node2);
+  rcl_subscription_fini(&subscription1, &node1);
+  rcl_subscription_fini(&subscription2, &node2);
+  rcl_node_fini(&node1);
+  rcl_node_fini(&node2);
 
   return 0;
 }
