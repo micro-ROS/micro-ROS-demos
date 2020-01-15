@@ -39,7 +39,7 @@ int main(int argc, const char * const * argv)
     for (size_t i = 0; i < wait_set.size_of_subscriptions; ++i) {
       if (wait_set.subscriptions[i]) {
         rc = rcl_take(wait_set.subscriptions[i], msg, NULL, NULL);
-        if (RCL_RET_OK == rv) {
+        if (RCL_RET_OK == rc) {
           printf("I received: [%i]\n", ((const std_msgs__msg__Int32*)msg)->data);
         }
       }

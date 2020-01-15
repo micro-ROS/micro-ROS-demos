@@ -35,10 +35,10 @@ int main(int argc, const char * const * argv)
 
   do {
     rc = rcl_publish(&publisher, (const void*)&msg, NULL);
-    if (RCL_RET_OK == rv ) {
+    if (RCL_RET_OK == rc ) {
         printf("Sent: '%i'\n", msg.data++);
     }
-  } while (RCL_RET_OK == rv && msg.data < num_msg );
+  } while (RCL_RET_OK == rc && msg.data < num_msg );
   printf("TOTAL sent: %i\n", num_msg);
 
   RCCHECK(rcl_publisher_fini(&publisher, &node))
