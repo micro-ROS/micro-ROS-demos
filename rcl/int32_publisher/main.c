@@ -34,7 +34,7 @@ int main(int argc, const char * const * argv)
   sleep(2); // Sleep a while to ensure DDS matching before sending request
 
   do {
-    rv = rcl_publish(&publisher, (const void*)&msg, NULL);
+    rc = rcl_publish(&publisher, (const void*)&msg, NULL);
     if (RCL_RET_OK == rv ) {
         printf("Sent: '%i'\n", msg.data++);
     }

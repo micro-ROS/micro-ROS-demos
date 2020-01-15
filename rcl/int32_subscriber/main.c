@@ -38,7 +38,7 @@ int main(int argc, const char * const * argv)
     RCSOFTCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(1)))
     for (size_t i = 0; i < wait_set.size_of_subscriptions; ++i) {
       if (wait_set.subscriptions[i]) {
-        rv = rcl_take(wait_set.subscriptions[i], msg, NULL, NULL);
+        rc = rcl_take(wait_set.subscriptions[i], msg, NULL, NULL);
         if (RCL_RET_OK == rv) {
           printf("I received: [%i]\n", ((const std_msgs__msg__Int32*)msg)->data);
         }
