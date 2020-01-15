@@ -65,8 +65,7 @@ int main(int argc, const char * const * argv)
   uint32_t count = 0;
 
   do {
-    if (count % 1000 == 0)
-    {
+    if (count % 1000 == 0){
       // Publish data on each node
       msg1.data++;
       rc = rcl_publish(&publisher1, (const void*)&msg1, NULL);
@@ -91,8 +90,7 @@ int main(int argc, const char * const * argv)
     RCSOFTCHECK()
 
     for (size_t i = 0; i < wait_set.size_of_subscriptions; ++i) {
-      if (wait_set.subscriptions[i])
-      { 
+      if (wait_set.subscriptions[i]){ 
         std_msgs__msg__Int32 received_msg;
 
         rc = rcl_take(wait_set.subscriptions[i], &received_msg, NULL, NULL);
