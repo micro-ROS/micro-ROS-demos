@@ -56,19 +56,21 @@ int main(int argc, const char * const * argv)
     return 1;
   }
 
-  // Create request 
+  sleep(2); // Sleep a while to ensure DDS matching before sending request
+
+  // Send request 
   int64_t seq; 
   example_interfaces__srv__AddTwoInts_Request req;
   example_interfaces__srv__AddTwoInts_Request__init(&req);
   req.a = 24;
   req.b = 42;
 
+  rv = rcl_send_request(&client, &req, &seq);
+  printf("Send service request %d + %d. Seq %ld\n",(int)req.a, (int)req.b, (int)seq);
+
   // Wait for response
   bool done = false;
   do {
-    rv = rcl_send_request(&client, &req, &seq);
-    printf("Send service request %d + %d. Seq %d\n",(int)req.a, (int)req.b, (int)seq);
-
     rv = rcl_wait_set_clear(&wait_set);
     if (RCL_RET_OK != rv) {
       printf("Wait set clear error: %s\n", rcl_get_error_string().str);
