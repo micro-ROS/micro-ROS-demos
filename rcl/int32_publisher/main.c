@@ -42,7 +42,10 @@ int main(int argc, const char * const * argv)
   std_msgs__msg__Int32 msg;
   const int num_msg = 1000;
   msg.data = 0;
-  usleep(3000000); // As we are sending low number mensajes we need to wait discovery of the subscriber. (Do not have a notification on discovery)
+  
+  
+  sleep(2); // Sleep a while to ensure DDS matching before sending request
+
   do {
     rv = rcl_publish(&publisher, (const void*)&msg, NULL);
     if (RCL_RET_OK == rv )

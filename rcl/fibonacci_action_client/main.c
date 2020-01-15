@@ -67,7 +67,8 @@ int main(int argc, const char * const * argv)
   bool goal_accepted = false;
   int order = 10;
 
-  sleep(2);
+  sleep(2); // Sleep a while to ensure DDS matching before sending request
+
   printf("Sending goal request\n");
   example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
   ros_goal_request.goal.order = order;

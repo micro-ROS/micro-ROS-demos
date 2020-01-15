@@ -60,7 +60,7 @@ int main(int argc, const char * const * argv)
   msg1.data = -100;
   msg2.data = 100;
 
-  sleep(2);
+  sleep(2); // Sleep a while to ensure DDS matching before sending request
 
   uint32_t count = 0;
 
