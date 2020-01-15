@@ -7,13 +7,11 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#define RCCHECK(fn) rc = fn; if((rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)rc); return 1;}
-#define RCSOFTCHECK(fn) rc = fn; if((rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)rc);}
+#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
+#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc);}}
 
 int main(int argc, const char * const * argv)
 {
-  rcl_ret_t rc;
-
   rcl_init_options_t options = rcl_get_zero_initialized_init_options();
   RCCHECK(rcl_init_options_init(&options, rcl_get_default_allocator()))
 

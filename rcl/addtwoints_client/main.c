@@ -5,13 +5,11 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define RCCHECK(fn) rc = fn; if((rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)rc); return 1;}
-#define RCSOFTCHECK(fn) rc = fn; if((rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)rc);}
+#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
+#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc);}}
 
 int main(int argc, const char * const * argv)
 {
-  rcl_ret_t rc;
-
   rcl_init_options_t options = rcl_get_zero_initialized_init_options();
   RCCHECK(rcl_init_options_init(&options, rcl_get_default_allocator()))
 
@@ -61,7 +59,7 @@ int main(int argc, const char * const * argv)
         example_interfaces__srv__AddTwoInts_Response res;
         example_interfaces__srv__AddTwoInts_Response__init(&res);
 
-        rc = rcl_take_response(&client, &req_id, &res);
+        rcl_ret_t rc = rcl_take_response(&client, &req_id, &res);
 
         if (RCL_RET_OK == rc) {
           printf("Received service response %d + %d = %d. Seq %d\n",(int)req.a, (int)req.b, (int)res.sum,req_id.sequence_number);
