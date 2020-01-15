@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
 
   printf("Connecting to agent %s:%d\n",argv[1],atoi(argv[2]));
   rmw_init_options_t* rmw_options = rcl_init_options_get_rmw_init_options(&init_options);
-  ret = rmw_uros_options_set_udp_address(argv[1], argv[2], rmw_options);
+  rmw_uros_options_set_udp_address(argv[1], argv[2], rmw_options);
   rmw_uros_options_set_client_key(0xCAFEBABE, rmw_options);
 
   context = rcl_get_zero_initialized_context();
