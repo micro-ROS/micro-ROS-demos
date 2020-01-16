@@ -20,6 +20,9 @@
 #include <geometry_msgs/msg/vector3.h>
 #include <rmw_uros/options.h>
 
+#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
+#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
+
 int main(int argc, char * argv[])
 {
   //Init RCL context
@@ -74,15 +77,15 @@ int main(int argc, char * argv[])
     size_t index = 0;
     RCSOFTCHECK(rcl_wait_set_add_subscription(&wait_set, &subscriber_vector3, &index))
 
-    RCSOFTCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(timeout_ms)))				
+    rcl_ret_t rc = rcl_wait(&wait_set, RCL_MS_TO_NS(timeout_ms));
 
-    if (ret == RCL_RET_OK && wait_set.subscriptions[0]) {
+    if (rc == RCL_RET_OK && wait_set.subscriptions[0]) {
         rmw_message_info_t messageInfo;
         RCSOFTCHECK(rcl_take(wait_set.subscriptions[0], &topic_data, &messageInfo, NULL))
         printf("Received: %f, %f, %f\n",topic_data.x,topic_data.y,topic_data.z);
     }
 
-    rcl_wait_set_fini(&wait_set);
+    RCSOFTCHECK(rcl_wait_set_fini(&wait_set))
   }
   
   RCCHECK(rcl_node_fini(&node))
