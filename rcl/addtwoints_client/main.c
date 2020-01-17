@@ -41,7 +41,7 @@ int main(int argc, const char * const * argv)
   req.b = 42;
 
   RCCHECK(rcl_send_request(&client, &req, &seq))
-  printf("Send service request %d + %d. Seq %ld\n",(int)req.a, (int)req.b, (int)seq);
+  printf("Send service request %ld + %ld. Seq %ld\n",req.a, req.b, seq);
 
   // Wait for response
   bool done = false;
@@ -62,7 +62,7 @@ int main(int argc, const char * const * argv)
         rcl_ret_t rc = rcl_take_response(&client, &req_id, &res);
 
         if (RCL_RET_OK == rc) {
-          printf("Received service response %d + %d = %d. Seq %d\n",(int)req.a, (int)req.b, (int)res.sum,req_id.sequence_number);
+          printf("Received service response %ld + %ld = %ld. Seq %ld\n",req.a, req.b, res.sum, req_id.sequence_number);
           done = true;
         }
       }
