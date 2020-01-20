@@ -2,6 +2,8 @@
 #include <rcl/error_handling.h>
 #include <std_msgs/msg/int32.h>
 
+#include <rmw_uros/options.h>
+
 #include <stdio.h>
 #include <unistd.h>
 
@@ -17,6 +19,7 @@ int main(int argc, const char * const * argv)
   RCCHECK(rcl_init(argc, argv, &options, &context))
 
   rcl_node_options_t node_ops = rcl_node_get_default_options();
+
   rcl_node_t node = rcl_get_zero_initialized_node();
   RCCHECK(rcl_node_init(&node, "int32_publisher_rcl", "", &context, &node_ops))
 
