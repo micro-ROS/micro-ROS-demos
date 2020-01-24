@@ -121,7 +121,7 @@ int main(int argc, const char * const * argv)
     }
   } while ( !done );
 
-  RCCHECK(rcl_action_server_fini(&action_client, &node))
+  RCCHECK(rcl_action_client_fini(&action_client, &node))
   RCCHECK(rcl_node_fini(&node))
 
   return 0;
