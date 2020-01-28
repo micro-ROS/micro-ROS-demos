@@ -27,7 +27,7 @@ public:
   : Node("complex_msg_subscriber_cpp")
   {
     subscription_ = this->create_subscription<complex_msgs::msg::NestedMsgTest>(
-      "complex_msgs_msg_NestedMsgTest", rclcpp::SystemDefaultsQos(),
+      "complex_msgs_msg_NestedMsgTest", rclcpp::SystemDefaultsQoS(),
       std::bind(&complex_msg_subscriber_cpp_node::topic_callback, this, _1));
   }
 
