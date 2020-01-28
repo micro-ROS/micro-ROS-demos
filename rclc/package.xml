@@ -5,7 +5,7 @@
   <version>0.0.1</version>
   <description>Example of a publisher using int32</description>
   <maintainer email="julianbermudez@eprosima.com">Julian Bermudez</maintainer>
-  <license>Apache License 2.0</license>
+  <license>Apache-2.0</license>
   <author>Julian Bermudez</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
