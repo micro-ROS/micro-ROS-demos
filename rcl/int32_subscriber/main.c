@@ -28,7 +28,6 @@ int main(int argc, const char * const * argv)
   rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
   RCCHECK(rcl_wait_set_init(&wait_set, 1, 0, 0, 0, 0, 0, &context, rcl_get_default_allocator()))
 
-  void* msg = rcl_get_default_allocator().zero_allocate(sizeof(std_msgs__msg__Int32), 1, rcl_get_default_allocator().state);
   do {
     RCSOFTCHECK(rcl_wait_set_clear(&wait_set))
     
@@ -36,12 +35,13 @@ int main(int argc, const char * const * argv)
     RCSOFTCHECK(rcl_wait_set_add_subscription(&wait_set, &subscription, &index))
     
     RCSOFTCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(1)))
-    for (size_t i = 0; i < wait_set.size_of_subscriptions; ++i) {
-      if (wait_set.subscriptions[i]) {
-        rcl_ret_t rc = rcl_take(wait_set.subscriptions[i], msg, NULL, NULL);
-        if (RCL_RET_OK == rc) {
-          printf("I received: [%i]\n", ((const std_msgs__msg__Int32*)msg)->data);
-        }
+
+    if (wait_set.subscriptions[index]) {
+      std_msgs__msg__Int32 msg;
+
+      rcl_ret_t rc = rcl_take(wait_set.subscriptions[index], &msg, NULL, NULL);
+      if (RCL_RET_OK == rc) {
+        printf("I received: [%i]\n", msg.data);
       }
     }
   } while ( true );
