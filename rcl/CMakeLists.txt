@@ -40,6 +40,7 @@ export_executable(fibonacci_action_client)
 export_executable(int32_multinode)
 export_executable(guard_condition)
 export_executable(int32_publisher_subscriber)
+export_executable(ping_pong)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
     install(
