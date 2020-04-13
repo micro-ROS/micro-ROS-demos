@@ -84,7 +84,7 @@ int main(int argc, const char * const * argv)
     size_t index;
     RCSOFTCHECK(rcl_action_wait_set_add_action_server(&wait_set, &action_server, &index))
 
-    RCSOFTCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(200)))
+    rcl_wait(&wait_set, RCL_MS_TO_NS(200));
 
     bool is_goal_request_ready = false;
     bool is_cancel_request_ready = false;
