@@ -7,8 +7,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define ARRAY_CAP 800
-#define ARRAY_LEN 600
+#define ARRAY_LEN 4096
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
@@ -31,21 +30,17 @@ int main(int argc, const char * const * argv)
   RCCHECK(rcl_publisher_init(&publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/char_long_sequence", &publisher_ops))
   
   std_msgs__msg__String msg;
-  msg.data.data = (char * ) malloc(ARRAY_CAP * sizeof(char));
-  msg.data.size = ARRAY_LEN;
-  msg.data.capacity = ARRAY_CAP;
+  msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
+  msg.data.size = 0;
+  msg.data.capacity = ARRAY_LEN;
 
   // Fill the array with a known sequence
-  for (size_t i = 0; i < ARRAY_LEN-1; i++){
+  for (size_t i = 0; i < 3500; i++){
     msg.data.data[i] = (char) 'z';
+    msg.data.size++;
   }
-  msg.data.data[ARRAY_LEN-1] = '\0';
+  msg.data.data[3500] = '\0';
 
-  for (size_t i = 0; i < ARRAY_LEN; i++){
-    printf("%c ", msg.data.data[i]);
-  }
-  printf("\n");
-  
   sleep(2); // Sleep a while to ensure DDS matching before sending request
 
   rcl_ret_t rc;

@@ -6,8 +6,7 @@
 
 #include <stdio.h>
 
-#define ARRAY_CAP 800
-#define ARRAY_LEN 600
+#define ARRAY_LEN 4096
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
@@ -33,9 +32,9 @@ int main(int argc, const char * const * argv)
 
   std_msgs__msg__String msg;
 
-  msg.data.data = (char * ) malloc(ARRAY_CAP * sizeof(char));
+  msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
   msg.data.size = 0;
-  msg.data.capacity = ARRAY_CAP;
+  msg.data.capacity = ARRAY_LEN;
 
   do {
     RCSOFTCHECK(rcl_wait_set_clear(&wait_set))
@@ -53,14 +52,13 @@ int main(int argc, const char * const * argv)
         
         bool pass_test = true;
         // Check if sequence items matches the know pattern
-        for (size_t i = 0; i < ARRAY_LEN; i++){
-          printf("%d ", (uint8_t) msg.data.data[i]);
-          if (msg.data.data[i] != 'a'){
+        for (size_t i = 0; i <  msg.data.size; i++){
+          if (msg.data.data[i] != 'z'){
             pass_test = false;
           }
         }
         printf("\n");
-        printf("I received an array. Test: [%s]\n", (pass_test) ? "OK" : "FAIL");
+        printf("I received an %ld array. Test: [%s]\n", msg.data.size, (pass_test) ? "OK" : "FAIL");
       }
     }
   } while ( true );
