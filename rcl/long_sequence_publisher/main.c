@@ -35,11 +35,9 @@ int main(int argc, const char * const * argv)
   msg.data.capacity = ARRAY_LEN;
 
   // Fill the array with a known sequence
-  for (size_t i = 0; i < 3500; i++){
-    msg.data.data[i] = (char) 'z';
-    msg.data.size++;
-  }
+  memset(msg.data.data,'z',3500);
   msg.data.data[3500] = '\0';
+  msg.data.size = 3501;
 
   sleep(2); // Sleep a while to ensure DDS matching before sending request
 
