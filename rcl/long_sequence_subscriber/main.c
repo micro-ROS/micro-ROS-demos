@@ -37,7 +37,8 @@ int main(int argc, const char * const * argv)
   msg.data.capacity = ARRAY_LEN;
   
   char test_array[ARRAY_LEN];
-  
+  memset(test_array,'z',ARRAY_LEN);
+
   do {
     RCSOFTCHECK(rcl_wait_set_clear(&wait_set))
     
@@ -52,11 +53,8 @@ int main(int argc, const char * const * argv)
       rcl_ret_t rc = rcl_take(wait_set.subscriptions[index], &msg, NULL, NULL);
       if (RCL_RET_OK == rc) {
         
-        memset(test_array,'z',msg.data.size);
-        test_array[msg.data.size] = '\0';
-        
         // Check if sequence items matches the know pattern
-        bool pass_test = srtcmp(test_array, msg.data.data) == 0;
+        bool pass_test = strncmp(test_array, msg.data.data, msg.data.size) == 0;
 
         printf("I received an %ld array. Test: [%s]\n", msg.data.size, (pass_test) ? "OK" : "FAIL");
       }
