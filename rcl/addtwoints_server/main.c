@@ -36,7 +36,7 @@ int main(int argc, const char * const * argv)
     size_t index;
     RCSOFTCHECK(rcl_wait_set_add_service(&wait_set, &serv, &index))
     
-    RCSOFTCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(1)))
+    rcl_wait(&wait_set, RCL_MS_TO_NS(1));
     for (size_t i = 0; i < wait_set.size_of_services; i++) {
       if (wait_set.services[i]) {   
             rmw_request_id_t req_id;
