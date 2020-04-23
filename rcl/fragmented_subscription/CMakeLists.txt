@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(long_sequence_subscriber LANGUAGES C)
+project(fragmented_subscription LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)

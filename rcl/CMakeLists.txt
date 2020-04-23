@@ -41,8 +41,8 @@ export_executable(int32_multinode)
 export_executable(guard_condition)
 export_executable(int32_publisher_subscriber)
 export_executable(ping_pong)
-export_executable(long_sequence_publisher)
-export_executable(long_sequence_subscriber)
+export_executable(fragmented_publication)
+export_executable(fragmented_subscription)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
     install(
