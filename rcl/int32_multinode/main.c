@@ -22,12 +22,12 @@ std_msgs__msg__Int32 recv_msg_2;
 
 void timer_callback_1(rcl_timer_t * timer, int64_t last_call_time)
 {
-  void last_call_time;
-  if (timer != NULL) {
-    RCSOFTCHECK(rcl_publish(&publisher_1, &send_msg_1, NULL));
-    printf("Node 1 -- Sent: %d\n", send_msg_1.data);
-    send_msg_1.data++;
-  }
+ 	void last_call_time;
+	if (timer != NULL) {
+		RCSOFTCHECK(rcl_publish(&publisher_1, &send_msg_1, NULL));
+		printf("Node 1 -- Sent: %d\n", send_msg_1.data);
+		send_msg_1.data++;
+	}
 }
 
 void subscription_callback_1(const void * msgin)
@@ -38,12 +38,12 @@ void subscription_callback_1(const void * msgin)
 
 void timer_callback_2(rcl_timer_t * timer, int64_t last_call_time)
 {
-  void last_call_time;
-  if (timer != NULL) {
-    RCSOFTCHECK(rcl_publish(&publisher_2, &send_msg_2, NULL));
-    printf("Node 2 -- Sent: %d\n", send_msg_2.data);
-    send_msg_2.data++;
-  }
+	void last_call_time;
+	if (timer != NULL) {
+		RCSOFTCHECK(rcl_publish(&publisher_2, &send_msg_2, NULL));
+		printf("Node 2 -- Sent: %d\n", send_msg_2.data);
+		send_msg_2.data++;
+	}
 }
 
 void subscription_callback_2(const void * msgin)
@@ -55,13 +55,13 @@ void subscription_callback_2(const void * msgin)
 
 int main(int argc, const char * const * argv)
 {
-  rcl_allocator_t allocator = rcl_get_default_allocator();
+	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
 
 	// create init_options
 	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
 
-  // ----- NODE 1 -----
+	// ----- NODE 1 -----
 	// create node
 	rcl_node_t node_1 = rcl_get_zero_initialized_node();
 	RCCHECK(rclc_node_init_default(&node_1, "int32_node_1", "", &support));
@@ -73,7 +73,7 @@ int main(int argc, const char * const * argv)
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
 		"node_1_to_2"));
 
-  // create subscriber
+	// create subscriber
 	RCCHECK(rclc_subscription_init_default(
 		&subscriber_1,
 		&node_1,
@@ -96,7 +96,7 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_executor_add_timer(&executor_1, &timer_1));
 	RCCHECK(rclc_executor_add_subscription(&executor_1, &subscriber_1, &recv_msg_1, &subscription_callback_1, ON_NEW_DATA));
 
-  // ----- NODE 2 -----
+	// ----- NODE 2 -----
 	// create node
 	rcl_node_t node_2 = rcl_get_zero_initialized_node();
 	RCCHECK(rclc_node_init_default(&node_2, "int32_node_2", "", &support));
@@ -108,7 +108,7 @@ int main(int argc, const char * const * argv)
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
 		"node_2_to_1"));
 
-  // create subscriber
+	// create subscriber
 	RCCHECK(rclc_subscription_init_default(
 		&subscriber_2,
 		&node_2,
@@ -131,13 +131,13 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_executor_add_timer(&executor_2, &timer_2));
 	RCCHECK(rclc_executor_add_subscription(&executor_2, &subscriber_2, &recv_msg_2, &subscription_callback_2, ON_NEW_DATA));
 
-  // ----- MAIN LOOP -----
+	// ----- MAIN LOOP -----
 	send_msg_1.data = 0;
 	send_msg_2.data = 100;
 
-  while (1)
-  {
-    rclc_executor_spin_some(&executor_1, 100);
-    rclc_executor_spin_some(&executor_2, 100);
-  }
+	while (1)
+	{
+		rclc_executor_spin_some(&executor_1, 100);
+		rclc_executor_spin_some(&executor_2, 100);
+	}
 }

@@ -21,7 +21,7 @@ void subscription_callback(const void * msgin)
 
 int main(int argc, const char * const * argv)
 {
-  rcl_allocator_t allocator = rcl_get_default_allocator();
+  	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
 
 	// create init_options

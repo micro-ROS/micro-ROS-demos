@@ -17,12 +17,12 @@ std_msgs__msg__Int32 recv_msg;
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
-  void last_call_time;
-  if (timer != NULL) {
-    RCSOFTCHECK(rcl_publish(&publisher, &send_msg, NULL));
-    printf("Sent: %d\n", send_msg.data);
-    send_msg.data++;
-  }
+	void last_call_time;
+	if (timer != NULL) {
+		RCSOFTCHECK(rcl_publish(&publisher, &send_msg, NULL));
+		printf("Sent: %d\n", send_msg.data);
+		send_msg.data++;
+	}
 }
 
 void subscription_callback(const void * msgin)

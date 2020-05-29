@@ -18,12 +18,12 @@ std_msgs__msg__String msg;
 void subscription_callback(const void * msgin)
 {
 	const std_msgs__msg__String * msg = (const std_msgs__msg__String *)msgin;
-  printf("I received an %ld array. Test: [%s]\n", msg.data.size, (pass_test) ? "OK" : "FAIL");
+  	printf("I received an %ld array. Test: [%s]\n", msg.data.size, (pass_test) ? "OK" : "FAIL");
 }
 
 int main(int argc, const char * const * argv)
 {
-  rcl_allocator_t allocator = rcl_get_default_allocator();
+  	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
 
 	// create init_options
@@ -48,11 +48,11 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
 	RCCHECK(rclc_executor_add_subscription(&executor, &subscriber, &msg, &subscription_callback, ON_NEW_DATA));
 	
-  msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
-  msg.data.size = 0;
-  msg.data.capacity = ARRAY_LEN;
+	msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
+	msg.data.size = 0;
+	msg.data.capacity = ARRAY_LEN;
 
-  rclc_executor_spin(&executor);
+	rclc_executor_spin(&executor);
 
 	RCCHECK(rcl_subscription_fini(&subscriber, &node));
 	RCCHECK(rcl_node_fini(&node));

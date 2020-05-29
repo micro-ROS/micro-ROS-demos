@@ -47,7 +47,7 @@ void main(void)
 
 	msg.data = 0;
 	
-  rclc_executor_spin(&executor);
+  	rclc_executor_spin(&executor);
 
 	RCCHECK(rcl_node_fini(&node));
 }
