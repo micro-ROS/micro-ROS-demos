@@ -21,7 +21,8 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
   void last_call_time;
   if (timer != NULL) {
     RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-	msg.data++;
+	printf("I sent an %ld array\n", msg.data.size);
+
   }
 }
 
@@ -61,10 +62,10 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
 	RCCHECK(rclc_executor_add_timer(&executor, &timer));
 
-  // Fill the array with a known sequence
-  memset(msg.data.data,'z',3500);
-  msg.data.data[3500] = '\0';
-  msg.data.size = 3501;	
+	// Fill the array with a known sequence
+	memset(msg.data.data,'z',3500);
+	msg.data.data[3500] = '\0';
+	msg.data.size = 3501;	
 
 	rclc_executor_spin(&executor);
 
