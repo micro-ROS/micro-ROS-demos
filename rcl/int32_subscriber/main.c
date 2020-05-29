@@ -1,53 +1,53 @@
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
-#include <std_msgs/msg/int32.h>
+#include <rclc/rclc.h>
+#include <rclc/executor.h>
 
-#include <rmw_uros/options.h>
+#include <std_msgs/msg/int32.h>
 
 #include <stdio.h>
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
+rcl_subscription_t subscriber;
+std_msgs__msg__Int32 msg;
+
+void subscription_callback(const void * msgin)
+{
+	const std_msgs__msg__Int32 * msg = (const std_msgs__msg__Int32 *)msgin;
+	printf("Received: %d\n", msg.data);
+}
+
 int main(int argc, const char * const * argv)
 {
-  rcl_init_options_t options = rcl_get_zero_initialized_init_options();
-  RCCHECK(rcl_init_options_init(&options, rcl_get_default_allocator()))
+  rcl_allocator_t allocator = rcl_get_default_allocator();
+	rclc_support_t support;
 
-  rcl_context_t context = rcl_get_zero_initialized_context();
-  RCCHECK(rcl_init(argc, argv, &options, &context))
+	// create init_options
+	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
 
-  rcl_node_options_t node_ops = rcl_node_get_default_options();
-  rcl_node_t node = rcl_get_zero_initialized_node();
-  RCCHECK(rcl_node_init(&node, "int32_subscriber_rcl", "", &context, &node_ops))
+	// create node
+	rcl_node_t node = rcl_get_zero_initialized_node();
+	RCCHECK(rclc_node_init_default(&node, "int32_subscriber_rclc", "", &support));
 
-  rcl_subscription_options_t subscription_ops = rcl_subscription_get_default_options();
-  rcl_subscription_t subscription = rcl_get_zero_initialized_subscription();
-  RCCHECK(rcl_subscription_init(&subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32), "std_msgs_msg_Int32", &subscription_ops))
+	// create subscriber
+	RCCHECK(rclc_subscription_init_default(
+		&subscriber,
+		&node,
+		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
+		"std_msgs_msg_Int32"));
 
-  rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
-  RCCHECK(rcl_wait_set_init(&wait_set, 1, 0, 0, 0, 0, 0, &context, rcl_get_default_allocator()))
+	// create executor
+	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
+	RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
 
-  do {
-    RCSOFTCHECK(rcl_wait_set_clear(&wait_set))
-    
-    size_t index;
-    RCSOFTCHECK(rcl_wait_set_add_subscription(&wait_set, &subscription, &index))
-    
-    RCSOFTCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(1)))
+	unsigned int rcl_wait_timeout = 1000;   // in ms
+	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
+	RCCHECK(rclc_executor_add_subscription(&executor, &subscriber, &msg, &subscription_callback, ON_NEW_DATA));
+	
+  	rclc_executor_spin(&executor);
 
-    if (wait_set.subscriptions[index]) {
-      std_msgs__msg__Int32 msg;
-
-      rcl_ret_t rc = rcl_take(wait_set.subscriptions[index], &msg, NULL, NULL);
-      if (RCL_RET_OK == rc) {
-        printf("I received: [%i]\n", msg.data);
-      }
-    }
-  } while ( true );
-
-  RCCHECK(rcl_subscription_fini(&subscription, &node))
-  RCCHECK(rcl_node_fini(&node))
-
-  return 0;
+	RCCHECK(rcl_subscription_fini(&subscriber, &node));
+	RCCHECK(rcl_node_fini(&node));
 }
