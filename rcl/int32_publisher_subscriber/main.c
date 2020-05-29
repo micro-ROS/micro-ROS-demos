@@ -1,12 +1,11 @@
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
+#include <rclc/rclc.h>
+#include <rclc/executor.h>
+
 #include <std_msgs/msg/int32.h>
 
-#include <rmw_uros/options.h>
-
 #include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
@@ -34,7 +33,7 @@ void subscription_callback(const void * msgin)
 
 int main(int argc, const char * const * argv)
 {
-  rcl_allocator_t allocator = rcl_get_default_allocator();
+  	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
 
 	// create init_options
@@ -51,7 +50,7 @@ int main(int argc, const char * const * argv)
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
 		"int32_publisher"));
 
-  // create subscriber
+  	// create subscriber
 	RCCHECK(rclc_subscription_init_default(
 		&subscriber,
 		&node,
@@ -78,7 +77,7 @@ int main(int argc, const char * const * argv)
 
 	send_msg.data = 0;
 	
-  rclc_executor_spin(&executor);
+  	rclc_executor_spin(&executor);
 
 	RCCHECK(rcl_subscription_fini(&subscriber, &node));
 	RCCHECK(rcl_publisher_fini(&publisher, &node));
