@@ -11,9 +11,11 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rcl</depend>
+  <depend>rclc</depend>
   <depend>rcl_action</depend>
   <depend>std_msgs</depend>
   <depend>example_interfaces</depend>
+  <depend>builtin_interfaces</depend>
 
   <!-- configured_publisher and configured_subscriber-->
   <depend>geometry_msgs</depend>

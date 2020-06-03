@@ -16,7 +16,7 @@ std_msgs__msg__Int32 msg;
 void subscription_callback(const void * msgin)
 {
 	const std_msgs__msg__Int32 * msg = (const std_msgs__msg__Int32 *)msgin;
-	printf("Received: %d\n", msg.data);
+	printf("Received: %d\n", msg->data);
 }
 
 int main(int argc, const char * const * argv)

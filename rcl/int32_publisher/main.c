@@ -16,12 +16,12 @@ std_msgs__msg__Int32 msg;
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
-  void last_call_time;
-  if (timer != NULL) {
-    RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-	printf("Sent: %d\n", msg.data);
-	msg.data++;
-  }
+	(void) last_call_time;
+	if (timer != NULL) {
+		RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
+		printf("Sent: %d\n", msg.data);
+		msg.data++;
+	}
 }
 
 void main(void)
@@ -30,7 +30,7 @@ void main(void)
 	rclc_support_t support;
 
 	// create init_options
-	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
+	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();

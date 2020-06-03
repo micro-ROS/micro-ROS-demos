@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME} main.c)
 ament_target_dependencies(${PROJECT_NAME}
   rcl
   std_msgs
+  builtin_interfaces
   rmw_microxrcedds
   )
 

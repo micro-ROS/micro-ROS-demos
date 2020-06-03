@@ -22,7 +22,7 @@ std_msgs__msg__Int32 recv_msg_2;
 
 void timer_callback_1(rcl_timer_t * timer, int64_t last_call_time)
 {
- 	void last_call_time;
+ 	(void) last_call_time;
 	if (timer != NULL) {
 		RCSOFTCHECK(rcl_publish(&publisher_1, &send_msg_1, NULL));
 		printf("Node 1 -- Sent: %d\n", send_msg_1.data);
@@ -33,12 +33,12 @@ void timer_callback_1(rcl_timer_t * timer, int64_t last_call_time)
 void subscription_callback_1(const void * msgin)
 {
 	const std_msgs__msg__Int32 * msg = (const std_msgs__msg__Int32 *)msgin;
-	printf("Node 1 --Received: %d\n", msg.data);
+	printf("Node 1 --Received: %d\n", msg->data);
 }
 
 void timer_callback_2(rcl_timer_t * timer, int64_t last_call_time)
 {
-	void last_call_time;
+	(void) last_call_time;
 	if (timer != NULL) {
 		RCSOFTCHECK(rcl_publish(&publisher_2, &send_msg_2, NULL));
 		printf("Node 2 -- Sent: %d\n", send_msg_2.data);
@@ -49,7 +49,7 @@ void timer_callback_2(rcl_timer_t * timer, int64_t last_call_time)
 void subscription_callback_2(const void * msgin)
 {
 	const std_msgs__msg__Int32 * msg = (const std_msgs__msg__Int32 *)msgin;
-	printf("Node 2 --Received: %d\n", msg.data);
+	printf("Node 2 --Received: %d\n", msg->data);
 }
 
 
@@ -121,7 +121,7 @@ int main(int argc, const char * const * argv)
 		&timer_2,
 		&support,
 		RCL_MS_TO_NS(1000),
-		timer_callback));
+		timer_callback_2));
 
 	// create executor
 	rclc_executor_t executor_2 = rclc_executor_get_zero_initialized_executor();

@@ -3,7 +3,7 @@
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 
-#include <std_msgs/msg/int32.h>
+#include <std_msgs/msg/string.h>
 
 #include <stdio.h>
 
@@ -14,15 +14,19 @@
 
 rcl_subscription_t subscriber;
 std_msgs__msg__String msg;
+char test_array[ARRAY_LEN];
 
 void subscription_callback(const void * msgin)
 {
 	const std_msgs__msg__String * msg = (const std_msgs__msg__String *)msgin;
-  	printf("I received an %ld array. Test: [%s]\n", msg.data.size, (pass_test) ? "OK" : "FAIL");
+	bool pass_test = strncmp(test_array, msg->data.data, msg->data.size) == 0;
+  	printf("I received an %ld array. Test: [%s]\n", msg->data.size, (pass_test) ? "OK" : "FAIL");
 }
 
 int main(int argc, const char * const * argv)
 {
+  	memset(test_array,'z',ARRAY_LEN);
+
   	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
 
