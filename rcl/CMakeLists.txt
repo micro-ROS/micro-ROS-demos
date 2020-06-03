@@ -42,6 +42,8 @@ export_executable(int32_publisher_subscriber)
 export_executable(ping_pong)
 export_executable(fragmented_publication)
 export_executable(fragmented_subscription)
+export_executable(complex_msg_publisher)
+export_executable(complex_msg_subscriber)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
     install(
