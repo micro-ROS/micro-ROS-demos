@@ -63,6 +63,10 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_executor_add_timer(&executor, &timer));
 
 	// Fill the array with a known sequence
+	msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
+	msg.data.size = 0;
+	msg.data.capacity = ARRAY_LEN;
+	
 	memset(msg.data.data,'z',3500);
 	msg.data.data[3500] = '\0';
 	msg.data.size = 3501;	

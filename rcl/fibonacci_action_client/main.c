@@ -56,7 +56,7 @@ int main(int argc, const char * const * argv)
     size_t client_index, subscription_index;
     RCSOFTCHECK(rcl_action_wait_set_add_action_client(&wait_set, &action_client, &client_index, &subscription_index))
 
-    RCSOFTCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(50)))
+    rcl_ret_t rc = rcl_wait(&wait_set, RCL_MS_TO_NS(50));
 
     bool is_feedback_ready = false;
     bool is_status_ready = false;
