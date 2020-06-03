@@ -55,7 +55,7 @@ int main(int argc, const char * const * argv)
 		&subscriber,
 		&node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
-		"std_msgs_msg_Int32"));
+		"int32_subscriber"));
 
 	// create timer,
 	rcl_timer_t timer = rcl_get_zero_initialized_timer();
