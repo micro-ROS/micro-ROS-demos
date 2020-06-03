@@ -1,149 +1,142 @@
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
-#include <std_msgs/msg/header.h>
+#include <rclc/rclc.h>
+#include <rclc/executor.h>
 
-#include <rmw_uros/options.h>
+#include <std_msgs/msg/header.h>
 
 #include <stdio.h>
 #include <unistd.h>
-#include <pthread.h>
+#include <time.h>
 
 #define STRING_BUFFER_LEN 100
 
-// Publishing ping guard condition thread
-void * trigger_guard_condition(void *args){
-  rcl_guard_condition_t * guard_condition = (rcl_guard_condition_t *)args;
+#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
+#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
-  while(true){
-    rcl_trigger_guard_condition(guard_condition);
-    sleep(5);
+rcl_publisher_t ping_publisher;
+rcl_publisher_t pong_publisher;
+rcl_subscription_t ping_subscriber;
+rcl_subscription_t pong_subscriber;
+
+std_msgs__msg__Header incoming_ping;
+std_msgs__msg__Header outcoming_ping;
+std_msgs__msg__Header incoming_pong;
+
+int device_id;
+int seq_no;
+int pong_count;
+
+void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+{
+	(void) last_call_time;
+
+	if (timer != NULL) {
+
+    seq_no = rand();
+    sprintf(outcoming_ping.frame_id.data, "%d_%d", seq_no, device_id);
+    outcoming_ping.frame_id.size = strlen(outcoming_ping.frame_id.data);
+    
+    // Fill the message timestamp
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    outcoming_ping.stamp.sec = ts.tv_sec;
+    outcoming_ping.stamp.nanosec = ts.tv_nsec;
+
+    // Reset the pong count and publish the ping message
+    pong_count = 0;
+    rcl_publish(&ping_publisher, (const void*)&outcoming_ping, NULL);
+    printf("Ping send seq %s\n", outcoming_ping.frame_id.data);  
+	}
+}
+
+void ping_subscription_callback(const void * msgin)
+{
+  const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
+
+  // Dont pong my own pings
+  if(strcmp(outcoming_ping.frame_id.data, msg->frame_id.data) != 0){
+    printf("Ping received with seq %s. Answering.\n", msg->frame_id.data);
+    rcl_publish(&pong_publisher, (const void*)msg, NULL);
   }
 }
 
-int main(int argc, const char * const * argv)
-{
-  //Init RCL options
-  rcl_init_options_t options = rcl_get_zero_initialized_init_options();
-  rcl_init_options_init(&options, rcl_get_default_allocator());
-  
-  // Init RCL context
-  rcl_context_t context = rcl_get_zero_initialized_context();
-  rcl_init(0, NULL, &options, &context);
 
-  // Create a node
-  rcl_node_options_t node_ops = rcl_node_get_default_options();
-  rcl_node_t node = rcl_get_zero_initialized_node();
-  rcl_node_init(&node, "pingpong_node", "", &context, &node_ops);
+void pong_subscription_callback(const void * msgin)
+{
+	const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
+
+  if(strcmp(outcoming_ping.frame_id.data, msg->frame_id.data) == 0) {
+      pong_count++;
+      printf("Pong for seq %s (%d)\n", msg->frame_id.data, pong_count);
+  }
+}
+
+
+void main()
+{
+  rcl_allocator_t allocator = rcl_get_default_allocator();
+	rclc_support_t support;
+
+	// create init_options
+	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
+
+	// create node
+	rcl_node_t node = rcl_get_zero_initialized_node();
+	RCCHECK(rclc_node_init_default(&node, "pingpong_node", "", &support));
 
   // Create a reliable ping publisher
-  rcl_publisher_options_t ping_publisher_ops = rcl_publisher_get_default_options();
-  rcl_publisher_t ping_publisher = rcl_get_zero_initialized_publisher();
-  rcl_publisher_init(&ping_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping", &ping_publisher_ops);
+	RCCHECK(rclc_publisher_init_default(&ping_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
 
   // Create a best effort pong publisher
-  rcl_publisher_options_t pong_publisher_ops = rcl_publisher_get_default_options();
-  pong_publisher_ops.qos.reliability = RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT;
-  rcl_publisher_t pong_publisher = rcl_get_zero_initialized_publisher();
-  rcl_publisher_init(&pong_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong", &pong_publisher_ops);
-
-  // Create a best effort  pong subscriber
-  rcl_subscription_options_t pong_subscription_ops = rcl_subscription_get_default_options();
-  pong_subscription_ops.qos.reliability = RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT;
-  rcl_subscription_t pong_subscription = rcl_get_zero_initialized_subscription();
-  rcl_subscription_init(&pong_subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong", &pong_subscription_ops);
+  // TODO (pablogs9): RCLC best effort not implemented
+	RCCHECK(rclc_publisher_init_default(&pong_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
 
   // Create a best effort ping subscriber
-  rcl_subscription_options_t ping_subscription_ops = rcl_subscription_get_default_options();
-  ping_subscription_ops.qos.reliability = RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT;
-  rcl_subscription_t ping_subscription = rcl_get_zero_initialized_subscription();
-  rcl_subscription_init(&ping_subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping", &ping_subscription_ops);
+  // TODO (pablogs9): RCLC best effort not implemented
+	RCCHECK(rclc_subscription_init_default(&ping_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
 
-  // Create guard condition
-  rcl_guard_condition_t guard_condition = rcl_get_zero_initialized_guard_condition();
-  rcl_guard_condition_options_t guard_condition_options = rcl_guard_condition_get_default_options();
-  rcl_guard_condition_init(&guard_condition, &context, guard_condition_options);
+  // Create a best effort  pong subscriber
+  // TODO (pablogs9): RCLC best effort not implemented
+	RCCHECK(rclc_subscription_init_default(&pong_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
 
-  pthread_t guard_condition_thread;
-  pthread_create(&guard_condition_thread, NULL, trigger_guard_condition, &guard_condition);
 
-  // Create a wait set
-  rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
-  rcl_wait_set_init(&wait_set, 2, 1, 0, 0, 0, 0, &context, rcl_get_default_allocator());
+  // Create a 3 seconds ping timer timer,
+	rcl_timer_t timer = rcl_get_zero_initialized_timer();
+	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback));
 
-  // Create and allocate the pingpong publication message
-  std_msgs__msg__Header msg;
-  char msg_buffer[STRING_BUFFER_LEN];
-  msg.frame_id.data = msg_buffer;
-  msg.frame_id.capacity = STRING_BUFFER_LEN;
 
-  // Create and allocate the pingpong subscription message
-  std_msgs__msg__Header rcv_msg;
-  char rcv_buffer[STRING_BUFFER_LEN];
-  rcv_msg.frame_id.data = rcv_buffer;
-  rcv_msg.frame_id.capacity = STRING_BUFFER_LEN;
+  // Create executor
+	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
+	RCCHECK(rclc_executor_init(&executor, &support.context, 3, &allocator));
 
-  // Set device id and sequence number;
-  int device_id = rand();
-  int seq_no;
-  
-  int pong_count = 0;
-  struct timespec ts;
-  rcl_ret_t rc;
+	unsigned int rcl_wait_timeout = 1000;   // in ms
+	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
+	RCCHECK(rclc_executor_add_timer(&executor, &timer));
+	RCCHECK(rclc_executor_add_subscription(&executor, &ping_subscriber, &incoming_ping, &ping_subscription_callback, ON_NEW_DATA));
+	RCCHECK(rclc_executor_add_subscription(&executor, &pong_subscriber, &incoming_pong, &pong_subscription_callback, ON_NEW_DATA));
 
-    do {
-    // Clear and set the waitset
-    rcl_wait_set_clear(&wait_set);
-    
-    size_t index_pong_subscription;
-    rcl_wait_set_add_subscription(&wait_set, &pong_subscription, &index_pong_subscription);
+  // Create and allocate the pingpong messages
 
-    size_t index_ping_subscription;
-    rcl_wait_set_add_subscription(&wait_set, &ping_subscription, &index_ping_subscription);
+  char outcoming_ping_buffer[STRING_BUFFER_LEN];
+  outcoming_ping.frame_id.data = outcoming_ping_buffer;
+  outcoming_ping.frame_id.capacity = STRING_BUFFER_LEN;
 
-    size_t index_guardcondition;
-    rcl_wait_set_add_guard_condition(&wait_set, &guard_condition, &index_guardcondition);
-    
-    // Run session for 100 ms
-    rcl_wait(&wait_set, RCL_MS_TO_NS(100));
-    
-    // Check if some pong message is received
-    if (wait_set.subscriptions[index_pong_subscription]) {
-      rc = rcl_take(wait_set.subscriptions[index_pong_subscription], &rcv_msg, NULL, NULL);
-      if(rc == RCL_RET_OK && strcmp(msg.frame_id.data,rcv_msg.frame_id.data) == 0) {
-          pong_count++;
-          printf("Pong for seq %s (%d)\n", rcv_msg.frame_id.data, pong_count);
-      }
-    }
+  char incoming_ping_buffer[STRING_BUFFER_LEN];
+  incoming_ping.frame_id.data = incoming_ping_buffer;
+  incoming_ping.frame_id.capacity = STRING_BUFFER_LEN;
 
-    // Check if some ping message is received and pong it
-    if (wait_set.subscriptions[index_ping_subscription]) {
-      rc = rcl_take(wait_set.subscriptions[index_ping_subscription], &rcv_msg, NULL, NULL);
+  char incoming_pong_buffer[STRING_BUFFER_LEN];
+  incoming_pong.frame_id.data = incoming_pong_buffer;
+  incoming_pong.frame_id.capacity = STRING_BUFFER_LEN;
 
-      // Dont pong my own pings
-      if(rc == RCL_RET_OK && strcmp(msg.frame_id.data,rcv_msg.frame_id.data) != 0){
-        printf("Ping received with seq %s. Answering.\n", rcv_msg.frame_id.data);
-        rcl_publish(&pong_publisher, (const void*)&rcv_msg, NULL);
-      }
-    }
+  device_id = rand();
 
-    // Check if it is time to send a ping
-    if (wait_set.guard_conditions[index_guardcondition]) {
-      // Generate a new random sequence number
-      seq_no = rand();
-      sprintf(msg.frame_id.data, "%d_%d", seq_no, device_id);
-      msg.frame_id.size = strlen(msg.frame_id.data);
-      
-      // Fill the message timestamp
-      clock_gettime(CLOCK_REALTIME, &ts);
-      msg.stamp.sec = ts.tv_sec;
-      msg.stamp.nanosec = ts.tv_nsec;
-
-      // Reset the pong count and publish the ping message
-      pong_count = 0;
-      rcl_publish(&ping_publisher, (const void*)&msg, NULL);
-      printf("Ping send seq %s\n", msg.frame_id.data);  
-    }
-    
-    usleep(10000);
-  } while (true);
+  rclc_executor_spin(&executor);
+	
+	RCCHECK(rcl_publisher_fini(&ping_publisher, &node));
+  RCCHECK(rcl_publisher_fini(&pong_publisher, &node));
+	RCCHECK(rcl_subscription_fini(&ping_subscriber, &node));
+	RCCHECK(rcl_subscription_fini(&pong_subscriber, &node));
+	RCCHECK(rcl_node_fini(&node));
 }
