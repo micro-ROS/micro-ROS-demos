@@ -1,91 +1,77 @@
-// Copyright 2018 Proyectos y Sistemas de Mantenimiento SL (eProsima).
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+#include <rcl/rcl.h>
+#include <rcl/error_handling.h>
+#include <rclc/rclc.h>
+#include <rclc/executor.h>
 
+#include <std_msgs/msg/int32.h>
 
 #include <stdio.h>
-#include <unistd.h>
 
-#include <rcl/rcl.h>
-#include <geometry_msgs/msg/vector3.h>
 #include <rmw_uros/options.h>
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
-int main(int argc, char * const argv[])
+rcl_publisher_t publisher;
+std_msgs__msg__Int32 msg;
+
+void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
-  //Init RCL context
-  rcl_context_t context;
-  rcl_init_options_t init_options;
+	(void) last_call_time;
+	if (timer != NULL) {
+		RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
+		printf("Sent: %d\n", msg.data);
+		msg.data++;
+	}
+}
 
-  init_options = rcl_get_zero_initialized_init_options();
-  RCCHECK(rcl_init_options_init(&init_options, rcl_get_default_allocator()))
-  
-  printf("Connecting to agent %s:%d\n",argv[1],atoi(argv[2]));
-  rmw_init_options_t* rmw_options = rcl_init_options_get_rmw_init_options(&init_options);
-  RCCHECK(rmw_uros_options_set_udp_address(argv[1], argv[2], rmw_options))
-  RCCHECK(rmw_uros_options_set_client_key(0xBA5EBA11, rmw_options))
+void main(int argc, char * const argv[])
+{	
+  	rcl_allocator_t allocator = rcl_get_default_allocator();
+	rclc_support_t support;
+	rcl_init_options_t init_options = rcl_get_zero_initialized_init_options();
 
-  context = rcl_get_zero_initialized_context();
+	printf("Connecting to agent %s:%d\n",argv[1],atoi(argv[2]));
+	RCCHECK(rcl_init_options_init(&init_options, allocator));
+	rmw_init_options_t* rmw_options = rcl_init_options_get_rmw_init_options(&init_options);
+	RCCHECK(rmw_uros_options_set_udp_address(argv[1], argv[2], rmw_options))
+	RCCHECK(rmw_uros_options_set_client_key(0xCAFEBABA, rmw_options))
 
-  RCCHECK(rcl_init(0, NULL, &init_options, &context))
+	// create init_options
+	RCCHECK(rclc_support_init_with_options(&support, 0, NULL, &init_options, &allocator));
 
-  //Init Node
-  rcl_node_t node = rcl_get_zero_initialized_node();
-  rcl_node_options_t node_ops = rcl_node_get_default_options();
+	// create node
+	rcl_node_t node = rcl_get_zero_initialized_node();
+	RCCHECK(rclc_node_init_default(&node, "int32_configured_publisher_rclc", "", &support));
 
-  RCCHECK(rcl_node_init(&node, "vector3_publisher", "", &context, &node_ops))
+	// create publisher
+	RCCHECK(rclc_publisher_init_default(
+		&publisher,
+		&node,
+		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
+		"std_msgs_msg_Int32"));
 
-  //Init Publisher
-  const char* topic_name = "sample_vector3";
+	// create timer,
+	rcl_timer_t timer = rcl_get_zero_initialized_timer();
+	const unsigned int timer_timeout = 1000;
+	RCCHECK(rclc_timer_init_default(
+		&timer,
+		&support,
+		RCL_MS_TO_NS(timer_timeout),
+		timer_callback));
 
-  rcl_publisher_t publisher_vector3 = rcl_get_zero_initialized_publisher();
-  const rosidl_message_type_support_t * pub_type_support = ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Vector3);
-  rcl_publisher_options_t pub_opt = rcl_publisher_get_default_options();
+	// create executor
+	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
+	RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
 
-  RCCHECK(rcl_publisher_init(&publisher_vector3, &node, pub_type_support, topic_name, &pub_opt))
+	unsigned int rcl_wait_timeout = 1000;   // in ms
+	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
+	RCCHECK(rclc_executor_add_timer(&executor, &timer));
 
-  geometry_msgs__msg__Vector3 topic_data;
-  geometry_msgs__msg__Vector3__init(&topic_data);
+	msg.data = 0;
+	
+  	rclc_executor_spin(&executor);
 
-  // Spin
-  rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
-  RCCHECK(rcl_wait_set_init(&wait_set, 1, 0, 0, 0, 0, 0, &context, rcl_get_default_allocator()))
-
-  float values[3];
-  values[0] = 0.0;
-  values[1] = 1.0;
-  values[2] = 2.0;
-
-  topic_data.x = values[0];
-  topic_data.y = values[1];
-  topic_data.z = values[2];
-
-  while (rcl_context_is_valid(&context)) {     
-    RCSOFTCHECK(rcl_publish( &publisher_vector3, (const void *) &topic_data, NULL))
-    
-    for(uint8_t i = 0; i < 3; i++) {
-      values[i]++;
-    }
-
-    topic_data.x = values[0];
-    topic_data.y = values[1];
-    topic_data.z = values[2];
-
-    printf("Publish: %f, %f, %f\n",topic_data.x,topic_data.y,topic_data.z);
-    sleep(1);
-  }
-  
-  RCCHECK(rcl_node_fini(&node))
+	RCCHECK(rcl_publisher_fini(&publisher, &node));
+	RCCHECK(rcl_node_fini(&node));
 }

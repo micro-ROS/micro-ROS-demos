@@ -19,13 +19,13 @@ void subscription_callback(const void * msgin)
 	printf("Received: %d\n", msg->data);
 }
 
-int main(int argc, const char * const * argv)
+void main()
 {
   	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
 
 	// create init_options
-	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
+	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();
