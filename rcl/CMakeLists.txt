@@ -44,6 +44,7 @@ export_executable(fragmented_publication)
 export_executable(fragmented_subscription)
 export_executable(complex_msg_publisher)
 export_executable(complex_msg_subscriber)
+export_executable(timer)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
     install(

@@ -22,7 +22,7 @@ void main(void)
 	rclc_support_t support;
 
 	// create init_options
-	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
+	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();
@@ -44,8 +44,6 @@ void main(void)
 	unsigned int rcl_wait_timeout = 1000;   // in ms
 	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
 	RCCHECK(rclc_executor_add_timer(&executor, &timer));
-
-	msg.data = 0;
 	
   	rclc_executor_spin(&executor);
 
