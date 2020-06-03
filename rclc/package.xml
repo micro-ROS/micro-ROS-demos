@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>micro_ros_demos_rcl</name>
-  <version>0.0.2</version>
-  <description>Examples using RCL API</description>
+  <name>micro_ros_demos_rclc</name>
+  <version>0.0.3</version>
+  <description>Examples using RCL+RCLC API</description>
   <maintainer email="borjaouterelo@eprosima.com">Borja Outerelo</maintainer>
   <license>Apache-2.0</license>
   <author>Borja Outerelo</author>

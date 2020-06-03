@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(micro_ros_demos_rcl)
+project(micro_ros_demos_rclc)
 
 find_package(ament_cmake REQUIRED)
 
