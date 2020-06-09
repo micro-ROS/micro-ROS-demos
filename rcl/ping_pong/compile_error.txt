@@ -1,0 +1,34 @@
+Ping send seq 846930886_1804289383
+test_ping_pong: malloc.c:2868: mremap_chunk: Assertion `((size + offset) & (GLRO (dl_pagesize) - 1)) == 0' failed.
+
+Thread 1 "test_ping_pong" received signal SIGABRT, Aborted.
+__GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51
+51	../sysdeps/unix/sysv/linux/raise.c: Datei oder Verzeichnis nicht gefunden.
+(gdb) bt
+#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51
+#1  0x00007ffff71bb801 in __GI_abort () at abort.c:79
+#2  0x00007ffff720d2c9 in __malloc_assert (file=<optimized out>, 
+    function=<optimized out>, line=<optimized out>, assertion=<optimized out>)
+    at malloc.c:298
+#3  mremap_chunk (p=<optimized out>, p@entry=0x7fffffffd7d0, 
+    new_size=<optimized out>, new_size@entry=32) at malloc.c:2868
+#4  0x00007ffff7213e15 in __GI___libc_realloc (oldmem=0x7fffffffd7e0, bytes=21)
+    at malloc.c:3201
+#5  0x00007ffff674f432 in rosidl_generator_c__String__assignn ()
+   from /opt/ros/dashing/lib/librosidl_generator_c.so
+#6  0x00007ffff0212048 in ?? ()
+   from /opt/ros/dashing/lib/libstd_msgs__rosidl_typesupport_fastrtps_c.so
+#7  0x00007ffff49b469c in ?? ()
+   from /opt/ros/dashing/lib/librmw_fastrtps_cpp.so
+#8  0x00007ffff437d632 in rmw_fastrtps_shared_cpp::TypeSupport::deserialize(eprosima::fastrtps::rtps::SerializedPayload_t*, void*) ()
+   from /opt/ros/dashing/lib/librmw_fastrtps_shared_cpp.so
+#9  0x00007ffff3dcf0f9 in eprosima::fastrtps::SubscriberHistory::deserialize_change(eprosima::fastrtps::rtps::CacheChange_t*, unsigned short, void*, eprosima::fastrtps::SampleInfo_t*) () from /opt/ros/dashing/lib/libfastrtps.so.1
+#10 0x00007ffff3dd49a0 in eprosima::fastrtps::SubscriberHistory::takeNextData(void*, eprosima::fastrtps::SampleInfo_t*) ()
+---Type <return> to continue, or q <return> to quit--- 
+   from /opt/ros/dashing/lib/libfastrtps.so.1
+#11 0x00007ffff437a913 in rmw_fastrtps_shared_cpp::_take(char const*, rmw_subscription_t const*, void*, bool*, rmw_message_info_t*, rmw_subscription_allocation_t*) () from /opt/ros/dashing/lib/librmw_fastrtps_shared_cpp.so
+#12 0x00007ffff7bc0d18 in rcl_take () from /opt/ros/dashing/lib/librcl.so
+#13 0x0000555555555977 in main (argc=1, argv=0x7fffffffd938)
+    at /home/jst3si/ros2_eloquent/src/microros_demo_ping_pong/src/main.c:123
+(gdb) 
+

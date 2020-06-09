@@ -1,0 +1,16 @@
+The file main_with_executor.c contains the ping_pong example with the 
+rclc executor. 
+
+Some notes:
+1. I could not compile the original main(), because I don't have microxrcedds
+   installed, therefore I wrote a similar application without it (for the time
+   being)
+2. After compiling, this ping-pong with ROS 2 Dashing got a segmentation fault 
+   while executing rcl_take 
+3. I replaced the message type from std::msgs::Header to std::msgs::String
+   then I could run the program
+4. The rclc Executor does not support guard conditions yet. Therfore I replaced
+   the guard condition with a timer to publish the ping message
+5. I did not get the ping-pong running, because the received ping message is
+   always the same as in the timer (aka send from the guard condition)
+   I probably did not correctly the setup. Please explain.
