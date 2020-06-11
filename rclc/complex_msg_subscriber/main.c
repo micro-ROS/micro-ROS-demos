@@ -14,7 +14,7 @@
 void subscription_callback(const void * msgin)
 {
     const complex_msgs__msg__NestedMsgTest * msg = (const complex_msgs__msg__NestedMsgTest *)msgin;
-    printf("Received complex message:\n");
+    printf("Complex message received:\n");
     printf("\tBool: %u\n", msg->data1);
     printf("\tuint8_t: %u\n", msg->data2);
     printf("\tsigned char: %u\n", msg->data3);
