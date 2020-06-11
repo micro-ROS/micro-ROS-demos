@@ -4,7 +4,7 @@
   <name>micro_ros_demos_rclc</name>
   <version>0.0.3</version>
   <description>Examples using RCL+RCLC API</description>
-  <maintainer email="borjaouterelo@eprosima.com">Borja Outerelo</maintainer>
+  <maintainer email="pablogarrido@eprosima.com">Pablo Garrido</maintainer>
   <license>Apache-2.0</license>
   <author>Borja Outerelo</author>
 
