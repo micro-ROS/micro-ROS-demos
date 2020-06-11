@@ -22,7 +22,6 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 	if (timer != NULL) {
 		RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
 		printf("I sent an %ld array\n", msg.data.size);
-
 	}
 }
 
