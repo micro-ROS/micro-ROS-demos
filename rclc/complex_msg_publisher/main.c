@@ -80,7 +80,7 @@ void main(void)
     rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
 
     if (ret == RCL_RET_OK) {
-      printf("Sended complex message:\n");
+      printf("Complex message sent:\n");
       printf("\tBool: %u\n", msg.data1);
       printf("\tuint8_t: %u\n", msg.data2);
       printf("\tsigned char: %u\n", msg.data3);
