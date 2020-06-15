@@ -89,6 +89,7 @@ void main()
 	RCCHECK(rclc_publisher_init_default(&ping_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
 
 	// Create a best effort pong publisher
+	// TODO (pablogs9): RCLC best effort not implemented
 	RCCHECK(rclc_publisher_init_best_effort(&pong_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
 
 	// Create a best effort ping subscriber
