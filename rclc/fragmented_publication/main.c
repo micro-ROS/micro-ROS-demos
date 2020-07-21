@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define ARRAY_LEN 200
+#define ARRAY_LEN 4096
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
@@ -16,16 +16,12 @@
 rcl_publisher_t publisher;
 std_msgs__msg__String msg;
 
-int counter = 0;
-
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
 	(void) last_call_time;
 	if (timer != NULL) {
-	    sprintf(msg.data.data, "Hello from micro-ROS #%d", counter++);
-		msg.data.size = strlen(msg.data.data);
 		RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-		printf("I have publish: \"%s\"\n", msg.data.data);
+		printf("I sent an %ld array\n", msg.data.size);
 	}
 }
 
@@ -39,14 +35,14 @@ int main(int argc, const char * const * argv)
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();
-	RCCHECK(rclc_node_init_default(&node, "string_node", "", &support));
+	RCCHECK(rclc_node_init_default(&node, "char_long_sequence_publisher_rcl", "", &support));
 
 	// create publisher
 	RCCHECK(rclc_publisher_init_default(
 		&publisher,
 		&node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String),
-		"/string_publisher"));
+		"/char_long_sequence"));
 
 	// create timer,
 	rcl_timer_t timer = rcl_get_zero_initialized_timer();
@@ -69,6 +65,10 @@ int main(int argc, const char * const * argv)
 	msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
 	msg.data.size = 0;
 	msg.data.capacity = ARRAY_LEN;
+	
+	memset(msg.data.data,'z',3500);
+	msg.data.data[3500] = '\0';
+	msg.data.size = 3501;	
 
 	rclc_executor_spin(&executor);
 

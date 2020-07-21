@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(int32_subscriber LANGUAGES C)
+project(ping_pong LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
@@ -14,6 +14,7 @@ ament_target_dependencies(${PROJECT_NAME}
   rcl
   rclc
   std_msgs
+  builtin_interfaces
   rmw_microxrcedds
   )
 

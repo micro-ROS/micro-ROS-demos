@@ -6,32 +6,28 @@
 #include <std_msgs/msg/string.h>
 
 #include <stdio.h>
-#include <unistd.h>
 
-#define ARRAY_LEN 200
+#define ARRAY_LEN 4096
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
-rcl_publisher_t publisher;
+rcl_subscription_t subscriber;
 std_msgs__msg__String msg;
+char test_array[ARRAY_LEN];
 
-int counter = 0;
-
-void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+void subscription_callback(const void * msgin)
 {
-	(void) last_call_time;
-	if (timer != NULL) {
-	    sprintf(msg.data.data, "Hello from micro-ROS #%d", counter++);
-		msg.data.size = strlen(msg.data.data);
-		RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-		printf("I have publish: \"%s\"\n", msg.data.data);
-	}
+	const std_msgs__msg__String * msg = (const std_msgs__msg__String *)msgin;
+	bool pass_test = strncmp(test_array, msg->data.data, msg->data.size) == 0;
+  	printf("I received an %ld array. Test: [%s]\n", msg->data.size, (pass_test) ? "OK" : "FAIL");
 }
 
 int main(int argc, const char * const * argv)
 {
-	rcl_allocator_t allocator = rcl_get_default_allocator();
+  	memset(test_array,'z',ARRAY_LEN);
+
+  	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
 
 	// create init_options
@@ -39,23 +35,14 @@ int main(int argc, const char * const * argv)
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();
-	RCCHECK(rclc_node_init_default(&node, "string_node", "", &support));
+	RCCHECK(rclc_node_init_default(&node, "char_long_sequence_subscriber_rcl", "", &support));
 
-	// create publisher
-	RCCHECK(rclc_publisher_init_default(
-		&publisher,
+	// create subscriber
+	RCCHECK(rclc_subscription_init_default(
+		&subscriber,
 		&node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String),
-		"/string_publisher"));
-
-	// create timer,
-	rcl_timer_t timer = rcl_get_zero_initialized_timer();
-	const unsigned int timer_timeout = 1000;
-	RCCHECK(rclc_timer_init_default(
-		&timer,
-		&support,
-		RCL_MS_TO_NS(timer_timeout),
-		timer_callback));
+		"/char_long_sequence"));
 
 	// create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
@@ -63,15 +50,14 @@ int main(int argc, const char * const * argv)
 
 	unsigned int rcl_wait_timeout = 1000;   // in ms
 	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
-	RCCHECK(rclc_executor_add_timer(&executor, &timer));
-
-	// Fill the array with a known sequence
+	RCCHECK(rclc_executor_add_subscription(&executor, &subscriber, &msg, &subscription_callback, ON_NEW_DATA));
+	
 	msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
 	msg.data.size = 0;
 	msg.data.capacity = ARRAY_LEN;
 
 	rclc_executor_spin(&executor);
 
-	RCCHECK(rcl_publisher_fini(&publisher, &node))
-	RCCHECK(rcl_node_fini(&node))
+	RCCHECK(rcl_subscription_fini(&subscriber, &node));
+	RCCHECK(rcl_node_fini(&node));
 }

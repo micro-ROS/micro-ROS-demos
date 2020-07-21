@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(int32_subscriber LANGUAGES C)
+project(int32_publisher_subscriber LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)

@@ -3,50 +3,53 @@
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 
-#include <std_msgs/msg/string.h>
+#include <std_msgs/msg/int32.h>
 
 #include <stdio.h>
-#include <unistd.h>
 
-#define ARRAY_LEN 200
+#include <rmw_uros/options.h>
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
 rcl_publisher_t publisher;
-std_msgs__msg__String msg;
-
-int counter = 0;
+std_msgs__msg__Int32 msg;
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
 	(void) last_call_time;
 	if (timer != NULL) {
-	    sprintf(msg.data.data, "Hello from micro-ROS #%d", counter++);
-		msg.data.size = strlen(msg.data.data);
 		RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-		printf("I have publish: \"%s\"\n", msg.data.data);
+		printf("Sent: %d\n", msg.data);
+		msg.data++;
 	}
 }
 
-int main(int argc, const char * const * argv)
-{
-	rcl_allocator_t allocator = rcl_get_default_allocator();
+void main(int argc, char * const argv[])
+{	
+  	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
+	rcl_init_options_t init_options = rcl_get_zero_initialized_init_options();
+
+	printf("Connecting to agent %s:%d\n",argv[1],atoi(argv[2]));
+	RCCHECK(rcl_init_options_init(&init_options, allocator));
+	rmw_init_options_t* rmw_options = rcl_init_options_get_rmw_init_options(&init_options);
+	RCCHECK(rmw_uros_options_set_udp_address(argv[1], argv[2], rmw_options))
+	RCCHECK(rmw_uros_options_set_client_key(0xCAFEBABA, rmw_options))
 
 	// create init_options
-	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
+	RCCHECK(rclc_support_init_with_options(&support, 0, NULL, &init_options, &allocator));
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();
-	RCCHECK(rclc_node_init_default(&node, "string_node", "", &support));
+	RCCHECK(rclc_node_init_default(&node, "int32_configured_publisher_rclc", "", &support));
 
 	// create publisher
 	RCCHECK(rclc_publisher_init_default(
 		&publisher,
 		&node,
-		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String),
-		"/string_publisher"));
+		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
+		"std_msgs_msg_Int32"));
 
 	// create timer,
 	rcl_timer_t timer = rcl_get_zero_initialized_timer();
@@ -65,13 +68,10 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
 	RCCHECK(rclc_executor_add_timer(&executor, &timer));
 
-	// Fill the array with a known sequence
-	msg.data.data = (char * ) malloc(ARRAY_LEN * sizeof(char));
-	msg.data.size = 0;
-	msg.data.capacity = ARRAY_LEN;
+	msg.data = 0;
+	
+  	rclc_executor_spin(&executor);
 
-	rclc_executor_spin(&executor);
-
-	RCCHECK(rcl_publisher_fini(&publisher, &node))
-	RCCHECK(rcl_node_fini(&node))
+	RCCHECK(rcl_publisher_fini(&publisher, &node));
+	RCCHECK(rcl_node_fini(&node));
 }
