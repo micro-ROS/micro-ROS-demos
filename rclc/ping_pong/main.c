@@ -73,7 +73,7 @@ void pong_subscription_callback(const void * msgin)
 }
 
 
-void main()
+int main()
 {
 	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;

@@ -12,7 +12,7 @@
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
 
-void main(void)
+int main()
 {	
 	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;

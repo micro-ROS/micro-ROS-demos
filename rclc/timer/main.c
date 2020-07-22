@@ -12,11 +12,11 @@
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
   if (timer != NULL) {
-	  printf("Timer callback executed. Last time %d\n", last_call_time);
+	  printf("Timer callback executed. Last time %ld\n", last_call_time);
   }
 }
 
-void main(void)
+int main()
 {	
 	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;

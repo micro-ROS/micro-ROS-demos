@@ -24,7 +24,7 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 	}
 }
 
-void main(void)
+int main()
 {	
 	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
