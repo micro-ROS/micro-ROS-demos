@@ -137,7 +137,7 @@ int main(int argc, const char * const * argv)
 
 	while (1)
 	{
-		rclc_executor_spin_some(&executor_1, 100);
-		rclc_executor_spin_some(&executor_2, 100);
+		rclc_executor_spin_some(&executor_1, RCL_MS_TO_NS(100));
+		rclc_executor_spin_some(&executor_2, RCL_MS_TO_NS(100));
 	}
 }
