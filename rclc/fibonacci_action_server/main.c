@@ -16,6 +16,7 @@
 bool processing_goal = false;
 bool result_requested = false;
 pthread_t processing_thread;
+pthread_mutex_t lock;
 
 rcl_action_server_t action_server;
 example_interfaces__action__Fibonacci_SendGoal_Request goal_request;
@@ -43,13 +44,15 @@ void * fibonacci(void *args){
         ros_goal_feedback.feedback.sequence.data[i-1] + 
         ros_goal_feedback.feedback.sequence.data[i-2];
 
-    printf("Sending feedback\n");
-    
+
     if (result_requested)
     {
+      pthread_mutex_lock(&lock);
+      printf("Sending feedback\n");
       RCSOFTCHECK(rcl_action_publish_feedback(&action_server, &ros_goal_feedback));
+      pthread_mutex_unlock(&lock);
     }
-    usleep(500000);
+    usleep(200000);
   }
 
   RCSOFTCHECK(rcl_action_update_goal_state(goal_handle, GOAL_EVENT_SUCCEED));
@@ -70,7 +73,9 @@ void * fibonacci(void *args){
   ros_result_response.result = result;
 
   printf("Sending result\n");
+  pthread_mutex_lock(&lock);
   RCSOFTCHECK(rcl_action_send_result_response(&action_server, &request_header, &ros_result_response))
+  pthread_mutex_unlock(&lock);
 
   processing_goal = false;
 }
@@ -145,7 +150,16 @@ int main()
     goal_callback,
     result_callback));
 
-  rclc_executor_spin(&executor);
+  pthread_mutex_init(&lock, NULL);
+
+  while (1){
+    pthread_mutex_lock(&lock);
+    rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100));
+    pthread_mutex_unlock(&lock);
+    usleep(1000);
+  }
+  
+  pthread_mutex_destroy(&lock);
 
   RCCHECK(rcl_action_server_fini(&action_server, &node))
   RCCHECK(rcl_node_fini(&node));

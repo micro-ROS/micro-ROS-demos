@@ -93,7 +93,7 @@ int main()
 
   // Init messages
   example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
-  ros_goal_request.goal.order = 10;
+  ros_goal_request.goal.order = 30;
 
   example_interfaces__action__Fibonacci_Feedback__init(&feedback.feedback);
   rosidl_runtime_c__int32__Sequence__init(&feedback.feedback.sequence, ros_goal_request.goal.order);
@@ -101,7 +101,7 @@ int main()
   example_interfaces__action__Fibonacci_GetResult_Response__init(&result_response);
   rosidl_runtime_c__int32__Sequence__init(&result_response.result.sequence, ros_goal_request.goal.order);
 
-  sleep(2); // Sleep a while to ensure DDS matching before sending request
+  sleep(1); // Sleep a while to ensure DDS matching before sending request
 
   // Goal request
   RCCHECK(rcl_action_send_goal_request(&action_client, &ros_goal_request, &goal_sequence_number))
