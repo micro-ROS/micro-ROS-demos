@@ -44,7 +44,11 @@ void * fibonacci(void *args){
         ros_goal_feedback.feedback.sequence.data[i-2];
 
     printf("Sending feedback\n");
-    RCSOFTCHECK(rcl_action_publish_feedback(&action_server, &ros_goal_feedback));
+    
+    if (result_requested)
+    {
+      RCSOFTCHECK(rcl_action_publish_feedback(&action_server, &ros_goal_feedback));
+    }
     usleep(500000);
   }
 
