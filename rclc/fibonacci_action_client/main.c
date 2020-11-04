@@ -14,7 +14,6 @@
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
 rcl_action_client_t action_client;
-example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
 example_interfaces__action__Fibonacci_SendGoal_Response goal_response;
 example_interfaces__action__Fibonacci_FeedbackMessage feedback;
 example_interfaces__action__Fibonacci_GetResult_Response result_response;
@@ -93,6 +92,7 @@ int main()
     result_callback));
 
   // Init messages
+  example_interfaces__action__Fibonacci_SendGoal_Request ros_goal_request;
   ros_goal_request.goal.order = 10;
 
   example_interfaces__action__Fibonacci_Feedback__init(&feedback.feedback);
