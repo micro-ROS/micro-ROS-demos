@@ -38,7 +38,9 @@ int main(int argc, const char * const * argv)
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();
-	RCCHECK(rclc_node_init_default(&node, "int32_configured_subscriber_rclc", "", &support));
+	rcl_node_options_t node_ops = rcl_node_get_default_options();
+	node_ops.domain_id = 10;
+	RCCHECK(rclc_node_init_with_options(&node, "int32_configured_subscriber_rclc", "", &support, &node_ops));
 
 	// create subscriber
 	RCCHECK(rclc_subscription_init_default(

@@ -42,7 +42,9 @@ int main(int argc, char * const argv[])
 
 	// create node
 	rcl_node_t node = rcl_get_zero_initialized_node();
-	RCCHECK(rclc_node_init_default(&node, "int32_configured_publisher_rclc", "", &support));
+	rcl_node_options_t node_ops = rcl_node_get_default_options();
+	node_ops.domain_id = 10;
+	RCCHECK(rclc_node_init_with_options(&node, "int32_configured_publisher_rclc", "", &support, &node_ops));
 
 	// create publisher
 	RCCHECK(rclc_publisher_init_default(
