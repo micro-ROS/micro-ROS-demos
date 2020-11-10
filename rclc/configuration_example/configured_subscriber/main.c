@@ -23,11 +23,11 @@ void subscription_callback(const void * msgin)
 
 int main(int argc, const char * const * argv)
 {
-    if (argc < 3 || argc > 4)
-    {
-        printf("Usage: configured_subscriber <IP> <port> <DomainID (default: 0)>\n");
-        return 1;
-    }
+	if (argc < 3 || argc > 4)
+	{
+		printf("Usage: configured_subscriber <IP> <port> <DomainID (default: 0)>\n");
+		return 1;
+	}
 
   	rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;
@@ -46,8 +46,8 @@ int main(int argc, const char * const * argv)
 	rcl_node_t node = rcl_get_zero_initialized_node();
 	rcl_node_options_t node_ops = rcl_node_get_default_options();
 	node_ops.domain_id = (size_t)(argc == 4 ? atoi(argv[3]) : 0);
-    const char * node_name = "int32_configured_subscriber_rclc";
-    printf("Initializing node '%s' with ROS Domain ID %ld...\n", node_name, node_ops.domain_id);
+	const char * node_name = "int32_configured_subscriber_rclc";
+	printf("Initializing node '%s' with ROS Domain ID %ld...\n", node_name, node_ops.domain_id);
 	RCCHECK(rclc_node_init_with_options(&node, node_name, "", &support, &node_ops));
 
 	// create subscriber
@@ -70,5 +70,5 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rcl_subscription_fini(&subscriber, &node));
 	RCCHECK(rcl_node_fini(&node));
 
-    return 0;
+	return 0;
 }
