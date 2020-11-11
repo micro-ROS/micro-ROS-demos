@@ -14,7 +14,7 @@
 example_interfaces__srv__AddTwoInts_Request req;
 example_interfaces__srv__AddTwoInts_Response res;
 
-void client_callback(void * msg, rmw_request_id_t * req_id){
+void client_callback(const void * msg, rmw_request_id_t * req_id){
   example_interfaces__srv__AddTwoInts_Response * msgin = (example_interfaces__srv__AddTwoInts_Response * ) msg;
   printf("Received service response %ld + %ld = %ld. Seq %ld\n", req.a, req.b, msgin->sum, req_id->sequence_number);
 }
