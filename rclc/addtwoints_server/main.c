@@ -14,8 +14,6 @@
 example_interfaces__srv__AddTwoInts_Request req;
 example_interfaces__srv__AddTwoInts_Response res;
 
-typedef void (* rclc_service_callback_t)(const void *, rmw_request_id_t *, void *);
-
 void service_callback(const void * req, rmw_request_id_t * req_id, void * res){
   example_interfaces__srv__AddTwoInts_Request * req_in = (example_interfaces__srv__AddTwoInts_Request *) req;
   example_interfaces__srv__AddTwoInts_Response * res_in = (example_interfaces__srv__AddTwoInts_Response *) res;
