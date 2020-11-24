@@ -30,6 +30,8 @@ function(export_executable)
 endfunction()
 
 export_executable(graph)
+export_executable(subscription_count)
+export_executable(publisher_count)
 export_executable(int32_publisher)
 export_executable(int32_subscriber)
 export_executable(configuration_example configured_publisher)

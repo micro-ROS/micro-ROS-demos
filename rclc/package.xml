@@ -13,6 +13,7 @@
   <depend>rcl</depend>
   <depend>rclc</depend>
   <depend>rcl_action</depend>
+  <depend>rcl_interfaces</depend>
   <depend>std_msgs</depend>
   <depend>example_interfaces</depend>
   <depend>complex_msgs</depend>
