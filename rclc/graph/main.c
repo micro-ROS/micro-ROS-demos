@@ -30,7 +30,7 @@ int main(int argc, const char * const * argv)
 
     size_t index;
 
-    rcl_guard_condition_t * graph_guard_condition =
+    const rcl_guard_condition_t * graph_guard_condition =
       rcl_node_get_graph_guard_condition(&node);
     if (NULL == graph_guard_condition) {
       printf("Error: node graph guard condition is invalid\n");
@@ -42,7 +42,7 @@ int main(int argc, const char * const * argv)
     RCCHECK(rcl_wait_set_add_guard_condition(
       &wait_set, graph_guard_condition, &index));
 
-    rcl_wait(&wait_set, RCL_MS_TO_NS(100));
+    rcl_ret_t unused = rcl_wait(&wait_set, RCL_MS_TO_NS(100));
 
     for (size_t i = 0; i < wait_set.size_of_guard_conditions; ++i) {
       if (wait_set.guard_conditions[i]) {
@@ -67,9 +67,35 @@ int main(int argc, const char * const * argv)
               printf("\n");
             }
           }
+          rcl_topic_endpoint_info_array_t publishers_info =
+            rcl_get_zero_initialized_topic_endpoint_info_array();
+          RCCHECK(rcl_get_publishers_info_by_topic(&node, &allocator,
+            names_and_types.names.data[j], false, &publishers_info));
+          printf("        topic endpoint information:\n");
+          for (size_t k = 0; k < publishers_info.size; ++k) {
+            printf("          Node: '%s%s', type: '%s', '%s'\n",
+              publishers_info.info_array[k].node_namespace,
+              publishers_info.info_array[k].node_name,
+              publishers_info.info_array[k].topic_type,
+              RMW_ENDPOINT_PUBLISHER == publishers_info.info_array[k].endpoint_type ? "publisher" : "error");
+          }
+          rcl_topic_endpoint_info_array_fini(&publishers_info, &allocator);
+
+          rcl_topic_endpoint_info_array_t subscriptions_info =
+            rcl_get_zero_initialized_topic_endpoint_info_array();
+          RCCHECK(rcl_get_subscriptions_info_by_topic(&node, &allocator,
+            names_and_types.names.data[j], false, &subscriptions_info));
+          for (size_t k = 0; k < subscriptions_info.size; ++k) {
+            printf("          Node: '%s%s', type: '%s', '%s'\n",
+              subscriptions_info.info_array[k].node_namespace,
+              subscriptions_info.info_array[k].node_name,
+              subscriptions_info.info_array[k].topic_type,
+              RMW_ENDPOINT_SUBSCRIPTION == subscriptions_info.info_array[k].endpoint_type ? "subscription" : "error");
+          }
+          rcl_topic_endpoint_info_array_fini(&subscriptions_info, &allocator);
         }
 
-        rcl_names_and_types_fini(&names_and_types);
+        RCSOFTCHECK(rcl_names_and_types_fini(&names_and_types));
 
         // Node names
         rcutils_string_array_t node_names = rcutils_get_zero_initialized_string_array();
@@ -101,11 +127,14 @@ int main(int argc, const char * const * argv)
               }
             }
           }
-          rcl_names_and_types_fini(&publisher_names_and_types);
+          RCSOFTCHECK(rcl_names_and_types_fini(&publisher_names_and_types));
         }
 
-        rcutils_string_array_fini(&node_names);
-        rcutils_string_array_fini(&node_namespaces);
+        if (RCUTILS_RET_OK != rcutils_string_array_fini(&node_names) ||
+            RCUTILS_RET_OK != rcutils_string_array_fini(&node_namespaces)) {
+          printf("Error while freeing rcutils resources\n");
+          return 1;
+        }
       }
     }
   }
