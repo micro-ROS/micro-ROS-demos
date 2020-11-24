@@ -13,18 +13,22 @@
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
 rcl_subscription_t subscription;
-rcl_interfaces__msg__ParameterEvent unused;
+rcl_node_t node;
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
   (void) last_call_time;
+  printf("Publisher count for subscription '/parameter_events':\n");
   size_t publisher_count = 0;
   RCSOFTCHECK(rcl_subscription_get_publisher_count(&subscription, &publisher_count));
-  printf("Publisher count for subscription '/parameter_events': %lu\n", publisher_count);
+  printf("    * Using 'rcl_subscription_get_publisher_count': %lu\n", publisher_count);
+  RCSOFTCHECK(rcl_count_publishers(&node, "/parameter_events", &publisher_count));
+  printf("    * Using 'rcl_count_publishers': %lu\n", publisher_count);
 }
 
 int main(int argc, const char * const * argv)
 {
+  printf("***Hint: test this example using 'ros2 run demo_nodes_cpp talker/listener' in another terminal***\n");
   rcl_allocator_t allocator = rcl_get_default_allocator();
   rclc_support_t support;
 
@@ -32,7 +36,7 @@ int main(int argc, const char * const * argv)
   RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
   // create_node
-  rcl_node_t node = rcl_get_zero_initialized_node();
+  node = rcl_get_zero_initialized_node();
   RCCHECK(rclc_node_init_default(&node, "publisher_count_node", "", &support));
 
   // create subscription
