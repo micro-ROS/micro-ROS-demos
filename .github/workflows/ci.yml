@@ -6,10 +6,12 @@ on:
         - '**'
 
 jobs:
-
     micro_ros_demos:
         runs-on: ubuntu-20.04
         container: microros/base:foxy
+        defaults:
+          run:
+            shell: bash
     
         steps:
         - name: Download environment
