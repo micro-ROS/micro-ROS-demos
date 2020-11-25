@@ -24,21 +24,20 @@ int main(int argc, const char * const * argv)
   rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();
   RCCHECK(rcl_wait_set_init(&wait_set, 0, 1, 0, 0, 0, 0, &context, allocator));
 
+  const rcl_guard_condition_t * graph_guard_condition =
+    rcl_node_get_graph_guard_condition(&node);
+  if (NULL == graph_guard_condition) {
+    printf("Error: node graph guard condition is invalid\n");
+    RCCHECK(rcl_node_fini(&node));
+    RCCHECK(rcl_shutdown(&context));
+    return 1;
+  }
+
   while (true)
   {
     RCSOFTCHECK(rcl_wait_set_clear(&wait_set));
 
     size_t index;
-
-    const rcl_guard_condition_t * graph_guard_condition =
-      rcl_node_get_graph_guard_condition(&node);
-    if (NULL == graph_guard_condition) {
-      printf("Error: node graph guard condition is invalid\n");
-      RCCHECK(rcl_node_fini(&node));
-      RCCHECK(rcl_shutdown(&context));
-      return 1;
-    }
-
     RCCHECK(rcl_wait_set_add_guard_condition(
       &wait_set, graph_guard_condition, &index));
 
