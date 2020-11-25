@@ -14,15 +14,14 @@
 example_interfaces__srv__AddTwoInts_Request req;
 example_interfaces__srv__AddTwoInts_Response res;
 
-void service_callback(const void * req, rmw_request_id_t * req_id, void * res){
+void service_callback(const void * req, void * res){
   example_interfaces__srv__AddTwoInts_Request * req_in = (example_interfaces__srv__AddTwoInts_Request *) req;
   example_interfaces__srv__AddTwoInts_Response * res_in = (example_interfaces__srv__AddTwoInts_Response *) res;
 
-  printf("Service request value: %d + %d. Seq %d\n", (int) req_in->a, (int) req_in->b, (int) req_id->sequence_number);
+  printf("Service request value: %d + %d.\n", (int) req_in->a, (int) req_in->b;
 
   res_in->sum = req_in->a + req_in->b;
 }
-
 
 int main(int argc, const char * const * argv)
 {
