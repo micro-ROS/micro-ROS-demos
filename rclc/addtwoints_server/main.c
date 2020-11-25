@@ -14,15 +14,14 @@
 example_interfaces__srv__AddTwoInts_Request req;
 example_interfaces__srv__AddTwoInts_Response res;
 
-void service_callback(const void * req, rmw_request_id_t * req_id, void * res){
+void service_callback(const void * req, void * res){
   example_interfaces__srv__AddTwoInts_Request * req_in = (example_interfaces__srv__AddTwoInts_Request *) req;
   example_interfaces__srv__AddTwoInts_Response * res_in = (example_interfaces__srv__AddTwoInts_Response *) res;
 
-  printf("Service request value: %d + %d. Seq %d\n", (int) req_in->a, (int) req_in->b, (int) req_id->sequence_number);
+  printf("Service request value: %d + %d.\n", (int) req_in->a, (int) req_in->b);
 
   res_in->sum = req_in->a + req_in->b;
 }
-
 
 int main(int argc, const char * const * argv)
 {
@@ -35,15 +34,15 @@ int main(int argc, const char * const * argv)
   RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
   // create node
-  rcl_node_t node = rcl_get_zero_initialized_node();
+  rcl_node_t node;
   RCCHECK(rclc_node_init_default(&node, "add_twoints_client_rclc", "", &support));
 
   // create service
-  rcl_service_t service = rcl_get_zero_initialized_service();
+  rcl_service_t service;
   RCCHECK(rclc_service_init_default(&service, &node, ROSIDL_GET_SRV_TYPE_SUPPORT(example_interfaces, srv, AddTwoInts), "/addtwoints"));
 
   // create executor
-  rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
+  rclc_executor_t executor;
   RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
 
   unsigned int rcl_wait_timeout = 10;   // in ms
