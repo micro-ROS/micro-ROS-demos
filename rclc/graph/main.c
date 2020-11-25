@@ -47,18 +47,19 @@ int main(int argc, const char * const * argv)
     for (size_t i = 0; i < wait_set.size_of_guard_conditions; ++i) {
       if (wait_set.guard_conditions[i]) {
         // Topic names and types
-        rcl_names_and_types_t names_and_types = rcl_get_zero_initialized_names_and_types();
-        RCCHECK(rcl_get_topic_names_and_types(&node, &allocator, false, &names_and_types));
+        rcl_names_and_types_t topic_names_and_types =
+          rcl_get_zero_initialized_names_and_types();
+        RCCHECK(rcl_get_topic_names_and_types(&node, &allocator, false, &topic_names_and_types));
 
         printf("\n---------------------------------------------------------------\n");
         printf("  'rcl_get_topic_names_and_types' result\n");
         printf("---------------------------------------------------------------\n");
-        size_t topic_num = names_and_types.names.size;
+        size_t topic_num = topic_names_and_types.names.size;
         printf("Current number of ROS 2 and micro-ROS topics: %lu\n", topic_num);
 
         for (size_t j = 0; j < topic_num; ++j) {
-          rcutils_string_array_t * topic_types = &names_and_types.types[j];
-          printf("  %lu)  topic: '%s', types: ", j + 1, names_and_types.names.data[j]);
+          rcutils_string_array_t * topic_types = &topic_names_and_types.types[j];
+          printf("  %lu)  topic: '%s', types: ", j + 1, topic_names_and_types.names.data[j]);
           for (size_t k = 0; k < topic_types->size; ++k) {
             printf("%s", topic_types->data[k]);
             if (k < (topic_types->size - 1)) {
@@ -70,7 +71,7 @@ int main(int argc, const char * const * argv)
           rcl_topic_endpoint_info_array_t publishers_info =
             rcl_get_zero_initialized_topic_endpoint_info_array();
           RCCHECK(rcl_get_publishers_info_by_topic(&node, &allocator,
-            names_and_types.names.data[j], false, &publishers_info));
+            topic_names_and_types.names.data[j], false, &publishers_info));
           printf("        topic endpoint information:\n");
           for (size_t k = 0; k < publishers_info.size; ++k) {
             printf("          Node: '%s%s', type: '%s', '%s'\n",
@@ -84,7 +85,7 @@ int main(int argc, const char * const * argv)
           rcl_topic_endpoint_info_array_t subscriptions_info =
             rcl_get_zero_initialized_topic_endpoint_info_array();
           RCCHECK(rcl_get_subscriptions_info_by_topic(&node, &allocator,
-            names_and_types.names.data[j], false, &subscriptions_info));
+            topic_names_and_types.names.data[j], false, &subscriptions_info));
           for (size_t k = 0; k < subscriptions_info.size; ++k) {
             printf("          Node: '%s%s', type: '%s', '%s'\n",
               subscriptions_info.info_array[k].node_namespace,
@@ -95,7 +96,33 @@ int main(int argc, const char * const * argv)
           rcl_topic_endpoint_info_array_fini(&subscriptions_info, &allocator);
         }
 
-        RCSOFTCHECK(rcl_names_and_types_fini(&names_and_types));
+        RCSOFTCHECK(rcl_names_and_types_fini(&topic_names_and_types));
+
+        // Service names and types
+        rcl_names_and_types_t service_names_and_types =
+          rcl_get_zero_initialized_names_and_types();
+        RCCHECK(rcl_get_service_names_and_types(&node, &allocator, &service_names_and_types));
+
+        printf("\n---------------------------------------------------------------\n");
+        printf("  'rcl_get_service_names_and_types' result\n");
+        printf("---------------------------------------------------------------\n");
+        size_t service_num = service_names_and_types.names.size;
+        printf("Current number of ROS 2 and micro-ROS services: %lu\n", service_num);
+
+        for (size_t j = 0; j < service_num; ++j) {
+          rcutils_string_array_t * service_types = &service_names_and_types.types[j];
+          printf("  %lu)  service: '%s', types: ", j + 1, service_names_and_types.names.data[j]);
+          for (size_t k = 0; k < service_types->size; ++k) {
+            printf("%s", service_types->data[k]);
+            if (k < (service_types->size - 1)) {
+              printf(", ");
+            } else {
+              printf("\n");
+            }
+          }
+        }
+
+        RCSOFTCHECK(rcl_names_and_types_fini(&service_names_and_types));
 
         // Node names
         rcutils_string_array_t node_names = rcutils_get_zero_initialized_string_array();
