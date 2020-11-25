@@ -45,7 +45,7 @@ int main()
 	unsigned int rcl_wait_timeout = 1000;   // in ms
 	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
 	RCCHECK(rclc_executor_add_subscription(&executor, &subscriber, &msg, &subscription_callback, ON_NEW_DATA));
-	
+
   	rclc_executor_spin(&executor);
 
 	RCCHECK(rcl_subscription_fini(&subscriber, &node));

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(graph LANGUAGES C)
+project(graph_visualizer LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
