@@ -21,28 +21,28 @@ void client_callback(const void * msg, rmw_request_id_t * req_id){
 
 int main(int argc, const char * const * argv)
 {
-    RCLC_UNUSED(argc);
-    RCLC_UNUSED(argv);
+  RCLC_UNUSED(argc);
+  RCLC_UNUSED(argv);
   rcl_allocator_t allocator = rcl_get_default_allocator();
-	rclc_support_t support;
+  rclc_support_t support;
 
-	// create init_options
-	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
+  // create init_options
+  RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
-	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
-	RCCHECK(rclc_node_init_default(&node, "add_twoints_client_rclc", "", &support));
+  // create node
+  rcl_node_t node = rcl_get_zero_initialized_node();
+  RCCHECK(rclc_node_init_default(&node, "add_twoints_client_rclc", "", &support));
 
   // create client 
   rcl_client_t client = rcl_get_zero_initialized_client();
   RCCHECK(rclc_client_init_default(&client, &node, ROSIDL_GET_SRV_TYPE_SUPPORT(example_interfaces, srv, AddTwoInts), "/addtwoints"));
 
   // create executor
-	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
-	RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
+  rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
+  RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
 
-	unsigned int rcl_wait_timeout = 10;   // in ms
-	RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
+  unsigned int rcl_wait_timeout = 10;   // in ms
+  RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
   RCCHECK(rclc_executor_add_client(&executor, &client, &res, client_callback));
 
   int64_t seq; 
@@ -54,9 +54,9 @@ int main(int argc, const char * const * argv)
 
   RCCHECK(rcl_send_request(&client, &req, &seq))
   printf("Send service request %ld + %ld. Seq %ld\n",req.a, req.b, seq);
-	
+  
   rclc_executor_spin(&executor);
 
-	RCCHECK(rcl_client_fini(&client, &node));
-	RCCHECK(rcl_node_fini(&node));
+  RCCHECK(rcl_client_fini(&client, &node));
+  RCCHECK(rcl_node_fini(&node));
 }
