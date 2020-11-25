@@ -40,9 +40,6 @@ int main(int argc, const char * const * argv)
   // create executor
   rclc_executor_t executor;
   RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
-
-  unsigned int rcl_wait_timeout = 10;   // in ms
-  RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
   RCCHECK(rclc_executor_add_client(&executor, &client, &res, client_callback));
 
   int64_t seq; 

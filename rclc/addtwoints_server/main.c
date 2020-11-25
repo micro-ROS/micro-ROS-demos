@@ -40,9 +40,6 @@ void main(void)
     rclc_executor_t executor;
     RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
 
-    unsigned int rcl_wait_timeout = 10;   // in ms
-    RCCHECK(rclc_executor_set_timeout(&executor, RCL_MS_TO_NS(rcl_wait_timeout)));
-
     example_interfaces__srv__AddTwoInts_Response res;
     example_interfaces__srv__AddTwoInts_Request req;
     RCCHECK(rclc_executor_add_service(&executor, &service, &req, &res, service_callback));
