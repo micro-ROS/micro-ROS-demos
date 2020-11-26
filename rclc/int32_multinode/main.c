@@ -91,8 +91,6 @@ int main(int argc, const char * const * argv)
 	// create executor
 	rclc_executor_t executor_1 = rclc_executor_get_zero_initialized_executor();
 	RCCHECK(rclc_executor_init(&executor_1, &support.context, 2, &allocator));
-
-	RCCHECK(rclc_executor_set_timeout(&executor_1, RCL_MS_TO_NS(1000)));
 	RCCHECK(rclc_executor_add_timer(&executor_1, &timer_1));
 	RCCHECK(rclc_executor_add_subscription(&executor_1, &subscriber_1, &recv_msg_1, &subscription_callback_1, ON_NEW_DATA));
 
@@ -126,8 +124,6 @@ int main(int argc, const char * const * argv)
 	// create executor
 	rclc_executor_t executor_2 = rclc_executor_get_zero_initialized_executor();
 	RCCHECK(rclc_executor_init(&executor_2, &support.context, 2, &allocator));
-
-	RCCHECK(rclc_executor_set_timeout(&executor_2, RCL_MS_TO_NS(1000)));
 	RCCHECK(rclc_executor_add_timer(&executor_2, &timer_2));
 	RCCHECK(rclc_executor_add_subscription(&executor_2, &subscriber_2, &recv_msg_2, &subscription_callback_2, ON_NEW_DATA));
 
