@@ -5,10 +5,18 @@
 
 #include <std_msgs/msg/int32.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <poll.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <errno.h>
+#include <netdb.h>
 
 #include <rmw_uros/options.h>
 
@@ -18,49 +26,85 @@
 // --- micro-ROS Transports ---
 
 typedef struct {
-	char * portname;
-	int fd;
+	struct pollfd poll_fd;
 } custom_transport_data_t;
 
 bool mbed_serial_open(struct uxrCustomTransport * transport){
-    custom_transport_data_t * serial_port = (custom_transport_data_t*) transport->args;
-    (void) unlink(serial_port->portname);
+    custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
+	
+	bool rv = false;
+    transport_data->poll_fd.fd = socket(AF_INET, SOCK_DGRAM, 0);
 
-	if (0 < mkfifo(serial_port->portname, S_IRWXU | S_IRWXG | S_IRWXO))
+    if (-1 != transport_data->poll_fd.fd)
     {
-        return false;
-    }
-    else
-    {
-        serial_port->fd = open("/tmp/serial_fifo", O_RDWR | O_NONBLOCK);
-        if (0 < serial_port->fd)
+        struct addrinfo hints;
+        struct addrinfo* result;
+        struct addrinfo* ptr;
+
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family = AF_INET;
+        hints.ai_socktype = SOCK_DGRAM;
+
+        if (0 == getaddrinfo("localhost", "8888", &hints, &result))
         {
-            fcntl(serial_port->fd, F_SETFL, O_NONBLOCK);
+            for (ptr = result; ptr != NULL; ptr = ptr->ai_next)
+            {
+                if (0 == connect(transport_data->poll_fd.fd, ptr->ai_addr, ptr->ai_addrlen))
+                {
+                    transport_data->poll_fd.events = POLLIN;
+                    rv = true;
+                    break;
+                }
+            }
         }
-        else
-        {
-            return false;
-        }
+        freeaddrinfo(result);
     }
-    return true;
+    return rcutils_vsnprintf;
 }
 
 bool mbed_serial_close(struct uxrCustomTransport * transport){
-    custom_transport_data_t * serial_port = (custom_transport_data_t*) transport->args;
-    (void) unlink(serial_port->portname);
-	return true;
+    custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
+    return (-1 == transport_data->poll_fd.fd) ? true : (0 == close(transport_data->poll_fd.fd));
 }
 
-size_t mbed_serial_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len, uint8_t * err){
-    custom_transport_data_t * serial_port = (custom_transport_data_t*) transport->args;
-	ssize_t wrote = write(serial_port->fd, buf, len);
-    return (wrote >= 0) ? wrote : 0;
+size_t mbed_serial_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len, uint8_t * errcode){
+    custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
+    size_t rv = 0;
+    ssize_t bytes_sent = send(transport_data->poll_fd.fd, (void*)buf, len, 0);
+    if (-1 != bytes_sent)
+    {
+        rv = (size_t)bytes_sent;
+        *errcode = 0;
+    }
+    else
+    {
+        *errcode = 1;
+    }
+    return rv;
 }
 
-size_t mbed_serial_read(struct uxrCustomTransport* transport, uint8_t* buf, size_t len, int timeout, uint8_t* err){
-    custom_transport_data_t * serial_port = (custom_transport_data_t*) transport->args;
-	ssize_t readed = read(serial_port->fd, buf, len);
-	return (readed >= 0) ? readed : 0;  
+size_t mbed_serial_read(struct uxrCustomTransport* transport, uint8_t* buf, size_t len, int timeout, uint8_t* errcode){
+    custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
+    size_t rv = 0;
+    int poll_rv = poll(&transport_data->poll_fd, 1, timeout);
+    if (0 < poll_rv)
+    {
+        ssize_t bytes_received = recv(transport_data->poll_fd.fd, (void*)buf, len, 0);
+        if (-1 != bytes_received)
+        {
+            rv = (size_t)bytes_received;
+            *errcode = 0;
+        }
+        else
+        {
+            *errcode = 1;
+        }
+    }
+    else
+    {
+        *errcode = (0 == poll_rv) ? 0 : 1;
+    }
+    return rv;
 }
 
 
@@ -90,11 +134,9 @@ int main(int argc, char * const argv[])
 	RCCHECK(rmw_uros_options_set_client_key(0xCAFEBABA, rmw_options))
 
 	custom_transport_data_t custom_transport_data;
-	char * portname = "/tmp/serial_fifo";
-	custom_transport_data.portname = portname;
 
 	RCCHECK(rmw_uros_options_set_custom_transport(
-        true,
+        false,
         (void*) &custom_transport_data,
         mbed_serial_open,
         mbed_serial_close,
