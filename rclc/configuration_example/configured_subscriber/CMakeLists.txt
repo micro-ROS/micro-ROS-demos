@@ -19,8 +19,8 @@ ament_target_dependencies(${PROJECT_NAME}
   rcl
   rclc
   std_msgs
-  microxrcedds_client
   rmw_microxrcedds
+  microxrcedds_client
   )
 
 install(TARGETS ${PROJECT_NAME}
