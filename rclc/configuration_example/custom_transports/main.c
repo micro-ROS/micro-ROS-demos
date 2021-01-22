@@ -29,7 +29,7 @@ typedef struct {
 	struct pollfd poll_fd;
 } custom_transport_data_t;
 
-bool mbed_serial_open(struct uxrCustomTransport * transport){
+bool custom_transport_open(struct uxrCustomTransport * transport){
     custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
 	
 	bool rv = false;
@@ -62,12 +62,12 @@ bool mbed_serial_open(struct uxrCustomTransport * transport){
     return rcutils_vsnprintf;
 }
 
-bool mbed_serial_close(struct uxrCustomTransport * transport){
+bool custom_transport_close(struct uxrCustomTransport * transport){
     custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
     return (-1 == transport_data->poll_fd.fd) ? true : (0 == close(transport_data->poll_fd.fd));
 }
 
-size_t mbed_serial_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len, uint8_t * errcode){
+size_t custom_transport_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len, uint8_t * errcode){
     custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
     size_t rv = 0;
     ssize_t bytes_sent = send(transport_data->poll_fd.fd, (void*)buf, len, 0);
@@ -83,7 +83,7 @@ size_t mbed_serial_write(struct uxrCustomTransport* transport, const uint8_t * b
     return rv;
 }
 
-size_t mbed_serial_read(struct uxrCustomTransport* transport, uint8_t* buf, size_t len, int timeout, uint8_t* errcode){
+size_t custom_transport_read(struct uxrCustomTransport* transport, uint8_t* buf, size_t len, int timeout, uint8_t* errcode){
     custom_transport_data_t * transport_data = (custom_transport_data_t*) transport->args;
     size_t rv = 0;
     int poll_rv = poll(&transport_data->poll_fd, 1, timeout);
@@ -138,10 +138,10 @@ int main(int argc, char * const argv[])
 	RCCHECK(rmw_uros_options_set_custom_transport(
         false,
         (void*) &custom_transport_data,
-        mbed_serial_open,
-        mbed_serial_close,
-        mbed_serial_write,
-        mbed_serial_read,
+        custom_transport_open,
+        custom_transport_close,
+        custom_transport_write,
+        custom_transport_read,
         rmw_options
     ))
 
