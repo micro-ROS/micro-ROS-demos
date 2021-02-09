@@ -135,14 +135,13 @@ int main(int argc, char * const argv[])
 
 	custom_transport_data_t custom_transport_data;
 
-	RCCHECK(rmw_uros_options_set_custom_transport(
+	RCCHECK(rmw_uros_set_custom_transport(
         false,
         (void*) &custom_transport_data,
         custom_transport_open,
         custom_transport_close,
         custom_transport_write,
-        custom_transport_read,
-        rmw_options
+        custom_transport_read
     ))
 
 	// create init_options
