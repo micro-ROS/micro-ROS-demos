@@ -21,6 +21,7 @@ jobs:
             source /opt/ros/foxy/setup.bash
             source install/local_setup.bash
             ros2 run micro_ros_setup create_firmware_ws.sh host
+            rm -rf src/uros/micro-ROS-demos
         - uses: actions/checkout@v2
           with:
             path: uros_ws/src/uros/micro-ROS-demos
