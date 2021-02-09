@@ -9,6 +9,9 @@ find_package(example_interfaces REQUIRED)
 
 add_executable(${PROJECT_NAME} main.c)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
+
 ament_target_dependencies(${PROJECT_NAME}
   rcl
   rcl_action

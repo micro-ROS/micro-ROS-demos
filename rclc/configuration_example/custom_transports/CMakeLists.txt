@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(autodiscover_agent LANGUAGES C)
+project(custom_transports LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
@@ -23,6 +23,14 @@ ament_target_dependencies(${PROJECT_NAME}
   microxrcedds_client
   )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  CXX_STANDARD
+      11
+  CXX_STANDARD_REQUIRED
+      YES
+  )
+
 install(TARGETS ${PROJECT_NAME}
   DESTINATION ${PROJECT_NAME}
   )
+  
