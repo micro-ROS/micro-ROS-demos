@@ -43,10 +43,10 @@ int usage()
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
-	(void) last_call_time;
-	if (NULL != timer) {
-		RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-		printf("Sent: '%s'\n", msg.data.data);
+    (void) last_call_time;
+    if (NULL != timer) {
+        RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
+        printf("Sent: '%s'\n", msg.data.data);
 
         /**
          * If agent suddently goes down, we will exit the application.
@@ -61,7 +61,7 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
         } else {
             printf("Agent is still up!\n\n");
         }
-	}
+    }
 }
 
 int main(int argc, char ** argv)
