@@ -18,6 +18,7 @@
 #include <errno.h>
 #include <netdb.h>
 
+#define RMW_UXRCE_TRANSPORT_CUSTOM // Caution!
 #include <rmw_uros/options.h>
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
