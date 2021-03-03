@@ -38,7 +38,7 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
 
 	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
+	rcl_node_t node;
 	RCCHECK(rclc_node_init_default(&node, "string_node", "", &support));
 
 	// create publisher
@@ -49,7 +49,7 @@ int main(int argc, const char * const * argv)
 		"/string_publisher"));
 
 	// create timer,
-	rcl_timer_t timer = rcl_get_zero_initialized_timer();
+	rcl_timer_t timer;
 	const unsigned int timer_timeout = 1000;
 	RCCHECK(rclc_timer_init_default(
 		&timer,

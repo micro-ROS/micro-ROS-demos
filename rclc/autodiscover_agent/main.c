@@ -45,7 +45,7 @@ int main()
 	RCCHECK(rclc_support_init_with_options(&support, 0, NULL, &init_options, &allocator));
 
 	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
+	rcl_node_t node;
 	RCCHECK(rclc_node_init_default(&node, "int32_publisher_rclc", "", &support));
 
 	// create publisher
@@ -56,7 +56,7 @@ int main()
 		"std_msgs_msg_Int32"));
 
 	// create timer,
-	rcl_timer_t timer = rcl_get_zero_initialized_timer();
+	rcl_timer_t timer;
 	const unsigned int timer_timeout = 1000;
 	RCCHECK(rclc_timer_init_default(
 		&timer,

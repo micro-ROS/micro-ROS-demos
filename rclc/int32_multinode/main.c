@@ -63,7 +63,7 @@ int main(int argc, const char * const * argv)
 
 	// ----- NODE 1 -----
 	// create node
-	rcl_node_t node_1 = rcl_get_zero_initialized_node();
+	rcl_node_t node_1;
 	RCCHECK(rclc_node_init_default(&node_1, "int32_node_1", "", &support));
 
 	// create publisher
@@ -81,7 +81,7 @@ int main(int argc, const char * const * argv)
 		"node_2_to_1"));
 
 	// create timer,
-	rcl_timer_t timer_1 = rcl_get_zero_initialized_timer();
+	rcl_timer_t timer_1;
 	RCCHECK(rclc_timer_init_default(
 		&timer_1,
 		&support,
@@ -96,7 +96,7 @@ int main(int argc, const char * const * argv)
 
 	// ----- NODE 2 -----
 	// create node
-	rcl_node_t node_2 = rcl_get_zero_initialized_node();
+	rcl_node_t node_2;
 	RCCHECK(rclc_node_init_default(&node_2, "int32_node_2", "", &support));
 
 	// create publisher
@@ -114,7 +114,7 @@ int main(int argc, const char * const * argv)
 		"node_1_to_2"));
 
 	// create timer,
-	rcl_timer_t timer_2 = rcl_get_zero_initialized_timer();
+	rcl_timer_t timer_2;
 	RCCHECK(rclc_timer_init_default(
 		&timer_2,
 		&support,
