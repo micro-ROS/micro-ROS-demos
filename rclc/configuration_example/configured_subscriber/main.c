@@ -43,7 +43,7 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_support_init_with_options(&support, 0, NULL, &init_options, &allocator));
 
 	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
+	rcl_node_t node;
 	rcl_node_options_t node_ops = rcl_node_get_default_options();
 	node_ops.domain_id = (size_t)(argc == 4 ? atoi(argv[3]) : 0);
 	const char * node_name = "int32_configured_subscriber_rclc";

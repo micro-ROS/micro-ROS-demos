@@ -34,7 +34,7 @@ int main(int argc, const char * const * argv)
 	RCCHECK(rclc_support_init(&support, argc, argv, &allocator));
 
 	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
+	rcl_node_t node;
 	RCCHECK(rclc_node_init_default(&node, "char_long_sequence_subscriber_rcl", "", &support));
 
 	// create subscriber

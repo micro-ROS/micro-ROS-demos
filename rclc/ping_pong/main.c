@@ -82,7 +82,7 @@ int main()
 	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
 	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
+	rcl_node_t node;
 	RCCHECK(rclc_node_init_default(&node, "pingpong_node", "", &support));
 
 	// Create a reliable ping publisher
@@ -99,7 +99,7 @@ int main()
 
 
 	// Create a 3 seconds ping timer timer,
-	rcl_timer_t timer = rcl_get_zero_initialized_timer();
+	rcl_timer_t timer;
 	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback));
 
 

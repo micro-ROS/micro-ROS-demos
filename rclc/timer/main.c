@@ -25,11 +25,11 @@ int main()
 	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
 	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
+	rcl_node_t node;
 	RCCHECK(rclc_node_init_default(&node, "timer_node", "", &support));
 
 	// create timer,
-	rcl_timer_t timer = rcl_get_zero_initialized_timer();
+	rcl_timer_t timer;
 	const unsigned int timer_timeout = 1000;
 	RCCHECK(rclc_timer_init_default(
 		&timer,

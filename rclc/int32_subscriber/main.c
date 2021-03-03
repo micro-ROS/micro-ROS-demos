@@ -28,7 +28,7 @@ int main()
 	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
 	// create node
-	rcl_node_t node = rcl_get_zero_initialized_node();
+	rcl_node_t node;
 	RCCHECK(rclc_node_init_default(&node, "int32_subscriber_rclc", "", &support));
 
 	// create subscriber
