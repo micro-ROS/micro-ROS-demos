@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include <rmw_microros/api.h>
+#include <rmw_microros/rmw_microros.h>
 
 #include <rosidl_runtime_c/string_functions.h>
 
