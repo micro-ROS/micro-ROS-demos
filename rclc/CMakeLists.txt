@@ -52,6 +52,7 @@ export_executable(timer)
 export_executable(string_publisher)
 export_executable(string_subscriber)
 export_executable(autodiscover_agent)
+export_executable(static_type_handling)
 # export_executable(configuration_example custom_transports)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
