@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
@@ -6,11 +7,11 @@
 #include <micro_ros_utilities/type_utilities.h>
 #include <micro_ros_utilities/string_utilities.h>
 
-#include <control_msgs/msg/joint_jog.h>
+#include <sensor_msgs/msg/image.h>
 
 rcl_publisher_t publisher;
-control_msgs__msg__JointJog msg;
-control_msgs__msg__JointJog msg_static;
+sensor_msgs__msg__Image msg;
+sensor_msgs__msg__Image msg_static;
 rclc_executor_t executor;
 rclc_support_t support;
 rcl_allocator_t allocator;
@@ -52,7 +53,7 @@ int main() {
   RCCHECK(rclc_publisher_init_default(
     &publisher,
     &node,
-    ROSIDL_GET_MSG_TYPE_SUPPORT(control_msgs, msg, JointJog),
+    ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image),
     "micro_ros_publisher"));
 
   // create timer,
@@ -88,8 +89,8 @@ int main() {
 
   micro_ros_utilities_memory_rule_t rules[] = {
     {"header.frame_id", 30},
-    {"joint_names", 3},
-    {"displacements", 8}
+    {"encoding", 3},
+    {"data", 400}
   };
   conf.rules = rules;
   conf.n_rules = sizeof(rules) / sizeof(rules[0]);
@@ -98,25 +99,25 @@ int main() {
   // Type can be instrospected using:
 
   rosidl_runtime_c__String data = micro_ros_utilities_type_info(
-    ROSIDL_GET_MSG_TYPE_SUPPORT(control_msgs, msg, JointJog));
+    ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image));
   printf("%s", data.data);
 
   // It can be calculated the size that will be needed by a msg with a certain configuration
 
   size_t dynamic_size = micro_ros_utilities_get_dynamic_size(
-    ROSIDL_GET_MSG_TYPE_SUPPORT(control_msgs, msg, JointJog),
+    ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image),
     conf
   );
 
   // The total (stack, static & dynamic) memory usage of a packet will be:
 
-  size_t message_total_size = dynamic_size + sizeof(control_msgs__msg__JointJog);
+  size_t message_total_size = dynamic_size + sizeof(sensor_msgs__msg__Image);
 
   // The message dynamic memory can be allocated using the following call.
   // This will use rcutils default allocators for getting memory.
 
   bool success = micro_ros_utilities_create_message_memory(
-    ROSIDL_GET_MSG_TYPE_SUPPORT(control_msgs, msg, JointJog),
+    ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image),
     &msg,
     conf
   );
@@ -127,8 +128,16 @@ int main() {
   // This method will use contiguos memory and will not take into account aligment
   // so handling statically allocated msg can be less efficient that dynamic ones
 
+  size_t static_size = micro_ros_utilities_get_static_size(
+    ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image),
+    conf
+  );
+
+  message_total_size = static_size + sizeof(sensor_msgs__msg__Image);
+
+  // my_buffer should have at least static_size Bytes
   success &= micro_ros_utilities_create_static_message_memory(
-    ROSIDL_GET_MSG_TYPE_SUPPORT(control_msgs, msg, JointJog),
+    ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image),
     &msg_static,
     conf,
     my_buffer,
@@ -145,17 +154,19 @@ int main() {
 
   // Fill the message
   msg.header.frame_id = micro_ros_string_utilities_set(msg.header.frame_id, "myframe");
-  msg_static.header.frame_id = micro_ros_string_utilities_set(msg_static.header.frame_id, "myframe2");
+  msg_static.header.frame_id = micro_ros_string_utilities_set(msg_static.header.frame_id, "myframestatic");
 
-  msg.velocities.size = msg_static.velocities.size = 3;
-  msg.velocities.data[0] = msg_static.velocities.data[0] = 10.0;
-  msg.velocities.data[1] = msg_static.velocities.data[1] = 11.1;
-  msg.velocities.data[2] = msg_static.velocities.data[2] = 22.2;
+  msg.height = msg_static.height = 10;
+  msg.width = msg_static.width = 40;
 
-  msg.displacements.size = msg.displacements.size = 4;
-  for (size_t i = 0; i < msg.displacements.size; i++)
+  msg.encoding = micro_ros_string_utilities_set(msg.encoding, "RGB");
+  msg_static.encoding = micro_ros_string_utilities_set(msg_static.encoding, "RGB");
+
+  msg.data.size = msg_static.data.size = 400;
+  for (size_t i = 0; i < msg.data.size; i++)
   {
-    msg.displacements.data[i] = i;
+    msg.data.data[i] = i;
+    msg_static.data.data[i] = i;
   }
 
   while(1) {
