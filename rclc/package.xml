@@ -19,6 +19,7 @@
   <depend>complex_msgs</depend>
   <depend>builtin_interfaces</depend>
   <depend>microxrcedds_client</depend>
+  <depend>micro_ros_utilities</depend>
 
   <!-- configured_publisher and configured_subscriber-->
   <depend>geometry_msgs</depend>
