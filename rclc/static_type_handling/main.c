@@ -125,8 +125,7 @@ int main() {
   // The message dynamic memory can also be allocated using a buffer.
   // This will NOT use dynamic memory for the allocation.
   // If no rules set in the conf, no dynamic allocation is guaranteed.
-  // This method will use contiguos memory and will not take into account aligment
-  // so handling statically allocated msg can be less efficient that dynamic ones
+  // This method will use need more memory than dynamic due to alignment
 
   size_t static_size = micro_ros_utilities_get_static_size(
     ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image),
