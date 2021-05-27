@@ -2,6 +2,7 @@
 #include <rcl/error_handling.h>
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
+#include <rclc_parameter/rclc_parameter.h>
 
 #include <std_msgs/msg/int32.h>
 
@@ -12,6 +13,7 @@
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
 rcl_publisher_t publisher;
+rclc_parameter_server_t param_server;
 rcl_timer_t timer;
 bool publish = true;
 std_msgs__msg__Int32 msg;
@@ -32,29 +34,17 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
 void on_parameter_changed(Parameter * param)
 {
-
-	// rcl_timer_exchange_period(&timer, int64_t new_period, int64_t * old_period);
-
-	// if (!strcmp(param_name, param->name.data)) {
-    //   return &parameter_list->data[i];
-    // }
-
-    printf("Parameter %s modified.", param->name.data);
-    switch (param->value.type)
-    {
-    case RCLC_PARAMETER_BOOL:
-        printf(" New value: %d (bool)", param->value.bool_value);
-        break;
-    case RCLC_PARAMETER_INT:
-        printf(" New value: %lld (int)", param->value.integer_value);
-        break;
-    case RCLC_PARAMETER_DOUBLE:
-        printf(" New value: %f (double)", param->value.double_value);
-        break;
-    default:
-        break;
-    }
-    printf("\n");
+	if (strcmp(param->name.data, "publish_toogle") == 0 && param->value.type == RCLC_PARAMETER_BOOL)
+	{
+		publish = param->value.bool_value;
+		printf("Publish %s\n", (publish) ? "ON" : "OFF");
+	}
+	else if (strcmp(param->name.data, "publish_rate_ms") == 0 && param->value.type == RCLC_PARAMETER_INT)
+	{
+		int64_t old;
+		RCSOFTCHECK(rcl_timer_exchange_period(&timer, RCL_MS_TO_NS(param->value.integer_value), &old));
+		printf("Publish rate %ld ms\n", param->value.integer_value);
+	}
 }
 
 int main()
@@ -77,7 +67,6 @@ int main()
 		"micro_ros_pub"));
 
   	// Create parameter service
-	rclc_parameter_server_t param_server;
     rclc_parameter_server_init_default(&param_server, &node);
 
 	// create timer,
@@ -89,7 +78,7 @@ int main()
 
 	// create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
-	RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
+	RCCHECK(rclc_executor_init(&executor, &support.context, RCLC_PARAMETER_EXECUTOR_HANDLES_NUMBER + 1, &allocator));
 	RCCHECK(rclc_executor_add_parameter_server(&executor, &param_server, on_parameter_changed));
 	RCCHECK(rclc_executor_add_timer(&executor, &timer));
 
@@ -97,7 +86,7 @@ int main()
     rclc_add_parameter(&param_server, "publish_toogle", RCLC_PARAMETER_BOOL);
     rclc_add_parameter(&param_server, "publish_rate_ms", RCLC_PARAMETER_INT);
 
-    rclc_parameter_set_bool(&param_server, "publish_toogle", false);
+    rclc_parameter_set_bool(&param_server, "publish_toogle", true);
     rclc_parameter_set_int(&param_server, "publish_rate_ms", 1000);
 
   	rclc_executor_spin(&executor);

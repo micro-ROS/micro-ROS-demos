@@ -20,11 +20,12 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 	(void) last_call_time;
 	(void) timer;
 
+	RCSOFTCHECK(rmw_uros_sync_session(1000));
 	int64_t time = rmw_uros_epoch_millis();
 	msg.data = time;
 
 	RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
-	printf("Sent: %d\n", msg.data);
+	printf("UNIX time: %ld ms\n", time);
 }
 
 int main()
