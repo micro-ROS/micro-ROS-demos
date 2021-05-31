@@ -87,7 +87,7 @@ int main(int argc, const char * const * argv)
 			&publisher[i],
 			&node,
 			ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header),
-			"/microROS/multithread"));
+			"multithread_publisher"));
 	}
 
 	// Create subscriber
@@ -95,7 +95,7 @@ int main(int argc, const char * const * argv)
 		&subscriber,
 		&node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header),
-		"/microROS/multithread"));
+		"multithread_subscriber"));
 	
 	// Allocate the subscriber message
 	char recv_msg_buffer[STRING_BUFFER_LEN];
