@@ -4,6 +4,8 @@
 #include <rclc/executor.h>
 
 #include <std_msgs/msg/header.h>
+#include <micro_ros_utilities/type_utilities.h>
+#include <micro_ros_utilities/string_utilities.h>
 
 #include <stdio.h>
 #include <pthread.h>
@@ -26,6 +28,7 @@ pthread_t pub_thr[PUBLISHER_NUMBER];
 rcl_publisher_t publisher[PUBLISHER_NUMBER];
 rcl_subscription_t subscriber;
 std_msgs__msg__Header recv_msg;
+static micro_ros_utilities_memory_conf_t conf = {0};
 
 volatile bool exit_flag = false;
 
@@ -39,12 +42,21 @@ void* publish(
 
 	// Create and allocate the publisher message
 	std_msgs__msg__Header send_msg;
-	char send_msg_buffer[STRING_BUFFER_LEN];
-	send_msg.frame_id.data = send_msg_buffer;
-	send_msg.frame_id.capacity = STRING_BUFFER_LEN;
 
-	sprintf(send_msg.frame_id.data, "Thread %d", id);
-	send_msg.frame_id.size = strlen(send_msg.frame_id.data);
+	bool success = micro_ros_utilities_create_message_memory(
+    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), 
+	&send_msg,
+	conf);
+
+	if (!success)
+	{
+		printf("Error allocating message memory for publisher %d", id);
+		return NULL;
+	}
+	
+	char message[STRING_BUFFER_LEN];
+	sprintf(message, "Thread %d", id);
+	send_msg.frame_id = micro_ros_string_utilities_set(send_msg.frame_id, message);
 
 	uint32_t period_us =  1e6 + ((rand()) % 10) * 1e5;
 	printf("Thread %d start, publish period: %.1f seconds\n", id, period_us/1000000.0);
@@ -58,7 +70,7 @@ void* publish(
 		send_msg.stamp.nanosec = ts.tv_nsec;
 
 		RCSOFTCHECK(rcl_publish(publisher, &send_msg, NULL));
-		printf("Thread %d sent: %d\n", id, send_msg.stamp.nanosec);	
+		printf("Thread %d sent: %d-%d\n", id, send_msg.stamp.sec, send_msg.stamp.nanosec);	
         usleep(period_us);
     }
 }
@@ -66,7 +78,7 @@ void* publish(
 void subscription_callback(const void * msgin)
 {
 	const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
-	printf("Received %d from %s\n", msg->stamp.nanosec, msg->frame_id.data);
+	printf("Received %d-%d from %s\n", msg->stamp.sec, msg->stamp.nanosec, msg->frame_id.data);
 }
 
 int main(int argc, const char * const * argv)
@@ -87,7 +99,7 @@ int main(int argc, const char * const * argv)
 			&publisher[i],
 			&node,
 			ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header),
-			"multithread_publisher"));
+			"multithread_topic"));
 	}
 
 	// Create subscriber
@@ -95,12 +107,21 @@ int main(int argc, const char * const * argv)
 		&subscriber,
 		&node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header),
-		"multithread_subscriber"));
+		"multithread_topic"));
 	
-	// Allocate the subscriber message
-	char recv_msg_buffer[STRING_BUFFER_LEN];
-	recv_msg.frame_id.data = recv_msg_buffer;
-	recv_msg.frame_id.capacity = STRING_BUFFER_LEN;
+	// Configure and allocate the subscriber message
+	conf.max_string_capacity = STRING_BUFFER_LEN;
+
+	bool success = micro_ros_utilities_create_message_memory(
+    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), 
+	&recv_msg,
+	conf);
+
+	if (!success)
+	{
+		printf("Error allocating message memory for subscriber");
+		return 1;
+	}
 
 	// Create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
@@ -118,7 +139,8 @@ int main(int argc, const char * const * argv)
 	}
 
 	// Set executor timeout to 100 ms to reduce thread locking time
-	executor.timeout_ns = 100000000;
+	const uint64_t timeout_ns = 100000000;
+	RCCHECK(rclc_executor_set_timeout(&executor,timeout_ns));
   	rclc_executor_spin(&executor);
 
 	exit_flag = true;
