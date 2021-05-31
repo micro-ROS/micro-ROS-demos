@@ -56,10 +56,7 @@ export_executable(static_type_handling)
 export_executable(epoch_synchronization)
 export_executable(parameter_server)
 # export_executable(configuration_example custom_transports)
-
-if(MULTITHREAD_EXAMPLE)
-    export_executable(multithread_publisher_subscriber)   
-endif()
+export_executable(multithread_publisher_subscriber)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
     install(
