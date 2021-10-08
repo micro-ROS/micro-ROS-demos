@@ -7,6 +7,15 @@ find_package(ament_cmake REQUIRED)
 include(ExternalProject)
 include(CMakeParseArguments)
 
+if(ANDROID)
+    set(CROSS_CMAKE_ARGS
+        -DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}
+        -DCMAKE_SYSTEM_VERSION:STRING=${CMAKE_SYSTEM_VERSION}
+        -DCMAKE_ANDROID_ARCH_ABI:STRING=${CMAKE_ANDROID_ARCH_ABI}
+        -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE:STRING=BOTH
+        )
+endif()
+
 function(export_executable)
     set(subtree "")
     foreach(arg IN LISTS ARGN)
@@ -26,6 +35,7 @@ function(export_executable)
             -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
             -DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}
             -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+            ${CROSS_CMAKE_ARGS}
     )
 endfunction()
 
