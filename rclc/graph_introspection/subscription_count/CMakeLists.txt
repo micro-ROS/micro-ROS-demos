@@ -4,6 +4,7 @@ project(subscription_count LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
+find_package(rcl_action REQUIRED)
 find_package(rclc REQUIRED)
 find_package(rcl_interfaces REQUIRED)
 find_package(rmw_microxrcedds REQUIRED)

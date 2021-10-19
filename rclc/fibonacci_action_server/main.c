@@ -30,7 +30,7 @@ void * fibonacci(void *args){
 
     *fib_args->feedback_lenght = i;
     fib_args->feedback[i] = fib_args->feedback[i-1] + fib_args->feedback[i-2];
-    
+
     usleep(500000);
   }
 
@@ -80,7 +80,7 @@ int main(int argc, const char * const * argv)
 
   do {
     RCSOFTCHECK(rcl_wait_set_clear(&wait_set))
-    
+
     size_t index;
     RCSOFTCHECK(rcl_action_wait_set_add_action_server(&wait_set, &action_server, &index))
 
@@ -93,7 +93,7 @@ int main(int argc, const char * const * argv)
 
     RCSOFTCHECK(rcl_action_server_wait_set_get_entities_ready(&wait_set, &action_server, &is_goal_request_ready, &is_cancel_request_ready, &is_result_request_ready, &is_goal_expired))
 
-    if (is_goal_request_ready) { 
+    if (is_goal_request_ready) {
       printf("Goal request received\n");
 
       goal_info = rcl_action_get_zero_initialized_goal_info();
@@ -112,7 +112,7 @@ int main(int argc, const char * const * argv)
 
         // ---- Accept goal
         goal_info.goal_id = ros_goal_request.goal_id;
-        // goal_info.stamp = 
+        // goal_info.stamp =
         goal_handle = rcl_action_accept_new_goal(&action_server, &goal_info);
 
         // ---- Update state
@@ -144,7 +144,7 @@ int main(int argc, const char * const * argv)
       // ---- Publish feedback
       printf("Publishing feedback\n");
 
-      example_interfaces__action__Fibonacci_FeedbackMessage ros_goal_feedback; 
+      example_interfaces__action__Fibonacci_FeedbackMessage ros_goal_feedback;
 
       ros_goal_feedback.goal_id = goal_info.goal_id;
       ros_goal_feedback.feedback.sequence.data = feedback;
@@ -158,6 +158,7 @@ int main(int argc, const char * const * argv)
       printf("Sending result ready state\n");
 
       processing_goal = false;
+      goal_done = false;
 
       RCSOFTCHECK(rcl_action_update_goal_state(goal_handle, GOAL_EVENT_SUCCEED))
 

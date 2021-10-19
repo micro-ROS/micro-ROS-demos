@@ -4,6 +4,7 @@ project(custom_transports LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
+find_package(rcl_action REQUIRED)
 find_package(rclc REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rmw_microxrcedds REQUIRED)
@@ -33,4 +34,3 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 install(TARGETS ${PROJECT_NAME}
   DESTINATION ${PROJECT_NAME}
   )
-  

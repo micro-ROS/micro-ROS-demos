@@ -4,6 +4,7 @@ project(configured_publisher LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
+find_package(rcl_action REQUIRED)
 find_package(rclc REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(microxrcedds_client REQUIRED)
@@ -26,4 +27,3 @@ ament_target_dependencies(${PROJECT_NAME}
 install(TARGETS ${PROJECT_NAME}
   DESTINATION ${PROJECT_NAME}
   )
-  

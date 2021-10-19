@@ -5,6 +5,7 @@ project(fibonacci_action_client LANGUAGES C)
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
 find_package(rcl_action REQUIRED)
+find_package(rcl_action REQUIRED)
 find_package(example_interfaces REQUIRED)
 
 add_executable(${PROJECT_NAME} main.c)
