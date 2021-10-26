@@ -4,7 +4,6 @@ project(addtwoints_client LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
-find_package(rcl_action REQUIRED)
 find_package(rclc REQUIRED)
 find_package(example_interfaces REQUIRED)
 

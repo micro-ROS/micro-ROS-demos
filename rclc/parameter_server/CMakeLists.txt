@@ -4,7 +4,6 @@ project(parameter_server LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
-find_package(rcl_action REQUIRED)
 find_package(rclc REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rclc_parameter REQUIRED)
