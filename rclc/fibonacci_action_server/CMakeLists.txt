@@ -4,8 +4,7 @@ project(fibonacci_action_server LANGUAGES C)
 
 find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
-find_package(rcl_action REQUIRED)
-find_package(rcl_action REQUIRED)
+find_package(rclc REQUIRED)
 find_package(example_interfaces REQUIRED)
 
 add_executable(${PROJECT_NAME} main.c)
@@ -15,7 +14,7 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
 
 ament_target_dependencies(${PROJECT_NAME}
   rcl
-  rcl_action
+  rclc
   example_interfaces
   )
 
