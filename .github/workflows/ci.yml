@@ -8,7 +8,7 @@ on:
 jobs:
     micro_ros_demos:
         runs-on: ubuntu-20.04
-        container: microros/base:foxy
+        container: microros/base:rolling
         defaults:
           run:
             shell: bash
@@ -18,7 +18,7 @@ jobs:
           run: |
             cd /uros_ws
             apt update
-            source /opt/ros/foxy/setup.bash
+            source /opt/ros/rolling/setup.bash
             source install/local_setup.bash
             ros2 run micro_ros_setup create_firmware_ws.sh host
             rm -rf src/uros/micro-ROS-demos
@@ -28,6 +28,6 @@ jobs:
         - name: Build
           run: |
             cd /uros_ws
-            source /opt/ros/foxy/setup.bash
+            source /opt/ros/rolling/setup.bash
             source install/local_setup.bash
             ros2 run micro_ros_setup build_firmware.sh
