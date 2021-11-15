@@ -2,7 +2,7 @@ name: CI
 
 on:
     pull_request:
-      branches: 
+      branches:
         - '**'
 
 jobs:
@@ -12,12 +12,13 @@ jobs:
         defaults:
           run:
             shell: bash
-    
+
         steps:
         - name: Download environment
           run: |
             cd /uros_ws
             apt update
+            rosdep update
             source /opt/ros/rolling/setup.bash
             source install/local_setup.bash
             ros2 run micro_ros_setup create_firmware_ws.sh host
