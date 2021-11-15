@@ -45,7 +45,7 @@ void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
 		// Reset the pong count and publish the ping message
 		pong_count = 0;
-		rcl_publish(&ping_publisher, (const void*)&outcoming_ping, NULL);
+		RCSOFTCHECK(rcl_publish(&ping_publisher, (const void*)&outcoming_ping, NULL));
 		printf("Ping send seq %s\n", outcoming_ping.frame_id.data);  
 	}
 }
@@ -57,7 +57,7 @@ void ping_subscription_callback(const void * msgin)
 	// Dont pong my own pings
 	if(strcmp(outcoming_ping.frame_id.data, msg->frame_id.data) != 0){
 		printf("Ping received with seq %s. Answering.\n", msg->frame_id.data);
-		rcl_publish(&pong_publisher, (const void*)msg, NULL);
+		RCSOFTCHECK(rcl_publish(&pong_publisher, (const void*)msg, NULL));
 	}
 }
 

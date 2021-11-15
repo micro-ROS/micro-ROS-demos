@@ -42,7 +42,7 @@ int main(int argc, const char * const * argv)
 	size_t domain_id = (size_t)(argc == 4 ? atoi(argv[3]) : 0);
 	const char * node_name = "int32_configured_subscriber_rclc";
 
-	rcl_init_options_set_domain_id(&init_options, domain_id);
+	RCCHECK(rcl_init_options_set_domain_id(&init_options, domain_id));
 	printf("Initializing RCL '%s' with ROS Domain ID %ld...\n", node_name, domain_id);
 
 	// create init_options
