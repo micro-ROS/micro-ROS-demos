@@ -6,11 +6,10 @@ find_package(ament_cmake REQUIRED)
 find_package(rcl REQUIRED)
 find_package(rclc REQUIRED)
 find_package(example_interfaces REQUIRED)
+find_package(Threads REQUIRED)
 
 add_executable(${PROJECT_NAME} main.c)
-
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
+target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 ament_target_dependencies(${PROJECT_NAME}
   rcl
