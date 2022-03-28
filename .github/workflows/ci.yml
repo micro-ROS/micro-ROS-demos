@@ -21,6 +21,7 @@ jobs:
             rosdep update
             source /opt/ros/rolling/setup.bash
             source install/local_setup.bash
+            rosdep update
             ros2 run micro_ros_setup create_firmware_ws.sh host
             rm -rf src/uros/micro-ROS-demos
         - uses: actions/checkout@v2

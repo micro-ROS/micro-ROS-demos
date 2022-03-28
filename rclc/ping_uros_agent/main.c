@@ -75,6 +75,11 @@ int main(int argc, char ** argv)
 
     const char * mode = argv[1];
 
+    // Init data
+    msg.data.data = "This is a message sent after pinging micro-ROS Agent";
+    msg.data.size = strlen(msg.data.data);
+    msg.data.capacity = msg.data.size + 1;
+
     /**
      * Basic mode
      */
@@ -134,22 +139,15 @@ int main(int argc, char ** argv)
         RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
     	RCCHECK(rclc_executor_add_timer(&executor, &timer));
 
-        // Init data
-        (void) rosidl_runtime_c__String__init(&msg.data);
-        (void) rosidl_runtime_c__String__assign(
-            &msg.data,
-            "This is a message sent after pinging micro-ROS Agent");
-
         // Spin executor
         rclc_executor_spin(&executor);
 
-        // Free micro-ROS resources before exiting
-        (void) rosidl_runtime_c__String__fini(&msg.data);
+        (void)! rcl_publisher_fini(&publisher, &node);
+        (void)! rcl_timer_fini(&timer);
+        (void)! rclc_executor_fini(&executor);
+        (void)! rcl_node_fini(&node);
+        (void)! rclc_support_fini(&support);
 
-        RCCHECK(rclc_executor_fini(&executor));
-        RCCHECK(rcl_publisher_fini(&publisher, &node));
-        RCCHECK(rcl_node_fini(&node));
-        RCCHECK(rclc_support_fini(&support));
     } else {
         return usage();
     }
