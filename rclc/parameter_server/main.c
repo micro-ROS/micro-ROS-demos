@@ -37,23 +37,28 @@ bool on_parameter_changed(const Parameter * old_param, const Parameter * new_par
 {
   (void) context;
 
+  if (old_param == NULL && new_param == NULL) {
+    printf("Callback error, both parameters are NULL\n");
+    return false;
+  }
+
   bool ret = true;
   if (new_param == NULL) {
     printf("Delete parameter %s rejected\n", old_param->name.data);
     ret = false;
   } else if (strcmp(
-      param->name.data,
-      "publish_toogle") == 0 && param->value.type == RCLC_PARAMETER_BOOL)
+      new_param->name.data,
+      "publish_toogle") == 0 && new_param->value.type == RCLC_PARAMETER_BOOL)
   {
-    publish = param->value.bool_value;
+    publish = new_param->value.bool_value;
     printf("Publish %s\n", (publish) ? "ON" : "OFF");
   } else if (strcmp(
-      param->name.data,
-      "publish_rate_ms") == 0 && param->value.type == RCLC_PARAMETER_INT)
+      new_param->name.data,
+      "publish_rate_ms") == 0 && new_param->value.type == RCLC_PARAMETER_INT)
   {
     int64_t old;
-    RCSOFTCHECK(rcl_timer_exchange_period(&timer, RCL_MS_TO_NS(param->value.integer_value), &old));
-    printf("Publish rate %ld ms\n", param->value.integer_value);
+    RCSOFTCHECK(rcl_timer_exchange_period(&timer, RCL_MS_TO_NS(new_param->value.integer_value), &old));
+    printf("Publish rate %ld ms\n", new_param->value.integer_value);
   }
 
   return ret;
@@ -95,7 +100,7 @@ int main()
   RCCHECK(
     rclc_executor_init(
       &executor, &support.context,
-      RCLC_PARAMETER_EXECUTOR_HANDLES_NUMBER + 1, &allocator));
+      RCLC_EXECUTOR_PARAMETER_SERVER_HANDLES + 1, &allocator));
   RCCHECK(rclc_executor_add_parameter_server(&executor, &param_server, on_parameter_changed));
   RCCHECK(rclc_executor_add_timer(&executor, &timer));
 
