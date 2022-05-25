@@ -2,8 +2,8 @@
 Changelog for package micro_ros_demos_rclc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.0.0 (2022-05-25)
+------------------
 * Update rclc parameter demo (`#62 <https://github.com/micro-ROS/micro-ROS-demos/issues/62>`_)
 * Fix ping demo (`#58 <https://github.com/micro-ROS/micro-ROS-demos/issues/58>`_) (`#60 <https://github.com/micro-ROS/micro-ROS-demos/issues/60>`_)
 * Add pthreads to cmake (`#55 <https://github.com/micro-ROS/micro-ROS-demos/issues/55>`_)
