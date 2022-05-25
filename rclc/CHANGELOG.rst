@@ -2,8 +2,8 @@
 Changelog for package micro_ros_demos_rclc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.0 (2022-05-25)
+------------------
 * Fix ping demo (`#58 <https://github.com/micro-ROS/micro-ROS-demos/issues/58>`_)
 * Add basic support for rclc demos to support Android (`#51 <https://github.com/micro-ROS/micro-ROS-demos/issues/51>`_)
 * Add multithread example (`#47 <https://github.com/micro-ROS/micro-ROS-demos/issues/47>`_)
