@@ -2,8 +2,8 @@
 Changelog for package micro_ros_demos_rclc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2022-05-25)
+------------------
 * Fix ping demo (`#58 <https://github.com/micro-ROS/micro-ROS-demos/issues/58>`_) (`#59 <https://github.com/micro-ROS/micro-ROS-demos/issues/59>`_)
 * Modify RMW API include (`#41 <https://github.com/micro-ROS/micro-ROS-demos/issues/41>`_)
 * multichange tool (`#42 <https://github.com/micro-ROS/micro-ROS-demos/issues/42>`_)
