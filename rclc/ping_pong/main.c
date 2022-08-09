@@ -19,10 +19,17 @@ rcl_publisher_t pong_publisher;
 rcl_subscription_t ping_subscriber;
 rcl_subscription_t pong_subscriber;
 
+rcl_subscription_t test1_subscriber;
+rcl_subscription_t test2_subscriber;
+rcl_subscription_t test3_subscriber;
+
 std_msgs__msg__Header incoming_ping;
 std_msgs__msg__Header outcoming_ping;
 std_msgs__msg__Header incoming_pong;
 
+std_msgs__msg__Header incoming_test1;
+std_msgs__msg__Header incoming_test2;
+std_msgs__msg__Header incoming_test3;
 int device_id;
 int seq_no;
 int pong_count;
@@ -70,6 +77,15 @@ void pong_subscription_callback(const void * msgin)
 			pong_count++;
 			printf("Pong for seq %s (%d)\n", msg->frame_id.data, pong_count);
 	}
+	
+	// sleep for 100ms
+  	usleep(100000);
+}
+
+void test_subscription_callback(const void * msgin)
+{
+	const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
+	// just a test subscriber callback 	
 }
 
 
@@ -86,10 +102,10 @@ int main()
 	RCCHECK(rclc_node_init_default(&node, "pingpong_node", "", &support));
 
 	// Create a reliable ping publisher
-	RCCHECK(rclc_publisher_init_default(&ping_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
+	// RCCHECK(rclc_publisher_init_default(&ping_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
 
 	// Create a best effort pong publisher
-	RCCHECK(rclc_publisher_init_best_effort(&pong_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
+	// RCCHECK(rclc_publisher_init_best_effort(&pong_publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
 
 	// Create a best effort ping subscriber
 	RCCHECK(rclc_subscription_init_best_effort(&ping_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
@@ -97,17 +113,29 @@ int main()
 	// Create a best effort  pong subscriber
 	RCCHECK(rclc_subscription_init_best_effort(&pong_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
 
+	// Create a best effort  test1 subscriber
+	RCCHECK(rclc_subscription_init_best_effort(&test1_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/test1"));
+
+	// Create a best effort  test2 subscriber
+	RCCHECK(rclc_subscription_init_best_effort(&test2_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/test2"));
+
+	// Create a best effort  test3 subscriber
+	RCCHECK(rclc_subscription_init_best_effort(&test3_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/test3"));
 
 	// Create a 3 seconds ping timer timer,
-	rcl_timer_t timer;
-	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback));
+	// rcl_timer_t timer;
+	// RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback));
 
 
 	// Create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
-	RCCHECK(rclc_executor_init(&executor, &support.context, 3, &allocator));
-	RCCHECK(rclc_executor_add_timer(&executor, &timer));
+	RCCHECK(rclc_executor_init(&executor, &support.context, 6, &allocator));
+	// RCCHECK(rclc_executor_add_timer(&executor, &timer));
 	RCCHECK(rclc_executor_add_subscription(&executor, &ping_subscriber, &incoming_ping, &ping_subscription_callback, ON_NEW_DATA));
+	RCCHECK(rclc_executor_add_subscription(&executor, &test1_subscriber, &incoming_test1, &test_subscription_callback, ON_NEW_DATA));
+	RCCHECK(rclc_executor_add_subscription(&executor, &test2_subscriber, &incoming_test2, &test_subscription_callback, ON_NEW_DATA));
+	RCCHECK(rclc_executor_add_subscription(&executor, &test3_subscriber, &incoming_test3, &test_subscription_callback, ON_NEW_DATA));
+	
 	RCCHECK(rclc_executor_add_subscription(&executor, &pong_subscriber, &incoming_pong, &pong_subscription_callback, ON_NEW_DATA));
 
 	// Create and allocate the pingpong messages
@@ -124,13 +152,31 @@ int main()
 	incoming_pong.frame_id.data = incoming_pong_buffer;
 	incoming_pong.frame_id.capacity = STRING_BUFFER_LEN;
 
+	char incoming_test1_buffer[STRING_BUFFER_LEN];
+	incoming_test1.frame_id.data = incoming_test1_buffer;
+	incoming_test1.frame_id.capacity = STRING_BUFFER_LEN;
+
+	char incoming_test2_buffer[STRING_BUFFER_LEN];
+	incoming_test2.frame_id.data = incoming_test2_buffer;
+	incoming_test2.frame_id.capacity = STRING_BUFFER_LEN;
+
+	char incoming_test3_buffer[STRING_BUFFER_LEN];
+	incoming_test3.frame_id.data = incoming_test3_buffer;
+	incoming_test3.frame_id.capacity = STRING_BUFFER_LEN;
+
+
 	device_id = rand();
+
+	rclc_executor_enable_profiling(&executor, true);
 
 	rclc_executor_spin(&executor);
 	
-	RCCHECK(rcl_publisher_fini(&ping_publisher, &node));
-	RCCHECK(rcl_publisher_fini(&pong_publisher, &node));
+	// RCCHECK(rcl_publisher_fini(&ping_publisher, &node));
+	// RCCHECK(rcl_publisher_fini(&pong_publisher, &node));
 	RCCHECK(rcl_subscription_fini(&ping_subscriber, &node));
 	RCCHECK(rcl_subscription_fini(&pong_subscriber, &node));
+	RCCHECK(rcl_subscription_fini(&test1_subscriber, &node));
+	RCCHECK(rcl_subscription_fini(&test2_subscriber, &node));
+	RCCHECK(rcl_subscription_fini(&test3_subscriber, &node));
 	RCCHECK(rcl_node_fini(&node));
 }
