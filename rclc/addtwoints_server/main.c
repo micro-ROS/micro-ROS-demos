@@ -30,7 +30,7 @@ void main(void)
 
     // create node
     rcl_node_t node;
-    RCCHECK(rclc_node_init_default(&node, "add_twoints_client_rclc", "", &support));
+    RCCHECK(rclc_node_init_default(&node, "add_twoints_server_rclc", "", &support));
 
     // create service
     rcl_service_t service;
