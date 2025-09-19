@@ -4,13 +4,13 @@
 
 ## Overview
 
-The primary purpose for this repository is to organise all packages for the [Micro-ROS project](https://microros.github.io/micro-ROS/) functionalities demonstrations.
+The primary purpose for this repository is to organise all packages for the [Micro-ROS project](https://microros.github.io/) functionalities demonstrations.
 All packages contained in this repository are a part of the Micro-ROS project stack.
 
 ## Previous step
 
 To run all the demonstrations, you need to set up the ROS2 environment and build all the required packages.
-Click [here](https://github.com/microROS/micro-ROS-doc) to read further about how to do this previous step.
+Click [here](https://github.com/micro-ROS/micro_ros_setup?tab=readme-ov-file#building) to read further about how to do this previous step.
 
 ## Package clusters
 
