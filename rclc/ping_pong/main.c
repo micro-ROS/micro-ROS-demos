@@ -5,6 +5,9 @@
 
 #include <std_msgs/msg/header.h>
 
+#include <rcutils/allocator.h>
+#include <rosidl_runtime_c/string_functions.h>
+
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
@@ -110,24 +113,27 @@ int main()
 	RCCHECK(rclc_executor_add_subscription(&executor, &ping_subscriber, &incoming_ping, &ping_subscription_callback, ON_NEW_DATA));
 	RCCHECK(rclc_executor_add_subscription(&executor, &pong_subscriber, &incoming_pong, &pong_subscription_callback, ON_NEW_DATA));
 
-	// Create and allocate the pingpong messages
-
-	char outcoming_ping_buffer[STRING_BUFFER_LEN];
-	outcoming_ping.frame_id.data = outcoming_ping_buffer;
+	// Allocate frame_id buffers via the rcutils allocator before spinning.
+	// The deserializer calls realloc() on frame_id.data when a message arrives;
+	// Remember to pair these with a call to rosidl_runtime_c__String__fini.
+	// outcoming_ping must be preallocated for sprintf to work. The others
+	// are used on paths that automatically realloc().
+	rcutils_allocator_t alloc = rcutils_get_default_allocator();
+	outcoming_ping.frame_id.data = alloc.allocate(STRING_BUFFER_LEN, alloc.state);
 	outcoming_ping.frame_id.capacity = STRING_BUFFER_LEN;
+	outcoming_ping.frame_id.size = 0;
 
-	char incoming_ping_buffer[STRING_BUFFER_LEN];
-	incoming_ping.frame_id.data = incoming_ping_buffer;
-	incoming_ping.frame_id.capacity = STRING_BUFFER_LEN;
-
-	char incoming_pong_buffer[STRING_BUFFER_LEN];
-	incoming_pong.frame_id.data = incoming_pong_buffer;
-	incoming_pong.frame_id.capacity = STRING_BUFFER_LEN;
+	(void) rosidl_runtime_c__String__init(&incoming_ping.frame_id);
+	(void) rosidl_runtime_c__String__init(&incoming_pong.frame_id);
 
 	device_id = rand();
 
 	rclc_executor_spin(&executor);
-	
+
+	rosidl_runtime_c__String__fini(&outcoming_ping.frame_id);
+	rosidl_runtime_c__String__fini(&incoming_ping.frame_id);
+	rosidl_runtime_c__String__fini(&incoming_pong.frame_id);
+
 	RCCHECK(rcl_publisher_fini(&ping_publisher, &node));
 	RCCHECK(rcl_publisher_fini(&pong_publisher, &node));
 	RCCHECK(rcl_subscription_fini(&ping_subscriber, &node));
