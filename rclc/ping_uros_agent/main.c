@@ -41,9 +41,10 @@ int usage()
     return 1;
 }
 
-void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+void timer_callback(rcl_timer_t * timer, int64_t last_call_time, uintptr_t user_data)
 {
     (void) last_call_time;
+    (void) user_data;
     if (NULL != timer) {
         RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
         printf("Sent: '%s'\n", msg.data.data);
@@ -128,11 +129,12 @@ int main(int argc, char ** argv)
         // Create timer
         rcl_timer_t timer;
         const unsigned int timer_timeout = 1000;
-        RCCHECK(rclc_timer_init_default(
+        RCCHECK(rclc_timer_init_default2(
             &timer,
             &support,
             RCL_MS_TO_NS(timer_timeout),
-            timer_callback));
+            timer_callback,
+            true));
 
         // Create executor
         rclc_executor_t executor;

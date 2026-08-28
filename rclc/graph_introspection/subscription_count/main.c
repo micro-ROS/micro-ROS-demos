@@ -15,9 +15,10 @@
 rcl_publisher_t publisher;
 rcl_node_t node;
 
-void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+void timer_callback(rcl_timer_t * timer, int64_t last_call_time, uintptr_t user_data)
 {
   (void) last_call_time;
+  (void) user_data;
   printf("Subscriptions count for publisher '/parameter_events':\n");
   size_t subscription_count = 0;
   RCSOFTCHECK(rcl_publisher_get_subscription_count(&publisher, &subscription_count));
@@ -48,11 +49,12 @@ int main(int argc, const char * const * argv)
   // create timer
   rcl_timer_t timer;
   const unsigned int timer_timeout = 1000;
-  RCCHECK(rclc_timer_init_default(
+  RCCHECK(rclc_timer_init_default2(
     &timer,
     &support,
     RCL_MS_TO_NS(timer_timeout),
-    timer_callback));
+    timer_callback,
+    true));
 
   // create executor
   rclc_executor_t executor;

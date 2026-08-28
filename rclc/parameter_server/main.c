@@ -20,10 +20,11 @@ rcl_timer_t timer;
 bool publish = true;
 std_msgs__msg__Int32 msg;
 
-void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+void timer_callback(rcl_timer_t * timer, int64_t last_call_time, uintptr_t user_data)
 {
   (void) last_call_time;
   (void) timer;
+  (void) user_data;
 
   if (publish) {
     RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
@@ -89,11 +90,12 @@ int main()
 
   // create timer,
   RCCHECK(
-    rclc_timer_init_default(
+    rclc_timer_init_default2(
       &timer,
       &support,
       RCL_MS_TO_NS(1000),
-      timer_callback));
+      timer_callback,
+      true));
 
   // create executor
   rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
