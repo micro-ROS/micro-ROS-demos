@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 project(custom_transports LANGUAGES C)
 
@@ -11,11 +11,9 @@ find_package(microxrcedds_client REQUIRED)
 
 add_executable(${PROJECT_NAME} main.c)
 
-target_link_libraries(${PROJECT_NAME}
-  microxrcedds_client
-)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ament_target_dependencies_compat.cmake)
 
-ament_target_dependencies(${PROJECT_NAME}
+ament_target_dependencies_compat(${PROJECT_NAME}
   rcl
   rclc
   std_msgs
@@ -33,4 +31,3 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 install(TARGETS ${PROJECT_NAME}
   DESTINATION ${PROJECT_NAME}
   )
-  

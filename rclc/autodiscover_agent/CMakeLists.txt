@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 project(autodiscover_agent LANGUAGES C)
 
@@ -8,21 +8,17 @@ find_package(rclc REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(microxrcedds_client REQUIRED)
 find_package(rmw_microxrcedds REQUIRED)
-find_package(microxrcedds_client REQUIRED)
 
 add_executable(${PROJECT_NAME} main.c)
 
-target_link_libraries(${PROJECT_NAME}
-  microxrcedds_client
-)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/ament_target_dependencies_compat.cmake)
 
-ament_target_dependencies(${PROJECT_NAME}
+ament_target_dependencies_compat(${PROJECT_NAME}
   rcl
   rclc
   std_msgs
   microxrcedds_client
   rmw_microxrcedds
-  microxrcedds_client
   )
 
 install(TARGETS ${PROJECT_NAME}
