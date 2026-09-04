@@ -27,9 +27,10 @@ int device_id;
 int seq_no;
 int pong_count;
 
-void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time, uintptr_t user_data)
 {
 	(void) last_call_time;
+	(void) user_data;
 
 	if (timer != NULL) {
 
@@ -100,7 +101,7 @@ int main()
 
 	// Create a 3 seconds ping timer timer,
 	rcl_timer_t timer;
-	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback));
+	RCCHECK(rclc_timer_init_default2(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback, true));
 
 
 	// Create executor

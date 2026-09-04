@@ -31,9 +31,10 @@ void error_loop(){
   }
 }
 
-void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+void timer_callback(rcl_timer_t * timer, int64_t last_call_time, uintptr_t user_data)
 {
   RCLC_UNUSED(last_call_time);
+  RCLC_UNUSED(user_data);
   if (timer != NULL) {
     RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
     RCSOFTCHECK(rcl_publish(&publisher, &msg_static, NULL));
@@ -58,11 +59,12 @@ int main() {
 
   // create timer,
   const unsigned int timer_timeout = 1000;
-  RCCHECK(rclc_timer_init_default(
+  RCCHECK(rclc_timer_init_default2(
     &timer,
     &support,
     RCL_MS_TO_NS(timer_timeout),
-    timer_callback));
+    timer_callback,
+    true));
 
   // create executor
   RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
