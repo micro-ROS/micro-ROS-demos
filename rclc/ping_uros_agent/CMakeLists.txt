@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 project(ping_uros_agent LANGUAGES C)
 
@@ -10,7 +10,9 @@ find_package(std_msgs REQUIRED)
 
 add_executable(${PROJECT_NAME} main.c)
 
-ament_target_dependencies(${PROJECT_NAME}
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/ament_target_dependencies_compat.cmake)
+
+ament_target_dependencies_compat(${PROJECT_NAME}
   rcl
   rclc
   rmw_microxrcedds
