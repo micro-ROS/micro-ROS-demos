@@ -2,6 +2,14 @@
 Changelog for package micro_ros_demos_rclc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add manual trigger to CI (`#85 <https://github.com/micro-ROS/micro-ROS-demos/issues/85>`_) (`#100 <https://github.com/micro-ROS/micro-ROS-demos/issues/100>`_)
+* Fix ament_target_dependencies removal (`#98 <https://github.com/micro-ROS/micro-ROS-demos/issues/98>`_)
+* Update demos after 'rcl' API changes (`#99 <https://github.com/micro-ROS/micro-ROS-demos/issues/99>`_)
+* Fix broken links (`#91 <https://github.com/micro-ROS/micro-ROS-demos/issues/91>`_)
+* Update maintainers (`#87 <https://github.com/micro-ROS/micro-ROS-demos/issues/87>`_) (`#90 <https://github.com/micro-ROS/micro-ROS-demos/issues/90>`_)
+
 6.0.0 (2024-05-31)
 ------------------
 * addtwoints_server: correct node name (`#75 <https://github.com/micro-ROS/micro-ROS-demos/issues/75>`_) (`#77 <https://github.com/micro-ROS/micro-ROS-demos/issues/77>`_)
