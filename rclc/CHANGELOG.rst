@@ -2,8 +2,8 @@
 Changelog for package micro_ros_demos_rclc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.0.0 (2026-09-10)
+------------------
 * Add manual trigger to CI (`#85 <https://github.com/micro-ROS/micro-ROS-demos/issues/85>`_) (`#100 <https://github.com/micro-ROS/micro-ROS-demos/issues/100>`_)
 * Fix ament_target_dependencies removal (`#98 <https://github.com/micro-ROS/micro-ROS-demos/issues/98>`_)
 * Update demos after 'rcl' API changes (`#99 <https://github.com/micro-ROS/micro-ROS-demos/issues/99>`_)
